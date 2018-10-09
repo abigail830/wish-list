@@ -32,7 +32,7 @@ mybatis:
     config-location: classpath:mapper/config/sqlMapConfig.xml
 app:
     appId: "wxf21ef2401686aaf5"
-    appSecret: ""
+    appSecret: "603e3b706989b5fe08d289bc98c9d808"
 info:
     github: https://github.com/abigail830/wish-list
     jitpack: https://jitpack.io/#abigail830/wish-list
