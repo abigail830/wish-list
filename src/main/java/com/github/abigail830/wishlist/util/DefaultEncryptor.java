@@ -14,7 +14,7 @@ public class DefaultEncryptor implements StringEncryptor {
 	public DefaultEncryptor() {
 		PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
 		SimpleStringPBEConfig config = new SimpleStringPBEConfig();
-		config.setPassword(System.getenv("jasypt.encryptor.password"));
+		config.setPassword(System.getenv("ENCRYPTION_KEY_WL"));
 		config.setAlgorithm("PBEWithMD5AndDES");
 		config.setKeyObtentionIterations("10000");
 		config.setPoolSize("1");
@@ -34,4 +34,5 @@ public class DefaultEncryptor implements StringEncryptor {
 	public String decrypt(String encryptedMessage) {
 		return encryptor.decrypt(encryptedMessage);
 	}
+
 }

@@ -4,7 +4,7 @@ spring:
         driver-class-name: com.mysql.jdbc.Driver
         url: jdbc:mysql://rm-wz9u841d66c0td1fq6o.mysql.rds.aliyuncs.com:3306/wishlist?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
         username: wishlist
-        password: Wishlist20181008
+        password: ENC(lNUcvnJHALkQdC51gY+bWE7UJ0ar7b21LW3HTNftCPY=)
     druid:
         initial-size: 10
         max-active: 100
