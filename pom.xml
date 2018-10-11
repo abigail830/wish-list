@@ -28,6 +28,7 @@
 		<okhttp.version>3.10.0</okhttp.version>
 		<commons.lang.version>2.6</commons.lang.version>
 		<commons.codec.version>1.10</commons.codec.version>
+		<swagger.version>2.9.2</swagger.version>
 	</properties>
 
 	<repositories>
@@ -99,6 +100,17 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger.version}</version>
 		</dependency>
 
 	</dependencies>
