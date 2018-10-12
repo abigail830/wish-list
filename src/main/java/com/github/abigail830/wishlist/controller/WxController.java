@@ -1,10 +1,13 @@
 package com.github.abigail830.wishlist.controller;
 
+import com.github.abigail830.wishlist.repository.UserDaoImpl;
 import com.github.abigail830.wishlist.util.HttpClientUtil;
 import com.github.abigail830.wishlist.util.WXBizDataCrypt;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/common")
 public class WxController {
 
+	private static final Logger logger = LoggerFactory.getLogger(WxController.class);
+
 	@Value("${app.appId}")
 	private String appId;
 
@@ -35,11 +40,13 @@ public class WxController {
 	@ResponseBody
 	public String login(HttpServletRequest request) {
 		String code = request.getHeader("X-WX-Code");
-		return HttpClientUtil.instance().getData(
+		String resultData =  HttpClientUtil.instance().getData(
 				"https://api.weixin.qq.com/sns/jscode2session?appid=" + appId +
 						"&secret=" + appSecret +
 						"&grant_type=authorization_code" +
 						"&js_code=" + code);
+		logger.info("Wechat wxLogin result: {}", resultData);
+		return resultData;
 	}
 
 	@ApiOperation(value = "Handle wechat info decryption",
@@ -53,6 +60,8 @@ public class WxController {
 		String encryptedData = request.getHeader("encryptedData");
 		String iv = request.getHeader("iv");
 		WXBizDataCrypt biz = new WXBizDataCrypt(appId, skey);
-		return biz.decryptData(encryptedData, iv);
+		String resultDate = biz.decryptData(encryptedData, iv);
+		logger.info("Wechat decrypt result: {}", resultDate);
+		return resultDate;
 	}
 }
