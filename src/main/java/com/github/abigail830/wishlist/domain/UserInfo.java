@@ -1,6 +1,6 @@
-package com.github.abigail830.wishlist.entity;
+package com.github.abigail830.wishlist.domain;
 
-public class User {
+public class UserInfo {
 
     private Integer id;
     private String openId;
@@ -10,6 +10,20 @@ public class User {
     private String country;
     private String province;
     private String lang;
+
+    public UserInfo(String openId) {
+        this.openId = openId;
+    }
+
+    public UserInfo(String openId, String gender, String nickName, String city, String country, String province, String lang) {
+        this.openId = openId;
+        this.gender = gender;
+        this.nickName = nickName;
+        this.city = city;
+        this.country = country;
+        this.province = province;
+        this.lang = lang;
+    }
 
     public Integer getId() {
         return id;

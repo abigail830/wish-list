@@ -9,10 +9,8 @@ public class UserEvent {
     private String eventType;
     private Timestamp eventTime;
 
-    public UserEvent(String openId, String eventType, Timestamp eventTime) {
+    public UserEvent(String openId) {
         this.openId = openId;
-        this.eventType = eventType;
-        this.eventTime = eventTime;
     }
 
     public Integer getId() {

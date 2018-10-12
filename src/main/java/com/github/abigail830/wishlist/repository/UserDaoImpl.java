@@ -1,7 +1,7 @@
 package com.github.abigail830.wishlist.repository;
 
+import com.github.abigail830.wishlist.domain.UserInfo;
 import com.github.abigail830.wishlist.entity.User;
-import com.google.common.base.Joiner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class UserDaoImpl {
 
 	private RowMapper<User> rowMapper = new BeanPropertyRowMapper<>(User.class);
 
-	public void createUser(User user) {
+	public void createUser(UserInfo user) {
 		logger.info("Going to insert user data openId={}, gender={}, nick_name={}, " +
 				"city={}, country={}, province={}, language={}",
 				user.getOpenId(),
@@ -46,7 +46,7 @@ public class UserDaoImpl {
 		);
 	}
 
-	public void updateUserByOpenID(User user) {
+	public void updateUserByOpenID(UserInfo user) {
 		logger.info("Going to update user openId={} to gender={}, nick_name={}, " +
 						"city={}, country={}, province={}, language={}",
 				user.getOpenId(),

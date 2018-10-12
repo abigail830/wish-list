@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -37,6 +38,23 @@ public class UserEventImpl {
 
 	public UserEvent getUserEventByOpenId(String openId) {
 		List<UserEvent> userEvents = jdbcTemplate.query("SELECT * FROM user_event WHERE open_id = ?", rowMapper, openId);
+		return userEvents.stream().findFirst().orElse(null);
+	}
+
+	public UserEvent getUserEventByEventType(String eventType) {
+		List<UserEvent> userEvents = jdbcTemplate.query("SELECT * FROM user_event WHERE event_type = ?", rowMapper, eventType);
+		return userEvents.stream().findFirst().orElse(null);
+	}
+
+	public UserEvent getUserEventByOpenIdAndEventType(String openId, String eventType) {
+		List<UserEvent> userEvents = jdbcTemplate.query("SELECT * FROM user_event " +
+				"WHERE open_id = ? and event_type = ?", rowMapper, openId, eventType);
+		return userEvents.stream().findFirst().orElse(null);
+	}
+
+	public UserEvent getUserEventByEventTime(Timestamp startTime, Timestamp endTime) {
+		List<UserEvent> userEvents = jdbcTemplate.query("SELECT * FROM user_event " +
+				"WHERE event_time >= ? and event_time < ? + INTERVAL 1 DAY", rowMapper, startTime, endTime);
 		return userEvents.stream().findFirst().orElse(null);
 	}
 
