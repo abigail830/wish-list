@@ -8,7 +8,7 @@ public class Wish {
     private String description;
     private Timestamp createTime;
     private Timestamp lastUpdateTime;
-    private String status;
+    private String wishStatus;
     private String implementorOpenId;
 
     public Wish(Integer id, Integer wishListId, String description) {
@@ -58,12 +58,12 @@ public class Wish {
         this.lastUpdateTime = lastUpdateTime;
     }
 
-    public String getStatus() {
-        return status;
+    public String getWishStatus() {
+        return wishStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setWishStatus(String wishStatus) {
+        this.wishStatus = wishStatus;
     }
 
     public String getImplementorOpenId() {
@@ -82,7 +82,7 @@ public class Wish {
                 ", description='" + description + '\'' +
                 ", createTime=" + createTime +
                 ", lastUpdateTime=" + lastUpdateTime +
-                ", status='" + status + '\'' +
+                ", wishStatus='" + wishStatus + '\'' +
                 ", implementorOpenId='" + implementorOpenId + '\'' +
                 '}';
     }
