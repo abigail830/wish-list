@@ -41,6 +41,5 @@ CREATE TABLE user_event (
   open_id varchar(100) NOT NULL,
   event_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   event_type varchar(255) NOT NULL,
-  PRIMARY KEY (ID),
-  FOREIGN KEY (open_id) REFERENCES user_tbl(open_id)
+  PRIMARY KEY (ID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
