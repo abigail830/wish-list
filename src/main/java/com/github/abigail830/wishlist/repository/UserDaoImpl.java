@@ -35,7 +35,7 @@ public class UserDaoImpl {
 		);
 		jdbcTemplate.update(
 				"REPLACE INTO user_tbl (open_id, gender, nick_name, city, country, province, lang) " +
-						"VALUES (?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?)",
+						"VALUES (?, ?, ?, ?, ?, ?, ? )",
 				user.getOpenId(),
 				user.getGender(),
 				user.getNickName(),
