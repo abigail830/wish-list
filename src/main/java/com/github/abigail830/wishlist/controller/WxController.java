@@ -1,7 +1,12 @@
 package com.github.abigail830.wishlist.controller;
 
+import com.github.abigail830.wishlist.domain.UserInfo;
+import com.github.abigail830.wishlist.domain.WxDecryptResponse;
+import com.github.abigail830.wishlist.domain.WxLoginResponse;
 import com.github.abigail830.wishlist.repository.UserDaoImpl;
+import com.github.abigail830.wishlist.service.UserService;
 import com.github.abigail830.wishlist.util.HttpClientUtil;
+import com.github.abigail830.wishlist.util.JsonUtil;
 import com.github.abigail830.wishlist.util.WXBizDataCrypt;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -15,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -32,6 +38,9 @@ public class WxController {
 	@Value("${app.appSecret}")
 	private String appSecret;
 
+    @Resource
+    private UserService userService;
+
 	@ApiOperation(value = "Handle wechat login",
 			notes = "小程序用户登陆处理",
 			response = String.class)
@@ -45,7 +54,14 @@ public class WxController {
 						"&secret=" + appSecret +
 						"&grant_type=authorization_code" +
 						"&js_code=" + code);
-		logger.info("Wechat wxLogin result: {}", resultData);
+
+        WxLoginResponse wxLoginResponse = JsonUtil.toObject(resultData, WxLoginResponse.class);
+        if(wxLoginResponse.getOpenid() != null){
+            userService.createUser(new UserInfo(wxLoginResponse.getOpenid()));
+        }else {
+            logger.error("Fail to get openID from wechat API");
+        }
+
 		return resultData;
 	}
 
@@ -60,8 +76,17 @@ public class WxController {
 		String encryptedData = request.getHeader("encryptedData");
 		String iv = request.getHeader("iv");
 		WXBizDataCrypt biz = new WXBizDataCrypt(appId, skey);
+
 		String resultDate = biz.decryptData(encryptedData, iv);
-		logger.info("Wechat decrypt result: {}", resultDate);
+        WxDecryptResponse wxDecryptResponse = JsonUtil.toObject(resultDate, WxDecryptResponse.class);
+		logger.info("wxDecryptResponse: {}", wxDecryptResponse);
+		if(wxDecryptResponse.getErrorCode() == null){
+            userService.updateUser(wxDecryptResponse.getUserInfo());
+            logger.info("Updated user info for user {}", wxDecryptResponse.getUserInfo().getOpenId());
+        }else{
+		    logger.error("Error occur during decrypt wechat message with error code: {}", wxDecryptResponse.getErrorCode());
+        }
+
 		return resultDate;
 	}
 }

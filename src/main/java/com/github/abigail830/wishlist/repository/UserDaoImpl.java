@@ -24,14 +24,14 @@ public class UserDaoImpl {
 
 	public void createUser(UserInfo user) {
 		logger.info("Going to insert user data openId={}, gender={}, nick_name={}, " +
-				"city={}, country={}, province={}, language={}",
+				"city={}, country={}, province={}, lang={}",
 				user.getOpenId(),
 				user.getGender(),
 				user.getNickName(),
 				user.getCity(),
 				user.getCountry(),
 				user.getProvince(),
-				user.getLang()
+				user.getLanguage()
 		);
 		jdbcTemplate.update(
 				"REPLACE INTO user_tbl (open_id, gender, nick_name, city, country, province, lang) " +
@@ -42,20 +42,20 @@ public class UserDaoImpl {
 				user.getCity(),
 				user.getCountry(),
 				user.getProvince(),
-				user.getLang()
+				user.getLanguage()
 		);
 	}
 
 	public void updateUserByOpenID(UserInfo user) {
 		logger.info("Going to update user openId={} to gender={}, nick_name={}, " +
-						"city={}, country={}, province={}, language={}",
+						"city={}, country={}, province={}, lang={}",
 				user.getOpenId(),
 				user.getGender(),
 				user.getNickName(),
 				user.getCity(),
 				user.getCountry(),
 				user.getProvince(),
-				user.getLang()
+				user.getLanguage()
 		);
 		jdbcTemplate.update(
 				"UPDATE user_tbl set gender=?, nick_name=?, city=?, country=?, province=?, lang=? where open_id=?",
@@ -64,7 +64,7 @@ public class UserDaoImpl {
 				user.getCity(),
 				user.getCountry(),
 				user.getProvince(),
-				user.getLang(),
+				user.getLanguage(),
 				user.getOpenId()
 		);
 	}

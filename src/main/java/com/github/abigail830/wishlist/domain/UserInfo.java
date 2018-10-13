@@ -2,36 +2,43 @@ package com.github.abigail830.wishlist.domain;
 
 public class UserInfo {
 
-    private Integer id;
     private String openId;
-    private String gender;
+    private int gender;
     private String nickName;
     private String city;
     private String country;
     private String province;
-    private String lang;
+    private String language;
+    private String avatarUrl;
 
     public UserInfo(String openId) {
         this.openId = openId;
+        this.gender = 0;
+        this.nickName = "";
+        this.city = "";
+        this.country = "";
+        this.province = "";
+        this.language = "";
     }
 
-    public UserInfo(String openId, String gender, String nickName, String city, String country, String province, String lang) {
+    public UserInfo(String openId, int gender, String nickName, String city, String country, String province, String language) {
         this.openId = openId;
         this.gender = gender;
         this.nickName = nickName;
         this.city = city;
         this.country = country;
         this.province = province;
-        this.lang = lang;
+        this.language = language;
     }
 
-    public Integer getId() {
-        return id;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
+
 
     public String getOpenId() {
         return openId;
@@ -41,11 +48,11 @@ public class UserInfo {
         this.openId = openId;
     }
 
-    public String getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 
@@ -81,25 +88,25 @@ public class UserInfo {
         this.province = province;
     }
 
-    public String getLang() {
-        return lang;
+    public String getLanguage() {
+        return language;
     }
 
-    public void setLang(String lang) {
-        this.lang = lang;
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     @Override
     public String toString() {
         return "UserInfo{" +
-                "id=" + id +
                 ", openId='" + openId + '\'' +
-                ", gender='" + gender + '\'' +
+                ", gender=" + gender +
                 ", nickName='" + nickName + '\'' +
                 ", city='" + city + '\'' +
                 ", country='" + country + '\'' +
                 ", province='" + province + '\'' +
-                ", lang='" + lang + '\'' +
+                ", language='" + language + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
                 '}';
     }
 }

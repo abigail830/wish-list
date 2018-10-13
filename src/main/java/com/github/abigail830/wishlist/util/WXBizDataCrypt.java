@@ -1,9 +1,13 @@
 package com.github.abigail830.wishlist.util;
 
+import com.github.abigail830.wishlist.controller.WxController;
+import com.github.abigail830.wishlist.domain.UserInfo;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
@@ -11,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WXBizDataCrypt {
+
+	private static final Logger logger = LoggerFactory.getLogger(WXBizDataCrypt.class);
 
 	private String appid;
 
@@ -23,22 +29,27 @@ public class WXBizDataCrypt {
 
 
 	public String decryptData(String encryptedData, String iv) {
+
+		Map<String, Object> map = new HashMap<>();
+
 		if (StringUtils.length(sessionKey) != 24) {
-			return "ErrorCode::$IllegalAesKey;";
+			map.put("errorCode", "ErrorCode::$IllegalAesKey;");
+			return JsonUtil.toJson(map);
 		}
 		// 对称解密秘钥 aeskey = Base64_Decode(session_key), aeskey 是16字节。
 		byte[] aesKey = Base64.decodeBase64(sessionKey);
 
 		if (StringUtils.length(iv) != 24) {
-			return "ErrorCode::$IllegalIv;";
+			map.put("errorCode", "ErrorCode::$IllegalIv;");
+			return JsonUtil.toJson(map);
 		}
+
 		// 对称解密算法初始向量 为Base64_Decode(iv)，其中iv由数据接口返回。
 		byte[] aesIV = Base64.decodeBase64(iv);
 
 		// 对称解密的目标密文为 Base64_Decode(encryptedData)
 		byte[] aesCipher = Base64.decodeBase64(encryptedData);
 
-		Map<String, Object> map = new HashMap<>();
 
 		try {
 			byte[] resultByte = AESUtils.decrypt(aesCipher, aesKey, aesIV);
@@ -60,10 +71,12 @@ public class WXBizDataCrypt {
 				JsonObject jsons = new JsonParser().parse(userInfo).getAsJsonObject();
 				String id = jsons.getAsJsonObject("watermark").get("appid").getAsString();
 				if (!StringUtils.equals(id, appid)) {
-					return "ErrorCode::$IllegalBuffer;";
+					Map<String, Object> errorMap = new HashMap<>();
+					errorMap.put("errorCode", "ErrorCode::$IllegalBuffer;");
+					return JsonUtil.toJson(errorMap);
 				}
 			} else {
-				map.put("status", "1000");
+				map.put("code", "1000");
 				map.put("msg", "false");
 			}
 		} catch (InvalidAlgorithmParameterException | UnsupportedEncodingException e) {
