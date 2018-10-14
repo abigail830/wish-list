@@ -25,7 +25,7 @@ public class WishListDaoImpl {
 	public void createWishList(WishList wishList) {
 		logger.info("Going to create wish list for user: {}", wishList.toString());
 		jdbcTemplate.update(
-				"INSERT INTO wishlist_tbl (open_id, description, create_time, due_time) VALUES (?, ?)",
+				"INSERT INTO wishlist_tbl (open_id, description, create_time, due_time) VALUES (?, ?,?,?)",
 				wishList.getOpenID(),
 				wishList.getDescription(),
 				wishList.getCreateTime(),

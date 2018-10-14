@@ -10,13 +10,6 @@ public class WishList {
     private Timestamp createTime;
     private Timestamp dueTime;
 
-    public WishList(String openID, String description, Timestamp createTime, Timestamp dueTime) {
-        this.openID = openID;
-        this.description = description;
-        this.createTime = createTime;
-        this.dueTime = dueTime;
-    }
-
     public Timestamp getDueTime() {
         return dueTime;
     }

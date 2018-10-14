@@ -3,6 +3,7 @@ package com.github.abigail830.wishlist.service;
 import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishList;
+import com.github.abigail830.wishlist.repository.ComplexWishDaoImpl;
 import com.github.abigail830.wishlist.repository.UserEventImpl;
 import com.github.abigail830.wishlist.repository.WishDaoImpl;
 import com.github.abigail830.wishlist.repository.WishListDaoImpl;
@@ -25,6 +26,9 @@ public class WishService {
     private WishDaoImpl wishDao;
 
     @Autowired
+    private ComplexWishDaoImpl complexWishDao;
+
+    @Autowired
     private UserEventImpl userEventDao;
 
     public List<WishList> getWishListByID(String id){
@@ -41,6 +45,14 @@ public class WishService {
 
     public List<Wish> getWishDetailByWishListID(String wishListID){
         return wishDao.getWishByWishListId(wishListID);
+    }
+
+    public int getFriendsCompletedWishCountbyImplementorID(String openId){
+        return complexWishDao.getFriendsWishCompletedCountByImplementorOpenID(openId);
+    }
+
+    public int getMyCompletedWishCount(String openId){
+        return complexWishDao.getMyWishCompletedCount(openId);
     }
 
 }

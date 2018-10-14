@@ -22,7 +22,7 @@ public class WishDaoImpl {
 	private RowMapper<Wish> rowMapper = new BeanPropertyRowMapper<>(Wish.class);
 
 	public void createWish(Wish wish) {
-		logger.info("Going to create wish for wishlist [wish_list_id={}].", wish.getWishListId());
+		logger.info("Create wish for wishlist [wish_list_id={}].", wish.getWishListId());
 		jdbcTemplate.update(
 				"REPLACE INTO wish_tbl (wish_list_id, description, wish_status, implementor_open_id) " +
 						"VALUES (?, ?, ?, ?)",
@@ -34,7 +34,7 @@ public class WishDaoImpl {
 	}
 
 	public void updateWish(Wish wish) {
-		logger.info("Going to update wish for wishlist [wish_list_id={}].", wish.getWishListId());
+		logger.info("Update wish for wishlist [wish_list_id={}].", wish.getWishListId());
 		jdbcTemplate.update("UPDATE wish_tbl set description=?, wish_status=?, implementor_open_id=? " +
 						"where wish_list_id=?",
 				wish.getDescription(),
@@ -45,12 +45,15 @@ public class WishDaoImpl {
 	}
 
 	public List<Wish> getWishByWishListId(String wishListID) {
+		logger.info("Query Wish by WishList ID: {}", wishListID);
 		List<Wish> wishes = jdbcTemplate.query("SELECT * FROM wish_tbl WHERE wish_list_id = ?", rowMapper, wishListID);
 		return wishes;
 	}
 
 	public List<Wish> getWishByID(String id) {
+		logger.info("Query Wish by ID: {}", id);
 		List<Wish> wishes = jdbcTemplate.query("SELECT * FROM wish_tbl WHERE id = ?", rowMapper, id);
 		return wishes;
 	}
+
 }

@@ -40,8 +40,9 @@ public class WishController {
                     0, 0);
 
         if(StringUtils.isNotBlank(openId))
-            return new WishListsResponse(wishService.getWishListByOpenID(id),
-                    0, 0);
+            return new WishListsResponse(wishService.getWishListByOpenID(openId),
+                    wishService.getMyCompletedWishCount(openId),
+                    wishService.getFriendsCompletedWishCountbyImplementorID(openId));
 
         return new WishListsResponse(0);
     }

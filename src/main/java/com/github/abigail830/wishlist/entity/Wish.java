@@ -11,12 +11,6 @@ public class Wish {
     private String wishStatus;
     private String implementorOpenId;
 
-    public Wish(Integer id, Integer wishListId, String description) {
-        this.id = id;
-        this.wishListId = wishListId;
-        this.description = description;
-    }
-
 
     public Integer getId() {
         return id;
