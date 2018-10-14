@@ -1,8 +1,10 @@
 package com.github.abigail830.wishlist.service;
 
 import com.github.abigail830.wishlist.entity.User;
+import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.repository.UserEventImpl;
+import com.github.abigail830.wishlist.repository.WishDaoImpl;
 import com.github.abigail830.wishlist.repository.WishListDaoImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,9 @@ public class WishService {
     private WishListDaoImpl wishListDao;
 
     @Autowired
+    private WishDaoImpl wishDao;
+
+    @Autowired
     private UserEventImpl userEventDao;
 
     public List<WishList> getWishListByID(String id){
@@ -28,6 +33,14 @@ public class WishService {
 
     public List<WishList> getWishListByOpenID(String openId){
         return wishListDao.getWishListByOpenId(openId);
+    }
+
+    public List<Wish> getWishByID(String id){
+        return Arrays.asList(wishDao.getWishByID(id));
+    }
+
+    public List<Wish> getwishByWishListID(String wishListID){
+        return wishDao.getWishByWishListId(wishListID);
     }
 
 }
