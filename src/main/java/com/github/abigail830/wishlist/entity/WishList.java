@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 public class WishList {
 
     private Integer id;
-    private String openID;
+    private String openId;
     private String description;
     private Timestamp createTime;
     private Timestamp dueTime;
@@ -26,12 +26,12 @@ public class WishList {
         this.id = id;
     }
 
-    public String getOpenID() {
-        return openID;
+    public String getOpenId() {
+        return openId;
     }
 
-    public void setOpenID(String openID) {
-        this.openID = openID;
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 
     public String getDescription() {
@@ -55,7 +55,7 @@ public class WishList {
     public String toString() {
         return "WishList{" +
                 "id=" + id +
-                ", openID='" + openID + '\'' +
+                ", openId ='" + openId + '\'' +
                 ", description='" + description + '\'' +
                 ", createTime=" + createTime +
                 ", dueTime=" + dueTime +

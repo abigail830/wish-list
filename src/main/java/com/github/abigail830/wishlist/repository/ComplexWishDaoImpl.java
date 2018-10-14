@@ -34,21 +34,21 @@ public class ComplexWishDaoImpl {
      * @return
      */
     public int getFriendsWishCompletedCountByImplementorOpenID(String openId) {
-        List<Wish> wishes = jdbcTemplate.query("select wish.id " +
+        List<Wish> wishes = jdbcTemplate.query("select wish_tbl.ID " +
                         "from wish_tbl, wishlist_tbl " +
-                        "where wishlist_tbl.id = wish_tbl.wish_list_id\n" +
+                        "where wishlist_tbl.id = wish_tbl.wish_list_id " +
                         "and wish_tbl.implementor_open_id=? and wishlist_tbl.open_id != ? " +
-                        "and wish_tbl.wish_status='DONE';",
+                        "and wish_tbl.wish_status='DONE'",
                 wishRowMapper, openId, openId);
         return wishes.size();
     }
 
     public int getMyWishCompletedCount(String openId) {
-        List<Wish> wishes = jdbcTemplate.query("select wish.id " +
+        List<Wish> wishes = jdbcTemplate.query("select wish_tbl.ID " +
                         "from wish_tbl, wishlist_tbl " +
-                        "where wishlist_tbl.id = wish_tbl.wish_list_id\n" +
-                        "and and wishlist_tbl.open_id = ? " +
-                        "and wish_status='DONE';",
+                        "where wishlist_tbl.id = wish_tbl.wish_list_id " +
+                        "and wishlist_tbl.open_id = ? " +
+                        "and wish_status='DONE'",
                 wishRowMapper, openId);
         return wishes.size();
     }

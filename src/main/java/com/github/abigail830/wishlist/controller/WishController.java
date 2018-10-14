@@ -2,6 +2,7 @@ package com.github.abigail830.wishlist.controller;
 
 import com.github.abigail830.wishlist.domain.WishListsResponse;
 import com.github.abigail830.wishlist.domain.WishesResponse;
+import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.service.WishService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/wish")
@@ -30,14 +32,21 @@ public class WishController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
     @RequestMapping(value = "/lists", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public WishListsResponse getWishListByID(
+    public WishListsResponse getWishListsByID(
             @ApiParam(example = "1") @RequestParam(value = "id", required = false) String id,
             @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openId) {
 
 
-        if (StringUtils.isNotBlank(id))
-            return new WishListsResponse(wishService.getWishListByID(id),
-                    0, 0);
+        if (StringUtils.isNotBlank(id)){
+            List<WishList> wishLists = wishService.getWishListByID(id);
+            if(wishLists.size()>=1)
+                return new WishListsResponse(wishLists,
+                    wishService.getMyCompletedWishCount(wishLists.get(0).getOpenId()),
+                    wishService.getFriendsCompletedWishCountbyImplementorID(wishLists.get(0).getOpenId()));
+            else
+                return new WishListsResponse(0);
+        }
+
 
         if(StringUtils.isNotBlank(openId))
             return new WishListsResponse(wishService.getWishListByOpenID(openId),
@@ -51,7 +60,7 @@ public class WishController {
             notes = "根据ID或者openID搜索愿望",
             response = WishesResponse.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "/detail", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/details", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public WishesResponse getWishesByID(
             @ApiParam(example = "1") @RequestParam(value = "id", required = false) String id,

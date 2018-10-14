@@ -3,10 +3,12 @@ package com.github.abigail830.wishlist.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.abigail830.wishlist.entity.WishList;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
+@ApiModel("愿望列表搜索返回结果")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class WishListsResponse {
 
@@ -14,9 +16,9 @@ public class WishListsResponse {
     @JsonProperty("wishLists")
     private List<WishList> wishLists;
 
-    @ApiModelProperty(value = "愿望清单数量", example = "5")
+    @ApiModelProperty(value = "愿望清单数量", notes = "当搜索无结果时该数量为0，其他值为null", example = "5")
     @JsonProperty("wishListCount")
-    private int wishListCount;
+    private int wishListCount = 0;
 
     @ApiModelProperty(value = "我完成的愿望数量", example = "12")
     @JsonProperty("myCompletedWishCount")
