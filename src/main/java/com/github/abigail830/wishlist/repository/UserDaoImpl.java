@@ -35,8 +35,8 @@ public class UserDaoImpl {
 				user.getAvatarUrl()
 		);
 		jdbcTemplate.update(
-				"INSERT ignore INTO user_tbl (open_id, gender, nick_name, city, country, province, lang,avatar_url) " +
-						"VALUES (?, ?, ?, ?, ?, ?, ? )",
+				"INSERT ignore INTO user_tbl (open_id, gender, nick_name, city, country, province, lang, avatar_url) " +
+						"VALUES (?, ?, ?, ?, ?, ?, ? ,?)",
 				user.getOpenId(),
 				user.getGender(),
 				user.getNickName(),
