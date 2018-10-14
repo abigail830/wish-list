@@ -23,18 +23,19 @@ public class UserDaoImpl {
 	private RowMapper<User> rowMapper = new BeanPropertyRowMapper<>(User.class);
 
 	public void createUser(UserInfo user) {
-		logger.info("Going to insert user data openId={}, gender={}, nick_name={}, " +
-				"city={}, country={}, province={}, lang={}",
+		logger.info("Insert IGNORE data openId={}, gender={}, nick_name={}, " +
+				"city={}, country={}, province={}, lang={}, avatar_url={}",
 				user.getOpenId(),
 				user.getGender(),
 				user.getNickName(),
 				user.getCity(),
 				user.getCountry(),
 				user.getProvince(),
-				user.getLanguage()
+				user.getLanguage(),
+				user.getAvatarUrl()
 		);
 		jdbcTemplate.update(
-				"REPLACE INTO user_tbl (open_id, gender, nick_name, city, country, province, lang) " +
+				"INSERT ignore INTO user_tbl (open_id, gender, nick_name, city, country, province, lang,avatar_url) " +
 						"VALUES (?, ?, ?, ?, ?, ?, ? )",
 				user.getOpenId(),
 				user.getGender(),
@@ -42,29 +43,32 @@ public class UserDaoImpl {
 				user.getCity(),
 				user.getCountry(),
 				user.getProvince(),
-				user.getLanguage()
+				user.getLanguage(),
+				user.getAvatarUrl()
 		);
 	}
 
 	public void updateUserByOpenID(UserInfo user) {
-		logger.info("Going to update user openId={} to gender={}, nick_name={}, " +
-						"city={}, country={}, province={}, lang={}",
+		logger.info("Update user openId={} to gender={}, nick_name={}, " +
+						"city={}, country={}, province={}, lang={}, avatar_url={}",
 				user.getOpenId(),
 				user.getGender(),
 				user.getNickName(),
 				user.getCity(),
 				user.getCountry(),
 				user.getProvince(),
-				user.getLanguage()
+				user.getLanguage(),
+				user.getAvatarUrl()
 		);
 		jdbcTemplate.update(
-				"UPDATE user_tbl set gender=?, nick_name=?, city=?, country=?, province=?, lang=? where open_id=?",
+				"UPDATE user_tbl set gender=?, nick_name=?, city=?, country=?, province=?, lang=?, avatar_url=? where open_id=?",
 				user.getGender(),
 				user.getNickName(),
 				user.getCity(),
 				user.getCountry(),
 				user.getProvince(),
 				user.getLanguage(),
+				user.getAvatarUrl(),
 				user.getOpenId()
 		);
 	}

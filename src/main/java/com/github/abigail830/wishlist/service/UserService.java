@@ -20,30 +20,30 @@ public class UserService {
     private UserDaoImpl userDao;
 
     @Autowired
-    private UserEventImpl userEvent;
+    private UserEventImpl userEventDao;
 
     public void createUser(UserInfo userInfo) {
 
-        logger.info("Record UserInfo into DB for user [{}].", userInfo.getOpenId());
+        logger.debug("Record UserInfo into DB for user [{}].", userInfo.getOpenId());
         userDao.createUser(userInfo);
 
         //Insert user_event
-        logger.info("Record Login event into DB for user [{}].", userInfo.getOpenId());
+        logger.debug("Record Login event into DB for user [{}].", userInfo.getOpenId());
         UserEvent event = new UserEvent(userInfo.getOpenId());
         event.setEventType(Constants.EVENT_TYPE_LOGIN);
-        userEvent.createUserEvent(event);
+        userEventDao.createUserEvent(event);
     }
 
     public void updateUser(UserInfo userInfo) {
         //Insert user_tbl
-        logger.info("Update UserInfo into DB for user [{}].", userInfo.getOpenId());
+        logger.debug("Update UserInfo into DB for user [{}].", userInfo.getOpenId());
         userDao.updateUserByOpenID(userInfo);
 
         //Insert user_event
-        logger.info("Record authorize event into DB for user [{}].", userInfo.getOpenId());
+        logger.debug("Record authorize event into DB for user [{}].", userInfo.getOpenId());
         UserEvent event = new UserEvent(userInfo.getOpenId());
         event.setEventType(Constants.EVENT_TYPE_AUTHORIZE);
-        userEvent.createUserEvent(event);
+        userEventDao.createUserEvent(event);
     }
 
     public User getUserByOpenId(String openId){

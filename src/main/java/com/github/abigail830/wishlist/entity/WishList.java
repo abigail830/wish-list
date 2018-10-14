@@ -8,18 +8,21 @@ public class WishList {
     private String openID;
     private String description;
     private Timestamp createTime;
+    private Timestamp dueTime;
 
-    public WishList(Integer id, String openID, String description) {
-        this.id = id;
-        this.openID = openID;
-        this.description = description;
-    }
-
-    public WishList(Integer id, String openID, String description, Timestamp createTime) {
-        this.id = id;
+    public WishList(String openID, String description, Timestamp createTime, Timestamp dueTime) {
         this.openID = openID;
         this.description = description;
         this.createTime = createTime;
+        this.dueTime = dueTime;
+    }
+
+    public Timestamp getDueTime() {
+        return dueTime;
+    }
+
+    public void setDueTime(Timestamp dueTime) {
+        this.dueTime = dueTime;
     }
 
     public Integer getId() {
@@ -62,6 +65,7 @@ public class WishList {
                 ", openID='" + openID + '\'' +
                 ", description='" + description + '\'' +
                 ", createTime=" + createTime +
+                ", dueTime=" + dueTime +
                 '}';
     }
 }

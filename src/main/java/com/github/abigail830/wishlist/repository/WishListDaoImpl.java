@@ -23,26 +23,31 @@ public class WishListDaoImpl {
 	private RowMapper<WishList> rowMapper = new BeanPropertyRowMapper<>(WishList.class);
 
 	public void createWishList(WishList wishList) {
-		logger.info("Going to create wish list for user openId={};", wishList.getOpenID());
+		logger.info("Going to create wish list for user: {}", wishList.toString());
 		jdbcTemplate.update(
-				"REPLACE INTO wishlist_tbl (open_id, description) VALUES (?, ?)",
+				"INSERT INTO wishlist_tbl (open_id, description, create_time, due_time) VALUES (?, ?)",
 				wishList.getOpenID(),
-				wishList.getDescription()
+				wishList.getDescription(),
+				wishList.getCreateTime(),
+				wishList.getDueTime()
 		);
 	}
 
-	public void updateWishListByOpenID(WishList wishList) {
-		logger.info("Going to update wish list for user openId={};", wishList.getOpenID());
+	public void updateWishListByID(WishList wishList) {
+		logger.info("Going to update wish list for user : {}", wishList.toString());
 		jdbcTemplate.update(
-				"UPDATE wishlist_tbl set description=? where open_id=?",
+				"UPDATE wishlist_tbl set description=?, create_time=?, due_time=? where ID=? and open_id=?",
 				wishList.getDescription(),
+				wishList.getCreateTime(),
+				wishList.getDueTime(),
+				wishList.getId(),
 				wishList.getOpenID()
 		);
 	}
 
-	public WishList getWishListByOpenId(String openId) {
+	public List<WishList> getWishListByOpenId(String openId) {
 		List<WishList> wishLists = jdbcTemplate.query("SELECT * FROM wishlist_tbl WHERE open_id = ?", rowMapper, openId);
-		return wishLists.stream().findFirst().orElse(null);
+		return wishLists;
 	}
 
 	public WishList getWishListById(String id) {

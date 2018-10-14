@@ -19,9 +19,11 @@ public class UserInfo {
         this.country = "";
         this.province = "";
         this.language = "";
+        this.avatarUrl="";
     }
 
-    public UserInfo(String openId, int gender, String nickName, String city, String country, String province, String language) {
+    public UserInfo(String openId, int gender, String nickName, String city, String country, String province,
+                    String language, String avatarUrl) {
         this.openId = openId;
         this.gender = gender;
         this.nickName = nickName;
@@ -29,6 +31,7 @@ public class UserInfo {
         this.country = country;
         this.province = province;
         this.language = language;
+        this.avatarUrl = avatarUrl;
     }
 
     public String getAvatarUrl() {
