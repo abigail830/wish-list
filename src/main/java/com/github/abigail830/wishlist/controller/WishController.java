@@ -2,9 +2,6 @@ package com.github.abigail830.wishlist.controller;
 
 import com.github.abigail830.wishlist.domain.WishListsResponse;
 import com.github.abigail830.wishlist.domain.WishesResponse;
-import com.github.abigail830.wishlist.entity.UserEvent;
-import com.github.abigail830.wishlist.entity.WishList;
-import com.github.abigail830.wishlist.repository.WishListDaoImpl;
 import com.github.abigail830.wishlist.service.WishService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -60,10 +57,10 @@ public class WishController {
             @ApiParam(example = "2") @RequestParam(value = "wishListID", required = false) String wishListID) {
 
         if (StringUtils.isNotBlank(id))
-            return new WishesResponse(wishService.getWishByID(id));
+            return new WishesResponse(wishService.getWishDetailByID(id));
 
         if(StringUtils.isNotBlank(wishListID))
-            return new WishesResponse(wishService.getwishByWishListID(wishListID));
+            return new WishesResponse(wishService.getWishDetailByWishListID(wishListID));
 
         return new WishesResponse(0);
     }

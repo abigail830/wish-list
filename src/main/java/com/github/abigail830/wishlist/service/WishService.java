@@ -28,18 +28,18 @@ public class WishService {
     private UserEventImpl userEventDao;
 
     public List<WishList> getWishListByID(String id){
-        return Arrays.asList(wishListDao.getWishListById(id));
+        return wishListDao.getWishListById(id);
     }
 
     public List<WishList> getWishListByOpenID(String openId){
         return wishListDao.getWishListByOpenId(openId);
     }
 
-    public List<Wish> getWishByID(String id){
-        return Arrays.asList(wishDao.getWishByID(id));
+    public List<Wish> getWishDetailByID(String id){
+        return wishDao.getWishByID(id);
     }
 
-    public List<Wish> getwishByWishListID(String wishListID){
+    public List<Wish> getWishDetailByWishListID(String wishListID){
         return wishDao.getWishByWishListId(wishListID);
     }
 

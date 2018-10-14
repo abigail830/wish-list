@@ -49,8 +49,8 @@ public class WishDaoImpl {
 		return wishes;
 	}
 
-	public Wish getWishByID(String id) {
+	public List<Wish> getWishByID(String id) {
 		List<Wish> wishes = jdbcTemplate.query("SELECT * FROM wish_tbl WHERE id = ?", rowMapper, id);
-		return wishes.stream().findFirst().orElse(null);
+		return wishes;
 	}
 }

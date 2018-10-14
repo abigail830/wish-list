@@ -50,8 +50,8 @@ public class WishListDaoImpl {
 		return wishLists;
 	}
 
-	public WishList getWishListById(String id) {
+	public List<WishList> getWishListById(String id) {
 		List<WishList> wishLists = jdbcTemplate.query("SELECT * FROM wishlist_tbl WHERE id = ?", rowMapper, id);
-		return wishLists.stream().findFirst().orElse(null);
+		return wishLists;
 	}
 }
