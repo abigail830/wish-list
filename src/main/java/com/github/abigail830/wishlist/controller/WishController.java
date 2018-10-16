@@ -38,21 +38,34 @@ public class WishController {
 
 
         if (StringUtils.isNotBlank(id)){
+            logger.info("Query wishService.getWishListByID: {}", id);
             List<WishList> wishLists = wishService.getWishListByID(id);
-            if(wishLists.size()>=1)
-                return new WishListsResponse(wishLists,
+            if(wishLists.size()>=1){
+                WishListsResponse response =  new WishListsResponse(wishLists,
                     wishService.getMyCompletedWishCount(wishLists.get(0).getOpenId()),
                     wishService.getFriendsCompletedWishCountbyImplementorID(wishLists.get(0).getOpenId()));
+                logger.info("{}", response);
+                return response;
+            }
             else
                 return new WishListsResponse(false);
         }
 
+        if (StringUtils.isNotBlank(openId)){
+            logger.info("Query wishService.getWishListByOpenID: {}", openId);
+            List<WishList> wishLists = wishService.getWishListByOpenID(openId);
+            if(wishLists.size()>=1){
+                WishListsResponse response =  new WishListsResponse(wishLists,
+                        wishService.getMyCompletedWishCount(wishLists.get(0).getOpenId()),
+                        wishService.getFriendsCompletedWishCountbyImplementorID(wishLists.get(0).getOpenId()));
+                logger.info("{}", response);
+                return response;
+            }
+            else
+                return new WishListsResponse(false);
+        }
 
-        if(StringUtils.isNotBlank(openId))
-            return new WishListsResponse(wishService.getWishListByOpenID(openId),
-                    wishService.getMyCompletedWishCount(openId),
-                    wishService.getFriendsCompletedWishCountbyImplementorID(openId));
-
+        logger.info("Query WishList missing param either wish list Id or openId");
         return new WishListsResponse(false);
     }
 
@@ -63,15 +76,22 @@ public class WishController {
     @RequestMapping(value = "/details", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public WishesResponse getWishesByID(
-            @ApiParam(example = "1") @RequestParam(value = "id", required = false) String id,
-            @ApiParam(example = "2") @RequestParam(value = "wishListID", required = false) String wishListID) {
+            @ApiParam(example = "1") @RequestParam(value = "Wish ID", required = false) String id,
+            @ApiParam(example = "2") @RequestParam(value = "Wish List ID", required = false) String wishListID) {
 
-        if (StringUtils.isNotBlank(id))
-            return new WishesResponse(wishService.getWishDetailByID(id));
+        if (StringUtils.isNotBlank(id)) {
+            logger.info("Query wishService.getWishDetailByID: {}", id);
+            WishesResponse response =  new WishesResponse(wishService.getWishDetailByID(id));
+            logger.info("{}", response);
+            return response;
+        }
+        if(StringUtils.isNotBlank(wishListID)){
+            logger.info("Query wishService.getWishDetailByWishListID: {}", wishListID);
+            WishesResponse response =  new WishesResponse(wishService.getWishDetailByWishListID(wishListID));
+            logger.info("{}", response);
+        }
 
-        if(StringUtils.isNotBlank(wishListID))
-            return new WishesResponse(wishService.getWishDetailByWishListID(wishListID));
-
+        logger.info("Query Wish detail missing param either wish Id or wish list id");
         return new WishesResponse(false);
     }
 

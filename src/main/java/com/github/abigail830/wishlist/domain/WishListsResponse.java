@@ -39,4 +39,14 @@ public class WishListsResponse {
         this.myCompletedWishCount = myCompletedWishCount;
         this.myFriendsCompletedWishCount = myFriendsCompletedWishCount;
     }
+
+    @Override
+    public String toString() {
+        return "WishListsResponse{" +
+                "wishLists=" + wishLists +
+                ", hasWishList=" + hasWishList +
+                ", myCompletedWishCount=" + myCompletedWishCount +
+                ", myFriendsCompletedWishCount=" + myFriendsCompletedWishCount +
+                '}';
+    }
 }

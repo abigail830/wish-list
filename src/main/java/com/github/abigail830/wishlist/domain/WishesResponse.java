@@ -28,4 +28,12 @@ public class WishesResponse {
         if(!wishes.isEmpty())
             this.hasWish = true;
     }
+
+    @Override
+    public String toString() {
+        return "WishesResponse{" +
+                "wishes=" + wishes +
+                ", hasWish=" + hasWish +
+                '}';
+    }
 }
