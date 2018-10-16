@@ -27,7 +27,7 @@ public class WishController {
     private WishService wishService;
 
     @ApiOperation(value = "Collect wish list by id or open_id",
-            notes = "根据ID或者openID搜索愿望清单",
+            notes = "根据ID或者openID搜索愿望清单，ID和openID只需要填一个，ID优先查询",
             response = WishListsResponse.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
     @RequestMapping(value = "/lists", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -44,7 +44,7 @@ public class WishController {
                     wishService.getMyCompletedWishCount(wishLists.get(0).getOpenId()),
                     wishService.getFriendsCompletedWishCountbyImplementorID(wishLists.get(0).getOpenId()));
             else
-                return new WishListsResponse(0);
+                return new WishListsResponse(false);
         }
 
 
@@ -53,11 +53,11 @@ public class WishController {
                     wishService.getMyCompletedWishCount(openId),
                     wishService.getFriendsCompletedWishCountbyImplementorID(openId));
 
-        return new WishListsResponse(0);
+        return new WishListsResponse(false);
     }
 
     @ApiOperation(value = "Collect wish item by id or wishlist_id",
-            notes = "根据ID或者openID搜索愿望",
+            notes = "根据ID或者openID搜索愿望,ID和openID只需要填一个，ID优先查询",
             response = WishesResponse.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
     @RequestMapping(value = "/details", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -72,7 +72,7 @@ public class WishController {
         if(StringUtils.isNotBlank(wishListID))
             return new WishesResponse(wishService.getWishDetailByWishListID(wishListID));
 
-        return new WishesResponse(0);
+        return new WishesResponse(false);
     }
 
 
