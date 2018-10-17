@@ -14,7 +14,7 @@ public class WishListsResponse {
 
 
     @JsonProperty("wishLists")
-    private List<WishList> wishLists;
+    private List<WishListDomain> wishLists;
 
     @ApiModelProperty(value = "是否存在愿望清单", notes = "当搜索无结果时该数量为false", example = "true")
     @JsonProperty("hasWishList")
@@ -32,7 +32,7 @@ public class WishListsResponse {
         this.hasWishList = hasWishList;
     }
 
-    public WishListsResponse(List<WishList> wishLists, int myCompletedWishCount, int myFriendsCompletedWishCount) {
+    public WishListsResponse(List<WishListDomain> wishLists, int myCompletedWishCount, int myFriendsCompletedWishCount) {
         this.wishLists = wishLists;
         if(!wishLists.isEmpty())
             this.hasWishList = true;

@@ -10,6 +10,7 @@ public class User {
     private String country;
     private String province;
     private String lang;
+    private String avatarUrl;
 
     public Integer getId() {
         return id;
@@ -75,9 +76,17 @@ public class User {
         this.lang = lang;
     }
 
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
     @Override
     public String toString() {
-        return "UserInfo{" +
+        return "User{" +
                 "id=" + id +
                 ", openId='" + openId + '\'' +
                 ", gender='" + gender + '\'' +
@@ -86,6 +95,7 @@ public class User {
                 ", country='" + country + '\'' +
                 ", province='" + province + '\'' +
                 ", lang='" + lang + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
                 '}';
     }
 }

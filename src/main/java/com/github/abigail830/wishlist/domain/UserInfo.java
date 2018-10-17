@@ -3,7 +3,7 @@ package com.github.abigail830.wishlist.domain;
 public class UserInfo {
 
     private String openId;
-    private int gender;
+    private String gender;
     private String nickName;
     private String city;
     private String country;
@@ -13,7 +13,7 @@ public class UserInfo {
 
     public UserInfo(String openId) {
         this.openId = openId;
-        this.gender = 0;
+        this.gender = "0";
         this.nickName = "";
         this.city = "";
         this.country = "";
@@ -22,7 +22,7 @@ public class UserInfo {
         this.avatarUrl="";
     }
 
-    public UserInfo(String openId, int gender, String nickName, String city, String country, String province,
+    public UserInfo(String openId, String gender, String nickName, String city, String country, String province,
                     String language, String avatarUrl) {
         this.openId = openId;
         this.gender = gender;
@@ -51,11 +51,11 @@ public class UserInfo {
         this.openId = openId;
     }
 
-    public int getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
