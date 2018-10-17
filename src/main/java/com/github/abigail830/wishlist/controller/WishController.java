@@ -51,7 +51,8 @@ public class WishController {
             List<WishList> wishLists = wishService.getWishListByID(id);
             if(wishLists.size()>=1){
                 List<WishListDomain> wishListDomains = wishLists.stream().map(wishList -> {
-                    return new WishListDomain(wishList.getOpenId(),
+                    return new WishListDomain(wishList.getId(),
+                            wishList.getOpenId(),
                             wishList.getDescription(),
                             f.format(wishList.getCreateTime()),
                             f.format(wishList.getDueTime()));
@@ -71,7 +72,8 @@ public class WishController {
             List<WishList> wishLists = wishService.getWishListByOpenID(openId);
             if(wishLists.size()>=1){
                 List<WishListDomain> wishListDomains = wishLists.stream().map(wishList -> {
-                    return new WishListDomain(wishList.getOpenId(),
+                    return new WishListDomain(wishList.getId(),
+                            wishList.getOpenId(),
                             wishList.getDescription(),
                             f.format(wishList.getCreateTime()),
                             f.format(wishList.getDueTime()));
@@ -138,7 +140,8 @@ public class WishController {
                 if(wish.getImplementorOpenId()!=null){
                     User user = userService.getUserByOpenId(wish.getImplementorOpenId());
                     if(user !=null){
-                        return new WishDomain(wish.getDescription(),
+                        return new WishDomain(wish.getId(),
+                                wish.getDescription(),
                                 f.format(wish.getCreateTime()),
                                 f.format(wish.getLastUpdateTime()),
                                 wish.getWishStatus(),
@@ -147,7 +150,8 @@ public class WishController {
                                         user.getLang(), user.getAvatarUrl()));
                     }
                 }
-                return new WishDomain(wish.getDescription(),
+                return new WishDomain(wish.getId(),
+                        wish.getDescription(),
                         f.format(wish.getCreateTime()),
                         f.format(wish.getLastUpdateTime()),
                         wish.getWishStatus(),

@@ -10,6 +10,9 @@ import java.sql.Timestamp;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class WishDomain {
 
+    @ApiModelProperty(value = "愿望ID",  example = "1")
+    private Integer wishID;
+
     @ApiModelProperty(value = "愿望概述",  example = "我要一台车！")
     private String description;
 
@@ -25,12 +28,21 @@ public class WishDomain {
     @ApiModelProperty(value = "愿望承接人",  example = "2018-09-01")
     private UserInfo implementor;
 
-    public WishDomain(String description, String createTime, String lastUpdateTime, String wishStatus, UserInfo implementor) {
+    public WishDomain(Integer wishID, String description, String createTime, String lastUpdateTime, String wishStatus, UserInfo implementor) {
+        this.wishID = wishID;
         this.description = description;
         this.createTime = createTime;
         this.lastUpdateTime = lastUpdateTime;
         this.wishStatus = wishStatus;
         this.implementor = implementor;
+    }
+
+    public Integer getWishID() {
+        return wishID;
+    }
+
+    public void setWishID(Integer wishID) {
+        this.wishID = wishID;
     }
 
     public String getDescription() {
@@ -76,7 +88,8 @@ public class WishDomain {
     @Override
     public String toString() {
         return "WishDomain{" +
-                "description='" + description + '\'' +
+                "wishID=" + wishID +
+                ", description='" + description + '\'' +
                 ", createTime='" + createTime + '\'' +
                 ", lastUpdateTime='" + lastUpdateTime + '\'' +
                 ", wishStatus='" + wishStatus + '\'' +

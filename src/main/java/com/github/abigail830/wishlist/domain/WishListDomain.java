@@ -8,6 +8,9 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class WishListDomain {
 
+    @ApiModelProperty(value = "愿望清单的ID",  example = "1")
+    private Integer wishListID;
+
     @ApiModelProperty(value = "用户openID",  example = "troEmJ75YWmBSDgyz4KLi_yGL8MBV4ue")
     private String openId;
 
@@ -20,11 +23,20 @@ public class WishListDomain {
     @ApiModelProperty(value = "愿望清单目标兑现时间",  example = "2018-10-10")
     private String dueTime;
 
-    public WishListDomain(String openId, String description, String createTime, String dueTime) {
+    public WishListDomain(Integer wishListID, String openId, String description, String createTime, String dueTime) {
+        this.wishListID = wishListID;
         this.openId = openId;
         this.description = description;
         this.createTime = createTime;
         this.dueTime = dueTime;
+    }
+
+    public Integer getWishListID() {
+        return wishListID;
+    }
+
+    public void setWishListID(Integer wishListID) {
+        this.wishListID = wishListID;
     }
 
     public String getOpenId() {
@@ -63,7 +75,8 @@ public class WishListDomain {
     @Override
     public String toString() {
         return "WishListDomain{" +
-                "openId='" + openId + '\'' +
+                "wishListID=" + wishListID +
+                ", openId='" + openId + '\'' +
                 ", description='" + description + '\'' +
                 ", createTime='" + createTime + '\'' +
                 ", dueTime='" + dueTime + '\'' +
