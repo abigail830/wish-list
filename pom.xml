@@ -5,7 +5,7 @@
 
 	<groupId>com.github.abigail830</groupId>
 	<artifactId>wish-list</artifactId>
-	<version>0.1.7.2-SNAPSHOT</version>
+	<version>0.1.7.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>wish-list</name>

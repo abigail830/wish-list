@@ -99,8 +99,8 @@ public class WishController {
     @RequestMapping(value = "/details", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public WishesResponse getWishesByID(
-            @ApiParam(example = "1") @RequestParam(value = "Wish ID", required = false) String id,
-            @ApiParam(example = "2") @RequestParam(value = "Wish List ID", required = false) String wishListID) {
+            @ApiParam(example = "1") @RequestParam(value = "wishId", required = false) String id,
+            @ApiParam(example = "2") @RequestParam(value = "wishListId", required = false) String wishListID) {
 
         if (StringUtils.isNotBlank(id)) {
             logger.info("Query wishService.getWishDetailByID: {}", id);
