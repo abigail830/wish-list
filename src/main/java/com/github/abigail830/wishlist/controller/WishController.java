@@ -38,7 +38,7 @@ public class WishController {
 
 
         if (StringUtils.isNotBlank(id)){
-            logger.info("Query wishService.getWishListByID: {}", id);
+            logger.info("User query wishService.getWishListByID: {}", id);
             List<WishList> wishLists = wishService.getWishListByID(id);
             if(wishLists.size()>=1){
                 WishListsResponse response =  new WishListsResponse(wishLists,
@@ -52,7 +52,7 @@ public class WishController {
         }
 
         if (StringUtils.isNotBlank(openId)){
-            logger.info("Query wishService.getWishListByOpenID: {}", openId);
+            logger.info("User[{}] query wishService.getWishListByOpenID: {}", openId,openId);
             List<WishList> wishLists = wishService.getWishListByOpenID(openId);
             if(wishLists.size()>=1){
                 WishListsResponse response =  new WishListsResponse(wishLists,
