@@ -1,10 +1,11 @@
 package com.github.abigail830.wishlist.controller;
 
 import com.github.abigail830.wishlist.domain.*;
-import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.Wish;
+import com.github.abigail830.wishlist.entity.WishListDetail;
 import com.github.abigail830.wishlist.service.UserService;
 import com.github.abigail830.wishlist.service.WishService;
+import com.github.abigail830.wishlist.util.Constants;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -12,6 +13,7 @@ import io.swagger.annotations.ApiResponses;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,14 +30,41 @@ public class WishController {
 
     SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
 
-    @Resource
+    @Autowired
     private WishService wishService;
 
-    @Resource
+    @Autowired
     private UserService userService;
 
+
+    @ApiOperation(value = "Collect wish list detail by wish list id",
+            notes = "根据愿望清单的ID获取清单内所有具体内容",
+            response = WishListDetailResponse.class)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
+    @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public WishListDetailResponse getWishListDetail(
+            @ApiParam(example = "2") @RequestParam(value = "wishListId", required = false) String wishListId) {
+
+
+        if (StringUtils.isNotBlank(wishListId)) {
+            logger.info("User getWishListDetail by wishListId {}", wishListId);
+            WishListDetailResponse response = new WishListDetailResponse(
+                    wishService.getWishListDetailByWishListID(wishListId));
+            response.setResultCode(Constants.HTTP_STATUS_SUCCESS);
+            logger.info("{}", response);
+            return response;
+        }else{
+            logger.warn("wishListId should not be empty when getWishListDetail.");
+            return new WishListDetailResponse(Constants.HTTP_STATUS_VALIDATION_FAIL);
+        }
+
+    }
+
+
+
     @ApiOperation(value = "Collect wish list by id or open_id",
-            notes = "根据ID或者openID搜索愿望清单，ID和openID只需要填一个，ID优先查询",
+            notes = "根据ID或者openID搜索愿望清单，ID和openID只需要填一个，ID优先查询，只返回清单概述",
             response = WishListsResponse.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
     @RequestMapping(value = "/lists", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -47,18 +76,19 @@ public class WishController {
 
         if (StringUtils.isNotBlank(id)){
             logger.info("User query wishService.getWishListByID: {}", id);
-            List<WishListDomain> wishListDomains = wishService.getWishListByID(id)
-                    .stream().map(WishListDomain::new).collect(Collectors.toList());
-            if(!wishListDomains.isEmpty()){
-                WishListsResponse response =  new WishListsResponse(wishListDomains,
-                        wishService.getMyCompletedWishCount(wishListDomains.get(0).getOpenId()),
-                        wishService.getFriendsCompletedWishCountByImplementorID(wishListDomains.get(0).getOpenId()));
+            List<BriefWishList> briefWishLists = wishService.getWishListByID(id)
+                    .stream().map(BriefWishList::new).collect(Collectors.toList());
+            if(!briefWishLists.isEmpty()){
+                WishListsResponse response =  new WishListsResponse(briefWishLists,
+                        wishService.getMyCompletedWishCount(briefWishLists.get(0).getOpenId()),
+                        wishService.getFriendsCompletedWishCountByImplementorID(briefWishLists.get(0).getOpenId()),
+                        Constants.HTTP_STATUS_SUCCESS);
                 logger.info("{}", response);
                 return response;
             }
             else{
                 logger.info("No wish list found with ID {}", id);
-                return new WishListsResponse(false);
+                return new WishListsResponse(false, Constants.HTTP_STATUS_SUCCESS);
             }
 
         }
@@ -67,29 +97,30 @@ public class WishController {
             logger.info("User[{}] query wishService.getWishListByOpenID: {}", openId,openId);
             int myCompletedWishCount = wishService.getMyCompletedWishCount(openId);
             int myFriendCompletedWishCount = wishService.getFriendsCompletedWishCountByImplementorID(openId);
-            List<WishListDomain> wishListDomains = wishService.getWishListByOpenID(openId)
-                    .stream().map(WishListDomain::new).collect(Collectors.toList());
-            if(!wishListDomains.isEmpty()){
-                WishListsResponse response =  new WishListsResponse(wishListDomains,
+            List<BriefWishList> briefWishLists = wishService.getWishListByOpenID(openId)
+                    .stream().map(BriefWishList::new).collect(Collectors.toList());
+            if(!briefWishLists.isEmpty()){
+                WishListsResponse response =  new WishListsResponse(briefWishLists,
                         myCompletedWishCount,
-                        myFriendCompletedWishCount
+                        myFriendCompletedWishCount,
+                        Constants.HTTP_STATUS_SUCCESS
                         );
                 logger.info("{}", response);
                 return response;
             }
             else{
                 logger.info("No wish list found with openId {}", openId);
-                return new WishListsResponse(false);
+                return new WishListsResponse(false, Constants.HTTP_STATUS_SUCCESS);
             }
 
         }
 
         logger.info("Query WishList missing param either wish list Id or openId");
-        return new WishListsResponse(false);
+        return new WishListsResponse(false, Constants.HTTP_STATUS_VALIDATION_FAIL);
     }
 
     @ApiOperation(value = "Collect wish item by id or wishlist_id",
-            notes = "根据ID或者openID搜索愿望,ID和openID只需要填一个，ID优先查询",
+            notes = "根据ID或者openID搜索愿望,ID和openID只需要填一个，ID优先查询，只返回愿望概述",
             response = WishesResponse.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
     @RequestMapping(value = "/details", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -105,7 +136,7 @@ public class WishController {
             if(!wishes.isEmpty()){
                 return convertWishListToWishesResponse(wishes);
             }else{
-                return new WishesResponse(false);
+                return new WishesResponse(false, Constants.HTTP_STATUS_SUCCESS);
             }
 
         }
@@ -116,12 +147,12 @@ public class WishController {
             if(!wishes.isEmpty()){
                 return convertWishListToWishesResponse(wishes);
             }else{
-                return new WishesResponse(false);
+                return new WishesResponse(false, Constants.HTTP_STATUS_SUCCESS);
             }
         }
 
         logger.info("Query Wish detail missing param either wish Id or wish list id");
-        return new WishesResponse(false);
+        return new WishesResponse(false, Constants.HTTP_STATUS_VALIDATION_FAIL);
     }
 
     private WishesResponse convertWishListToWishesResponse(List<Wish> wishes){
@@ -135,7 +166,7 @@ public class WishController {
             return domain;
         }).collect(Collectors.toList());
 
-        WishesResponse response =  new WishesResponse(wishDomains);
+        WishesResponse response =  new WishesResponse(wishDomains, Constants.HTTP_STATUS_SUCCESS);
         logger.info("{}", response);
         return response;
     }

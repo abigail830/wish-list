@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 
 @ApiModel("愿望列表前段")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class WishListDomain {
+public class BriefWishList {
 
     @ApiModelProperty(value = "愿望清单的ID",  example = "1")
     private Integer wishListID;
@@ -28,7 +28,7 @@ public class WishListDomain {
 
     SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
 
-    public WishListDomain(Integer wishListID, String openId, String description, String createTime, String dueTime) {
+    public BriefWishList(Integer wishListID, String openId, String description, String createTime, String dueTime) {
         this.wishListID = wishListID;
         this.openId = openId;
         this.description = description;
@@ -36,7 +36,7 @@ public class WishListDomain {
         this.dueTime = dueTime;
     }
 
-    public WishListDomain(WishList wishList) {
+    public BriefWishList(WishList wishList) {
         this.wishListID = wishList.getId();
         this.openId = wishList.getOpenId();
         this.description = wishList.getDescription();
@@ -87,7 +87,7 @@ public class WishListDomain {
 
     @Override
     public String toString() {
-        return "WishListDomain{" +
+        return "BriefWishList{" +
                 "wishListID=" + wishListID +
                 ", openId='" + openId + '\'' +
                 ", description='" + description + '\'' +

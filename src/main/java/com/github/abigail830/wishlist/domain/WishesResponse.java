@@ -18,11 +18,17 @@ public class WishesResponse {
     @JsonProperty("hasWish")
     private boolean hasWish=false;
 
-    public WishesResponse(boolean hasWish) {
+    @ApiModelProperty(value = "查询状态", example = "VALIDATION_FAIL")
+    @JsonProperty("resultCode")
+    String resultCode;
+
+    public WishesResponse(boolean hasWish, String resultCode) {
         this.hasWish = hasWish;
+        this.resultCode = resultCode;
     }
 
-    public WishesResponse(List<WishDomain> wishes) {
+    public WishesResponse(List<WishDomain> wishes,String resultCode) {
+        this.resultCode = resultCode;
         this.wishes = wishes;
         if(!wishes.isEmpty())
             this.hasWish = true;
@@ -33,6 +39,7 @@ public class WishesResponse {
         return "WishesResponse{" +
                 "wishes=" + wishes +
                 ", hasWish=" + hasWish +
+                ", resultCode='" + resultCode + '\'' +
                 '}';
     }
 }

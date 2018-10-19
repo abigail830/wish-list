@@ -2,7 +2,6 @@ package com.github.abigail830.wishlist.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.abigail830.wishlist.entity.WishList;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -12,9 +11,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class WishListsResponse {
 
-
     @JsonProperty("wishLists")
-    private List<WishListDomain> wishLists;
+    private List<BriefWishList> wishLists;
 
     @ApiModelProperty(value = "是否存在愿望清单", notes = "当搜索无结果时该数量为false", example = "true")
     @JsonProperty("hasWishList")
@@ -28,16 +26,24 @@ public class WishListsResponse {
     @JsonProperty("myFriendsCompletedWishCount")
     private int myFriendsCompletedWishCount;
 
-    public WishListsResponse(boolean hasWishList) {
+    @ApiModelProperty(value = "查询状态", example = "VALIDATION_FAIL")
+    @JsonProperty("resultCode")
+    String resultCode;
+
+    public WishListsResponse(boolean hasWishList, String resultCode) {
         this.hasWishList = hasWishList;
+        this.resultCode = resultCode;
     }
 
-    public WishListsResponse(List<WishListDomain> wishLists, int myCompletedWishCount, int myFriendsCompletedWishCount) {
+    public WishListsResponse(List<BriefWishList> wishLists,
+                             int myCompletedWishCount, int myFriendsCompletedWishCount,
+                             String resultCode) {
         this.wishLists = wishLists;
         if(!wishLists.isEmpty())
             this.hasWishList = true;
         this.myCompletedWishCount = myCompletedWishCount;
         this.myFriendsCompletedWishCount = myFriendsCompletedWishCount;
+        this.resultCode = resultCode;
     }
 
     @Override
@@ -47,6 +53,7 @@ public class WishListsResponse {
                 ", hasWishList=" + hasWishList +
                 ", myCompletedWishCount=" + myCompletedWishCount +
                 ", myFriendsCompletedWishCount=" + myFriendsCompletedWishCount +
+                ", resultCode='" + resultCode + '\'' +
                 '}';
     }
 }

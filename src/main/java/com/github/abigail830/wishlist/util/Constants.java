@@ -18,4 +18,7 @@ public class Constants {
     public static final String EVENT_TYPE_GIVEUP_WISH = "GIVEUP_WISH";
     public static final String EVENT_TYPE_DONE_WISH = "DONE_WISH";
 
+    public static final String HTTP_STATUS_SUCCESS = "SUCCESS";
+    public static final String HTTP_STATUS_VALIDATION_FAIL = "VALIDATION_FAIL";
+
 }
