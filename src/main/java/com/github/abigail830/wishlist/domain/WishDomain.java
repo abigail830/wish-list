@@ -1,10 +1,13 @@
 package com.github.abigail830.wishlist.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.github.abigail830.wishlist.entity.User;
+import com.github.abigail830.wishlist.entity.Wish;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 @ApiModel("愿望列表前段VO")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -28,6 +31,8 @@ public class WishDomain {
     @ApiModelProperty(value = "愿望承接人",  example = "2018-09-01")
     private UserInfo implementor;
 
+    SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+
     public WishDomain(Integer wishID, String description, String createTime, String lastUpdateTime, String wishStatus, UserInfo implementor) {
         this.wishID = wishID;
         this.description = description;
@@ -35,6 +40,14 @@ public class WishDomain {
         this.lastUpdateTime = lastUpdateTime;
         this.wishStatus = wishStatus;
         this.implementor = implementor;
+    }
+
+    public WishDomain(Wish wish) {
+        this.wishID = wish.getId();
+        this.description = wish.getDescription();
+        this.createTime = f.format(wish.getCreateTime());
+        this.lastUpdateTime = f.format(wish.getLastUpdateTime());
+        this.wishStatus = wish.getWishStatus();
     }
 
     public Integer getWishID() {

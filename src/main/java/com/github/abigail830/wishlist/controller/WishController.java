@@ -3,7 +3,6 @@ package com.github.abigail830.wishlist.controller;
 import com.github.abigail830.wishlist.domain.*;
 import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.Wish;
-import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.service.UserService;
 import com.github.abigail830.wishlist.service.WishService;
 import io.swagger.annotations.ApiOperation;
@@ -48,44 +47,41 @@ public class WishController {
 
         if (StringUtils.isNotBlank(id)){
             logger.info("User query wishService.getWishListByID: {}", id);
-            List<WishList> wishLists = wishService.getWishListByID(id);
-            if(wishLists.size()>=1){
-                List<WishListDomain> wishListDomains = wishLists.stream().map(wishList -> {
-                    return new WishListDomain(wishList.getId(),
-                            wishList.getOpenId(),
-                            wishList.getDescription(),
-                            f.format(wishList.getCreateTime()),
-                            f.format(wishList.getDueTime()));
-                }).collect(Collectors.toList());
+            List<WishListDomain> wishListDomains = wishService.getWishListByID(id)
+                    .stream().map(WishListDomain::new).collect(Collectors.toList());
+            if(!wishListDomains.isEmpty()){
                 WishListsResponse response =  new WishListsResponse(wishListDomains,
-                    wishService.getMyCompletedWishCount(wishLists.get(0).getOpenId()),
-                    wishService.getFriendsCompletedWishCountbyImplementorID(wishLists.get(0).getOpenId()));
+                        wishService.getMyCompletedWishCount(wishListDomains.get(0).getOpenId()),
+                        wishService.getFriendsCompletedWishCountByImplementorID(wishListDomains.get(0).getOpenId()));
                 logger.info("{}", response);
                 return response;
             }
-            else
+            else{
+                logger.info("No wish list found with ID {}", id);
                 return new WishListsResponse(false);
+            }
+
         }
 
         if (StringUtils.isNotBlank(openId)){
             logger.info("User[{}] query wishService.getWishListByOpenID: {}", openId,openId);
-            List<WishList> wishLists = wishService.getWishListByOpenID(openId);
-            if(wishLists.size()>=1){
-                List<WishListDomain> wishListDomains = wishLists.stream().map(wishList -> {
-                    return new WishListDomain(wishList.getId(),
-                            wishList.getOpenId(),
-                            wishList.getDescription(),
-                            f.format(wishList.getCreateTime()),
-                            f.format(wishList.getDueTime()));
-                }).collect(Collectors.toList());
+            int myCompletedWishCount = wishService.getMyCompletedWishCount(openId);
+            int myFriendCompletedWishCount = wishService.getFriendsCompletedWishCountByImplementorID(openId);
+            List<WishListDomain> wishListDomains = wishService.getWishListByOpenID(openId)
+                    .stream().map(WishListDomain::new).collect(Collectors.toList());
+            if(!wishListDomains.isEmpty()){
                 WishListsResponse response =  new WishListsResponse(wishListDomains,
-                        wishService.getMyCompletedWishCount(wishLists.get(0).getOpenId()),
-                        wishService.getFriendsCompletedWishCountbyImplementorID(wishLists.get(0).getOpenId()));
+                        myCompletedWishCount,
+                        myFriendCompletedWishCount
+                        );
                 logger.info("{}", response);
                 return response;
             }
-            else
+            else{
+                logger.info("No wish list found with openId {}", openId);
                 return new WishListsResponse(false);
+            }
+
         }
 
         logger.info("Query WishList missing param either wish list Id or openId");
@@ -105,25 +101,20 @@ public class WishController {
         if (StringUtils.isNotBlank(id)) {
             logger.info("Query wishService.getWishDetailByID: {}", id);
             List<Wish> wishes = wishService.getWishDetailByID(id);
-            List<WishDomain> wishDomains = convertWishListToWishDomain(wishes);
 
-            if(wishDomains!=null){
-                WishesResponse response =  new WishesResponse(wishDomains);
-                logger.info("{}", response);
-                return response;
+            if(!wishes.isEmpty()){
+                return convertWishListToWishesResponse(wishes);
             }else{
                 return new WishesResponse(false);
             }
+
         }
         if(StringUtils.isNotBlank(wishListID)){
             logger.info("Query wishService.getWishDetailByWishListID: {}", wishListID);
             List<Wish> wishes =wishService.getWishDetailByWishListID(wishListID);
-            List<WishDomain> wishDomains = convertWishListToWishDomain(wishes);
 
-            if(wishDomains!=null){
-                WishesResponse response =  new WishesResponse(wishDomains);
-                logger.info("{}", response);
-                return response;
+            if(!wishes.isEmpty()){
+                return convertWishListToWishesResponse(wishes);
             }else{
                 return new WishesResponse(false);
             }
@@ -133,33 +124,20 @@ public class WishController {
         return new WishesResponse(false);
     }
 
-    private List<WishDomain> convertWishListToWishDomain(List<Wish> wishes){
+    private WishesResponse convertWishListToWishesResponse(List<Wish> wishes){
 
-        if(wishes.size()>=1){
-            return wishes.stream().map(wish -> {
-                if(wish.getImplementorOpenId()!=null){
-                    User user = userService.getUserByOpenId(wish.getImplementorOpenId());
-                    if(user !=null){
-                        return new WishDomain(wish.getId(),
-                                wish.getDescription(),
-                                f.format(wish.getCreateTime()),
-                                f.format(wish.getLastUpdateTime()),
-                                wish.getWishStatus(),
-                                new UserInfo(user.getOpenId(), user.getGender(),user.getNickName(),
-                                        user.getCity(), user.getCountry(),user.getProvince(),
-                                        user.getLang(), user.getAvatarUrl()));
-                    }
-                }
-                return new WishDomain(wish.getId(),
-                        wish.getDescription(),
-                        f.format(wish.getCreateTime()),
-                        f.format(wish.getLastUpdateTime()),
-                        wish.getWishStatus(),
-                        null);
-            }).collect(Collectors.toList());
-        }else{
-            return null;
-        }
+        List<WishDomain> wishDomains =  wishes.stream().map(wish -> {
+            WishDomain domain = new WishDomain(wish);
+            if(!wish.getImplementorOpenId().isEmpty()) {
+                UserInfo userInfo = new UserInfo(userService.getUserByOpenId(wish.getImplementorOpenId()));
+                domain.setImplementor(userInfo);
+            }
+            return domain;
+        }).collect(Collectors.toList());
+
+        WishesResponse response =  new WishesResponse(wishDomains);
+        logger.info("{}", response);
+        return response;
     }
 
 

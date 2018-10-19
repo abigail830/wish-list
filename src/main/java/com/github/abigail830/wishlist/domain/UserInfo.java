@@ -1,5 +1,7 @@
 package com.github.abigail830.wishlist.domain;
 
+import com.github.abigail830.wishlist.entity.User;
+
 public class UserInfo {
 
     private String openId;
@@ -33,6 +35,19 @@ public class UserInfo {
         this.language = language;
         this.avatarUrl = avatarUrl;
     }
+
+    public UserInfo(User user){
+        this.openId = user.getOpenId();
+        this.gender = user.getGender();
+        this.nickName = user.getNickName();
+        this.city = user.getCity();
+        this.country = user.getCountry();
+        this.province = user.getProvince();
+        this.language = user.getLang();
+        this.avatarUrl = user.getAvatarUrl();
+    }
+
+
 
     public String getAvatarUrl() {
         return avatarUrl;

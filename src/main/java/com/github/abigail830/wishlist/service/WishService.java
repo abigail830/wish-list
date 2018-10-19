@@ -29,8 +29,10 @@ public class WishService {
     @Autowired
     private UserEventImpl userEventDao;
 
+
     public List<WishList> getWishListByID(String id){
         return wishListDao.getWishListById(id);
+
     }
 
     public List<WishList> getWishListByOpenID(String openId){
@@ -45,7 +47,7 @@ public class WishService {
         return wishDao.getWishByWishListId(wishListID);
     }
 
-    public int getFriendsCompletedWishCountbyImplementorID(String openId){
+    public int getFriendsCompletedWishCountByImplementorID(String openId){
         return complexWishDao.getFriendsWishCompletedCountByImplementorOpenID(openId);
     }
 
