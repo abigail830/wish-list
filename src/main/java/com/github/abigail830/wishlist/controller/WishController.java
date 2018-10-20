@@ -41,7 +41,7 @@ public class WishController {
             notes = "根据愿望清单的ID获取清单内所有具体内容",
             response = WishListDetailResponse.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public WishListDetailResponse getWishListDetail(
             @ApiParam(example = "2") @RequestParam(value = "wishListId", required = false) String wishListId) {
