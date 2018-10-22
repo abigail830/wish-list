@@ -22,6 +22,10 @@ public class UserDaoImpl {
 
 	private RowMapper<User> rowMapper = new BeanPropertyRowMapper<>(User.class);
 
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+
 	public void createUser(UserInfo user) {
 		logger.info("Insert IGNORE data openId={}, gender={}, nick_name={}, " +
 				"city={}, country={}, province={}, lang={}, avatar_url={}",
