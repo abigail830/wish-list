@@ -54,4 +54,8 @@ public class WishListDaoImpl {
 		List<WishList> wishLists = jdbcTemplate.query("SELECT * FROM wishlist_tbl WHERE id = ?", rowMapper, id);
 		return wishLists;
 	}
+
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
 }

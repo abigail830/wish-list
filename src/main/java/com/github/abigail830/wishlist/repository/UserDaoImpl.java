@@ -2,6 +2,7 @@ package com.github.abigail830.wishlist.repository;
 
 import com.github.abigail830.wishlist.domain.UserInfo;
 import com.github.abigail830.wishlist.entity.User;
+import com.github.abigail830.wishlist.util.Toggle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,18 +39,37 @@ public class UserDaoImpl {
 				user.getLanguage(),
 				user.getAvatarUrl()
 		);
-		jdbcTemplate.update(
-				"INSERT ignore INTO user_tbl (open_id, gender, nick_name, city, country, province, lang, avatar_url) " +
-						"VALUES (?, ?, ?, ?, ?, ?, ? ,?)",
-				user.getOpenId(),
-				user.getGender(),
-				user.getNickName(),
-				user.getCity(),
-				user.getCountry(),
-				user.getProvince(),
-				user.getLanguage(),
-				user.getAvatarUrl()
-		);
+		if (Toggle.TEST_MODE.isON()) {
+			logger.info("It is running in test mode");
+
+			jdbcTemplate.update(
+					"INSERT INTO user_tbl (open_id, gender, nick_name, city, country, province, lang, avatar_url) " +
+							"VALUES (?, ?, ?, ?, ?, ?, ? ,?)",
+					user.getOpenId(),
+					user.getGender(),
+					user.getNickName(),
+					user.getCity(),
+					user.getCountry(),
+					user.getProvince(),
+					user.getLanguage(),
+					user.getAvatarUrl()
+			);
+
+		} else {
+			jdbcTemplate.update(
+					"INSERT ignore INTO user_tbl (open_id, gender, nick_name, city, country, province, lang, avatar_url) " +
+							"VALUES (?, ?, ?, ?, ?, ?, ? ,?)",
+					user.getOpenId(),
+					user.getGender(),
+					user.getNickName(),
+					user.getCity(),
+					user.getCountry(),
+					user.getProvince(),
+					user.getLanguage(),
+					user.getAvatarUrl()
+			);
+
+		}
 	}
 
 	public void updateUserByOpenID(UserInfo user) {

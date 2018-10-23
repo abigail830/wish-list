@@ -12,6 +12,10 @@ public class UserEvent {
     public UserEvent(String openId) {
         this.openId = openId;
     }
+    public UserEvent() {
+
+    }
+
 
     public Integer getId() {
         return id;

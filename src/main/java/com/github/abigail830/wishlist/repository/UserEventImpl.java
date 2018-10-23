@@ -62,4 +62,8 @@ public class UserEventImpl {
 		List<UserEvent> userEvents = jdbcTemplate.query("SELECT * FROM user_event WHERE id = ?", rowMapper, id);
 		return userEvents.stream().findFirst().orElse(null);
 	}
+
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
 }

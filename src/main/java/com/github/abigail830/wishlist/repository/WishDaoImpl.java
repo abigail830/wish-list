@@ -1,6 +1,7 @@
 package com.github.abigail830.wishlist.repository;
 
 import com.github.abigail830.wishlist.entity.Wish;
+import com.github.abigail830.wishlist.util.Toggle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +24,28 @@ public class WishDaoImpl {
 
 	public void createWish(Wish wish) {
 		logger.info("Create wish for wishlist [wish_list_id={}].", wish.getWishListId());
-		jdbcTemplate.update(
-				"REPLACE INTO wish_tbl (wish_list_id, description, wish_status, implementor_open_id) " +
-						"VALUES (?, ?, ?, ?)",
-				wish.getWishListId(),
-				wish.getDescription(),
-				wish.getWishStatus(),
-				wish.getImplementorOpenId()
-		);
+		if (Toggle.TEST_MODE.isON()) {
+			logger.info("It is running in test mode");
+			jdbcTemplate.update(
+					"INSERT INTO wish_tbl (wish_list_id, description, wish_status, implementor_open_id) " +
+							"VALUES (?, ?, ?, ?)",
+					wish.getWishListId(),
+					wish.getDescription(),
+					wish.getWishStatus(),
+					wish.getImplementorOpenId()
+			);
+
+		} else {
+			jdbcTemplate.update(
+					"REPLACE INTO wish_tbl (wish_list_id, description, wish_status, implementor_open_id) " +
+							"VALUES (?, ?, ?, ?)",
+					wish.getWishListId(),
+					wish.getDescription(),
+					wish.getWishStatus(),
+					wish.getImplementorOpenId()
+			);
+
+		}
 	}
 
 	public void updateWish(Wish wish) {
@@ -54,6 +69,10 @@ public class WishDaoImpl {
 		logger.info("Query Wish by ID: {}", id);
 		List<Wish> wishes = jdbcTemplate.query("SELECT * FROM wish_tbl WHERE id = ?", rowMapper, id);
 		return wishes;
+	}
+
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
 	}
 
 }
