@@ -53,4 +53,12 @@ public class UserService {
     public User getUserByUnionId(String id) {
         return userDao.getUserById(id);
     }
+
+    public void setUserDao (UserDaoImpl userDao) {
+        this.userDao = userDao;
+    }
+
+    public void setUserEventDao (UserEventImpl userEventDao) {
+        this.userEventDao = userEventDao;
+    }
 }

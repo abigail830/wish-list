@@ -98,4 +98,8 @@ public class ComplexWishDaoImpl {
                 }, wishListId);
     }
 
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
 }

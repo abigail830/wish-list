@@ -46,6 +46,27 @@ public class WishListsResponse {
         this.resultCode = resultCode;
     }
 
+
+    public boolean isHasWishList() {
+        return hasWishList;
+    }
+
+    public int getMyCompletedWishCount() {
+        return myCompletedWishCount;
+    }
+
+    public int getMyFriendsCompletedWishCount() {
+        return myFriendsCompletedWishCount;
+    }
+
+    public String getResultCode() {
+        return resultCode;
+    }
+
+    public List<BriefWishList> getWishLists() {
+        return wishLists;
+    }
+
     @Override
     public String toString() {
         return "WishListsResponse{" +

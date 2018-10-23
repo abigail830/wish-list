@@ -42,4 +42,16 @@ public class WishesResponse {
                 ", resultCode='" + resultCode + '\'' +
                 '}';
     }
+
+    public List<WishDomain> getWishes() {
+        return wishes;
+    }
+
+    public String getResultCode() {
+        return resultCode;
+    }
+
+    public boolean isHasWish() {
+        return hasWish;
+    }
 }

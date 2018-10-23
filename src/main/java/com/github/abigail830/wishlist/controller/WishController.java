@@ -171,5 +171,12 @@ public class WishController {
         return response;
     }
 
+    public void setWishService(WishService wishService) {
+        this.wishService = wishService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
 }

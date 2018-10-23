@@ -48,6 +48,9 @@ public class WishDomain {
         this.createTime = f.format(wish.getCreateTime());
         this.lastUpdateTime = f.format(wish.getLastUpdateTime());
         this.wishStatus = wish.getWishStatus();
+        if (wish.getImplementorOpenId() != null) {
+            this.implementor = new UserInfo(wish.getImplementorOpenId());
+        }
     }
 
     public Integer getWishID() {

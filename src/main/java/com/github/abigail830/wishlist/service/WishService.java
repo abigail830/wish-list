@@ -58,4 +58,20 @@ public class WishService {
         return complexWishDao.getMyWishCompletedCount(openId);
     }
 
+
+    public void setWishListDao(WishListDaoImpl wishListDao) {
+        this.wishListDao = wishListDao;
+    }
+
+    public void setWishDao(WishDaoImpl wishDao) {
+        this.wishDao = wishDao;
+    }
+
+    public void setComplexWishDao (ComplexWishDaoImpl complexWishDao) {
+        this.complexWishDao = complexWishDao;
+    }
+
+    public void setUserEventDao(UserEventImpl userEventDao) {
+        this.userEventDao = userEventDao;
+    }
 }
