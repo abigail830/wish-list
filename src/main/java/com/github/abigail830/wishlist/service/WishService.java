@@ -34,6 +34,14 @@ public class WishService {
         return complexWishDao.getWishListDetail(wishListId);
     }
 
+    public void deleteWishListByListID(String wishListId) {
+        wishListDao.deleteWishList(Integer.valueOf(wishListId));
+    }
+
+    public void createWishList(WishList wishList) {
+        wishListDao.createWishList(wishList);
+    }
+
     public List<WishList> getWishListByID(String id){
         return wishListDao.getWishListById(id);
     }

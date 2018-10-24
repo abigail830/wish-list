@@ -45,6 +45,12 @@ public class WishListDaoImpl {
 		);
 	}
 
+	public void deleteWishList(Integer wishListID ) {
+		logger.info("Going to delete wish list {}", wishListID);
+		jdbcTemplate.update("DELETE wishlist_tbl where ID=?",wishListID);
+
+	}
+
 	public List<WishList> getWishListByOpenId(String openId) {
 		List<WishList> wishLists = jdbcTemplate.query("SELECT * FROM wishlist_tbl WHERE open_id = ?", rowMapper, openId);
 		return wishLists;

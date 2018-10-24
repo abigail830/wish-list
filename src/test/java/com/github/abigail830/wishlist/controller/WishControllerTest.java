@@ -4,7 +4,6 @@ import com.github.abigail830.wishlist.domain.UserInfo;
 import com.github.abigail830.wishlist.domain.WishListDetailResponse;
 import com.github.abigail830.wishlist.domain.WishListsResponse;
 import com.github.abigail830.wishlist.domain.WishesResponse;
-import com.github.abigail830.wishlist.entity.UserEvent;
 import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.repository.*;
@@ -17,6 +16,8 @@ import org.h2.jdbcx.JdbcDataSource;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
@@ -66,36 +67,42 @@ public class WishControllerTest {
     }
 
 
+
+    @Test
+    public void canCreateAndDeleteWishList() {
+        WishController wishController = getWishController();
+
+        WishList wishList = new WishList();
+        wishList.setOpenId("openID1");
+        wishList.setDescription("THIS IS FOR WISE LIST ROUNDTRIP TEST");
+
+        WishListsResponse wishListsResponse = wishController.postNewWishList(wishList);
+        assertThat(wishListsResponse.getResultCode(), is(Constants.HTTP_STATUS_SUCCESS));
+        assertThat(wishListsResponse.getWishLists()
+                .stream()
+                .filter(item -> "THIS IS FOR WISE LIST ROUNDTRIP TEST".equals(item.getDescription()))
+                .count(), is(1L));
+
+        String wishListID = wishListsResponse.getWishLists()
+                .stream()
+                .filter(item -> "THIS IS FOR WISE LIST ROUNDTRIP TEST".equals(item.getDescription()))
+                .collect(Collectors.toList())
+                .get(0)
+                .getWishListID().toString();
+
+        wishListsResponse = wishController.deleteWishList(wishListID);
+        assertThat(wishListsResponse.getResultCode(), is(Constants.HTTP_STATUS_SUCCESS));
+        assertThat(wishListsResponse.getWishLists()
+                .stream()
+                .filter(item -> "THIS IS FOR WISE LIST ROUNDTRIP TEST".equals(item.getDescription()))
+                .count(), is(0L));
+
+    }
+
+
     @Test
     public void testGetWishListDetail() throws Exception {
-        UserDaoImpl userDao = new UserDaoImpl();
-        userDao.setJdbcTemplate(jdbcTemplate);
-
-        WishListDaoImpl wishListDao = new WishListDaoImpl();
-        wishListDao.setJdbcTemplate(jdbcTemplate);
-
-        WishDaoImpl wishDao = new WishDaoImpl();
-        wishDao.setJdbcTemplate(jdbcTemplate);
-
-        ComplexWishDaoImpl complexWishDao = new ComplexWishDaoImpl();
-        complexWishDao.setJdbcTemplate(jdbcTemplate);
-
-        UserEventImpl userEvent = new UserEventImpl();
-        userEvent.setJdbcTemplate(jdbcTemplate);
-
-        WishService wishService = new WishService();
-        wishService.setComplexWishDao(complexWishDao);
-        wishService.setWishDao(wishDao);
-        wishService.setWishListDao(wishListDao);
-        wishService.setUserEventDao(userEvent);
-
-        UserService userService = new UserService();
-        userService.setUserEventDao(userEvent);
-        userService.setUserDao(userDao);
-
-        WishController wishController = new WishController();
-        wishController.setUserService(userService);
-        wishController.setWishService(wishService);
+        WishController wishController = getWishController();
 
         WishListDetailResponse response = wishController.getWishListDetail("1");
         assertThat(response.getResultCode(), is(Constants.HTTP_STATUS_SUCCESS));
@@ -105,42 +112,12 @@ public class WishControllerTest {
         assertThat(response.getWishes().get(0).getImplementor().getOpenId(), is("openID2"));
         assertThat(response.getWishes().get(0).getWishStatus(), is(Constants.WISH_STATUS_DONE));
         assertThat(response.getWishes().get(0).getDescription(), is("DESC1"));
-
-
-
     }
+
 
     @Test
     public void testGetWishListsByID() throws Exception {
-        UserDaoImpl userDao = new UserDaoImpl();
-        userDao.setJdbcTemplate(jdbcTemplate);
-
-        WishListDaoImpl wishListDao = new WishListDaoImpl();
-        wishListDao.setJdbcTemplate(jdbcTemplate);
-
-        WishDaoImpl wishDao = new WishDaoImpl();
-        wishDao.setJdbcTemplate(jdbcTemplate);
-
-        ComplexWishDaoImpl complexWishDao = new ComplexWishDaoImpl();
-        complexWishDao.setJdbcTemplate(jdbcTemplate);
-
-        UserEventImpl userEvent = new UserEventImpl();
-        userEvent.setJdbcTemplate(jdbcTemplate);
-
-        WishService wishService = new WishService();
-        wishService.setComplexWishDao(complexWishDao);
-        wishService.setWishDao(wishDao);
-        wishService.setWishListDao(wishListDao);
-        wishService.setUserEventDao(userEvent);
-
-        UserService userService = new UserService();
-        userService.setUserEventDao(userEvent);
-        userService.setUserDao(userDao);
-
-        WishController wishController = new WishController();
-        wishController.setUserService(userService);
-        wishController.setWishService(wishService);
-
+        WishController wishController = getWishController();
 
         WishListsResponse response = wishController.getWishListsByID(null, "openID1");
         assertThat(response.getResultCode(), is(Constants.HTTP_STATUS_SUCCESS));
@@ -152,6 +129,18 @@ public class WishControllerTest {
 
     @Test
     public void testGetWishesByID() throws Exception {
+        WishController wishController = getWishController();
+        WishesResponse response = wishController.getWishesByID("1", null);
+
+
+        assertThat(response.getResultCode(), is(Constants.HTTP_STATUS_SUCCESS));
+        assertThat(response.isHasWish(), is(true));
+        assertThat(response.getWishes().size(), is(1));
+
+    }
+
+
+    private WishController getWishController() {
         UserDaoImpl userDao = new UserDaoImpl();
         userDao.setJdbcTemplate(jdbcTemplate);
 
@@ -180,12 +169,6 @@ public class WishControllerTest {
         WishController wishController = new WishController();
         wishController.setUserService(userService);
         wishController.setWishService(wishService);
-        WishesResponse response = wishController.getWishesByID("1", null);
-
-
-        assertThat(response.getResultCode(), is(Constants.HTTP_STATUS_SUCCESS));
-        assertThat(response.isHasWish(), is(true));
-        assertThat(response.getWishes().size(), is(1));
-
+        return wishController;
     }
 }

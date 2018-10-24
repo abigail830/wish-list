@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -63,6 +64,27 @@ public class WishListDaoImplTest {
                 .stream()
                 .filter(wl -> "THIS IS FOR TEST2".equals(wl.getDescription())).count(), is(1L));
 
+    }
+
+    @Test
+    public void testDeleteWishListByID() throws Exception {
+        WishList wishList = new WishList();
+        wishList.setOpenId("openID1");
+        wishList.setDescription("THIS IS FOR DELETE TEST");
+        WishListDaoImpl wishListDao = new WishListDaoImpl();
+        wishListDao.setJdbcTemplate(jdbcTemplate);
+        wishListDao.createWishList(wishList);
+
+        List<WishList> wishLists = wishListDao.getWishListByOpenId("openID1")
+                .stream()
+                .filter(wl -> "THIS IS FOR DELETE TEST".equals(wl.getDescription()))
+                .collect(Collectors.toList());
+
+        wishListDao.deleteWishList(wishLists.get(0).getId());
+        assertThat(wishListDao.getWishListByOpenId("openID1")
+                .stream()
+                .filter(wl -> "THIS IS FOR DELETE TEST".equals(wl.getDescription()))
+                .count(), is(0L));
     }
 
     @Test
