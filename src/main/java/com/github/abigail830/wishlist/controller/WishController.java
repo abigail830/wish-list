@@ -66,7 +66,7 @@ public class WishController {
             notes = "添加新愿望到愿望清单",
             response = WishListDetailResponse.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public WishListDetailResponse postNewWish(@RequestBody Wish wish) {
 
