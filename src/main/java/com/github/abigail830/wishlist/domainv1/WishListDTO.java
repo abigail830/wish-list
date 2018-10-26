@@ -14,6 +14,9 @@ public class WishListDTO {
     @ApiModelProperty(value = "用户openID",  example = "troEmJ75YWmBSDgyz4KLi_yGL8MBV4ue")
     private String listOpenId;
 
+    @ApiModelProperty(value = "愿望清单的ID",  example = "2")
+    private Integer listId;
+
     @ApiModelProperty(value = "愿望清单概述",  example = "新年愿望清单")
     private String listDescription;
 
@@ -39,6 +42,7 @@ public class WishListDTO {
 
     public WishListDTO(WishListDetail wishListDetail) {
         this.listOpenId = wishListDetail.getListOpenId();
+        this.listId = wishListDetail.getListId();
         this.listDescription = wishListDetail.getListDescription();
         this.listCreateTime = dateFormatter.get().format(wishListDetail.getListCreateTime());
         this.listDueTime = dateFormatter.get().format(wishListDetail.getListDueTime());
@@ -48,11 +52,20 @@ public class WishListDTO {
 
     public WishListDTO(WishList wishList) {
         this.listOpenId = wishList.getOpenId();
+        this.listId = wishList.getId();
         this.listDescription = wishList.getDescription();
         this.listCreateTime = dateFormatter.get().format(wishList.getCreateTime());
         this.listDueTime = dateFormatter.get().format(wishList.getDueTime());
     }
 
+
+    public Integer getListId() {
+        return listId;
+    }
+
+    public void setListId(Integer listId) {
+        this.listId = listId;
+    }
 
     public String getListOpenId() {
         return listOpenId;
