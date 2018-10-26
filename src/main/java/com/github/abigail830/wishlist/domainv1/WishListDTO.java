@@ -1,6 +1,5 @@
 package com.github.abigail830.wishlist.domainv1;
 
-import com.github.abigail830.wishlist.domain.WishDomain;
 import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.entity.WishListDetail;
 import io.swagger.annotations.ApiModelProperty;
@@ -25,7 +24,7 @@ public class WishListDTO {
     private String listDueTime;
 
     @ApiModelProperty(value = "愿望列表")
-    List<WishDomain> wishes = new ArrayList<>();
+    List<WishDTO> wishes = new ArrayList<>();
 
 
     private static final ThreadLocal<SimpleDateFormat> dateFormatter = new ThreadLocal<SimpleDateFormat>() {
@@ -39,7 +38,7 @@ public class WishListDTO {
         this.listDescription = wishListDetail.getListDescription();
         this.listCreateTime = dateFormatter.get().format(wishListDetail.getListCreateTime());
         this.listDueTime = dateFormatter.get().format(wishListDetail.getListDueTime());
-        this.wishes = wishListDetail.getWishes().stream().map(WishDomain::new).collect(Collectors.toList());
+        this.wishes = wishListDetail.getWishes().stream().map(WishDTO::new).collect(Collectors.toList());
     }
 
 
@@ -83,15 +82,15 @@ public class WishListDTO {
         this.listDueTime = listDueTime;
     }
 
-    public List<WishDomain> getWishes() {
+    public List<WishDTO> getWishes() {
         return wishes;
     }
 
-    public void setWishes(List<WishDomain> wishes) {
+    public void setWishes(List<WishDTO> wishes) {
         this.wishes = wishes;
     }
 
-    public void addWish(WishDomain wish){
+    public void addWish(WishDTO wish){
         this.wishes.add(wish);
     }
 
