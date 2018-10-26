@@ -12,8 +12,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.stream.Collectors;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 
 
 public class ComplexWishDaoImplTest {
@@ -36,6 +39,8 @@ public class ComplexWishDaoImplTest {
                 "country", "province", "lang", "imageUrl"));
         userDao.createUser(new UserInfo("openID2", "M", "nickname2", "city",
                 "country", "province", "lang", "imageUrl2"));
+        userDao.createUser(new UserInfo("openID3", "M", "nickname3", "city",
+                "country", "province", "lang", "imageUrl3"));
 
         WishList wishList = new WishList();
         wishList.setId(1);
@@ -53,6 +58,11 @@ public class ComplexWishDaoImplTest {
         wish.setDescription("DESC1");
         wish.setImplementorOpenId("openID2");
         wishDaoImpl.createWish(wish);
+        Wish wish2 = new Wish();
+        wish2.setWishListId(Integer.valueOf(1));
+        wish2.setWishStatus(Constants.WISH_STATUS_NEW);
+        wish2.setDescription("DESC2");
+        wishDaoImpl.createWish(wish2);
     }
 
     @Test
@@ -75,7 +85,20 @@ public class ComplexWishDaoImplTest {
         complexWishDao.setJdbcTemplate(jdbcTemplate);
         WishListDetail wishListDetail = complexWishDao.getWishListDetail("1");
         assertThat(wishListDetail.getListOpenId(), is("openID1"));
-        assertThat(wishListDetail.getWishes().get(0).getWishStatus(),is(Constants.WISH_STATUS_DONE));
-        assertThat(wishListDetail.getWishes().get(0).getImplementorOpenId(),is("openID2"));
+        assertThat(wishListDetail.getWishes().size(), is(2));
+        Wish doneWish = wishListDetail.getWishes().stream()
+                .filter(item -> Constants.WISH_STATUS_DONE.equals(item.getWishStatus()))
+                .collect(Collectors.toList())
+                .get(0);
+        assertThat(doneWish.getDescription(), is("DESC1"));
+        assertThat(doneWish.getImplementorOpenId(), is("openID2"));
+        assertThat(doneWish.getImplementor().getNickName(), is("nickname2"));
+        Wish openWish = wishListDetail.getWishes().stream()
+                .filter(item -> Constants.WISH_STATUS_NEW.equals(item.getWishStatus()))
+                .collect(Collectors.toList())
+                .get(0);
+        assertThat(openWish.getDescription(), is("DESC2"));
+        assertThat(openWish.getImplementor(), is(nullValue()));
+
     }
 }

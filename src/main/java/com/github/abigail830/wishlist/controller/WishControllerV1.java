@@ -1,10 +1,14 @@
 package com.github.abigail830.wishlist.controller;
 
+import com.github.abigail830.wishlist.domain.WishListDetailResponse;
+import com.github.abigail830.wishlist.domain.WishListsResponse;
 import com.github.abigail830.wishlist.domainv1.WishDashboardDTO;
 import com.github.abigail830.wishlist.domainv1.WishListDTO;
+import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.entity.WishListDetail;
 import com.github.abigail830.wishlist.service.UserService;
 import com.github.abigail830.wishlist.service.WishService;
+import com.github.abigail830.wishlist.util.Constants;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -16,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -93,6 +97,25 @@ public class WishControllerV1 {
         return new WishDashboardDTO(Collections.EMPTY_LIST, 0, 0);
     }
 
+    @ApiOperation(value = "Add new Wish List",
+            notes = "添加新愿望清单",
+            response = WishDashboardDTO.class)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
+    @RequestMapping(value = "/lists", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public WishDashboardDTO postNewWishList(
+            @RequestBody WishListDTO wishList) throws ParseException {
+        logger.info("Add new wish list {}", wishList);
+
+        if (StringUtils.isNotBlank(wishList.getListOpenId()) && StringUtils.isNotBlank(wishList.getListDescription())) {
+            wishService.createWishList(wishList);
+            return getWishListsByUserOpenID(wishList.getListOpenId());
+        } else {
+            return new WishDashboardDTO(Collections.EMPTY_LIST, 0, 0);
+        }
+
+    }
+
     private WishDashboardDTO getWishListsByUserOpenID(String openId) {
         int myCompletedWishCount = wishService.getMyCompletedWishCount(openId);
         int myFriendCompletedWishCount = wishService.getFriendsCompletedWishCountByImplementorID(openId);
@@ -111,5 +134,12 @@ public class WishControllerV1 {
         }
     }
 
+    public void setWishService(WishService wishService) {
+        this.wishService = wishService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
 }

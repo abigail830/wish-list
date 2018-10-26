@@ -10,6 +10,7 @@ public class Wish {
     private Timestamp lastUpdateTime;
     private String wishStatus;
     private String implementorOpenId;
+    private User implementor;
 
 
     public Integer getId() {
@@ -66,6 +67,14 @@ public class Wish {
 
     public void setImplementorOpenId(String implementorOpenId) {
         this.implementorOpenId = implementorOpenId;
+    }
+
+    public User getImplementor() {
+        return implementor;
+    }
+
+    public void setImplementor(User implementor) {
+        this.implementor = implementor;
     }
 
     @Override

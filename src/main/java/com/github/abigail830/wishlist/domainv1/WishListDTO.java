@@ -33,6 +33,10 @@ public class WishListDTO {
         }
     };
 
+    public WishListDTO () {
+
+    }
+
     public WishListDTO(WishListDetail wishListDetail) {
         this.listOpenId = wishListDetail.getListOpenId();
         this.listDescription = wishListDetail.getListDescription();

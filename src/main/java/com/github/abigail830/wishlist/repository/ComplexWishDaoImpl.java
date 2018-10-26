@@ -1,5 +1,6 @@
 package com.github.abigail830.wishlist.repository;
 
+import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishListDetail;
 import com.github.abigail830.wishlist.util.Constants;
@@ -28,6 +29,8 @@ public class ComplexWishDaoImpl {
     private RowMapper<Wish> wishRowMapper = new BeanPropertyRowMapper<>(Wish.class);
 
     private RowMapper<WishListDetail> wishListDetailRowMapper = new BeanPropertyRowMapper<>(WishListDetail.class);
+
+    private RowMapper<User> userRowMapper = new BeanPropertyRowMapper<>(User.class);
 
     /**
      * This is to query the wish complete count for:
@@ -76,10 +79,19 @@ public class ComplexWishDaoImpl {
                         "wish_tbl.create_time as create_time, " +
                         "wish_tbl.last_update_time as last_update_time, " +
                         "wish_tbl.wish_status as wish_status, " +
-                        "wish_tbl.implementor_open_id as implementor_open_id " +
-                        "from wishlist_tbl, wish_tbl " +
-                        "where wishlist_tbl.id = wish_tbl.wish_list_id " +
-                        "and wishlist_tbl.id = ?",
+                        "wish_tbl.implementor_open_id as implementor_open_id, " +
+                        "user_tbl.open_id as open_id, " +
+                        "user_tbl.gender as gender, " +
+                        "user_tbl.nick_name as nick_name, " +
+                        "user_tbl.city as city, " +
+                        "user_tbl.country as ountry, " +
+                        "user_tbl.province as province, " +
+                        "user_tbl.lang as lang, " +
+                        "user_tbl.avatar_url as avatar_url " +
+                        "from wishlist_tbl " +
+                        "join wish_tbl on wishlist_tbl.id = wish_tbl.wish_list_id " +
+                        "left join user_tbl on wish_tbl.implementor_open_id = user_tbl.open_id " +
+                        "where  wishlist_tbl.id = ?" ,
                 new ResultSetExtractor<WishListDetail>(){
 
                     @Override
@@ -90,7 +102,13 @@ public class ComplexWishDaoImpl {
                             if (wishListDetail == null) {
                                 wishListDetail = wishListDetailRowMapper.mapRow(resultSet, row);
                             }
-                            wishListDetail.addWish(wishRowMapper.mapRow(resultSet, row));
+                            User user = userRowMapper.mapRow(resultSet, row);
+                            Wish wish = wishRowMapper.mapRow(resultSet, row);
+                            if (user != null && user.getOpenId() != null) {
+                                wish.setImplementor(user);
+                            }
+
+                            wishListDetail.addWish(wish);
                             row++;
                         }
                         return wishListDetail;

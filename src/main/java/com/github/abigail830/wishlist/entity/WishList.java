@@ -2,7 +2,7 @@ package com.github.abigail830.wishlist.entity;
 
 import java.sql.Timestamp;
 
-public class WishList {
+public class WishList implements Comparable{
 
     private Integer id;
     private String openId;
@@ -60,5 +60,15 @@ public class WishList {
                 ", createTime=" + createTime +
                 ", dueTime=" + dueTime +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Object obj) {
+        WishList compareObj = (WishList) obj;
+        if (compareObj.getCreateTime() != null && this.createTime != null) {
+            return this.createTime.compareTo(compareObj.getCreateTime());
+        } else {
+            return 0;
+        }
     }
 }

@@ -34,6 +34,11 @@ public class WishDTO {
             return new SimpleDateFormat("yyyy-MM-dd");
         }
     };
+
+    public WishDTO () {
+
+    }
+
     public WishDTO(Integer wishID, String description, String createTime, String lastUpdateTime,
                       String wishStatus, UserDTO implementor) {
         this.wishID = wishID;
@@ -51,7 +56,7 @@ public class WishDTO {
         this.lastUpdateTime = dateFormatter.get().format(wish.getLastUpdateTime());
         this.wishStatus = wish.getWishStatus();
         if (wish.getImplementorOpenId() != null) {
-            this.implementor = new UserDTO(wish.getImplementorOpenId());
+            this.implementor = new UserDTO(wish.getImplementor());
         }
     }
 
