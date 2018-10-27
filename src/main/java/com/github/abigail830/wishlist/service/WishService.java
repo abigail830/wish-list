@@ -64,10 +64,7 @@ public class WishService {
     }
 
     public void createWishList(WishListDTO wishListDTO) throws ParseException {
-        WishList wishList = new WishList();
-        wishList.setOpenId(wishListDTO.getListOpenId());
-        wishList.setDescription(wishListDTO.getListDescription());
-        wishList.setDueTime(new java.sql.Timestamp(dateFormatter.get().parse(wishListDTO.getListDueTime()).getTime()));
+        WishList wishList = convertWishListFromDTOToEntity(wishListDTO);
         wishListDao.createWishList(wishList);
         WishList wishListInDB = wishListDao.getWishListByOpenId(wishListDTO.getListOpenId())
                 .stream()
@@ -115,5 +112,50 @@ public class WishService {
 
     public void setUserEventDao(UserEventImpl userEventDao) {
         this.userEventDao = userEventDao;
+    }
+
+    public void deleteWishList(WishListDTO wishListDTO) {
+        List<WishList> wishLists = wishListDao.getWishListById(wishListDTO.getListId().toString());
+        if (wishLists.size() > 0 ) {
+            WishList wishListToBeDeleted = wishLists.get(0);
+            wishDao.deleteByWishListID(wishListToBeDeleted.getId());
+            wishListDao.deleteWishList(wishListToBeDeleted.getId());
+        }
+
+    }
+
+    public void updateWishList(WishListDTO wishListDTO) throws ParseException {
+        WishList wishList = convertWishListFromDTOToEntity(wishListDTO);
+        wishListDao.updateWishListByID(wishList);
+    }
+
+    private WishList convertWishListFromDTOToEntity(WishListDTO wishListDTO) throws ParseException {
+        WishList wishList = new WishList();
+        wishList.setOpenId(wishListDTO.getListOpenId());
+        wishList.setDescription(wishListDTO.getListDescription());
+        wishList.setDueTime(new java.sql.Timestamp(dateFormatter.get().parse(wishListDTO.getListDueTime()).getTime()));
+        return wishList;
+    }
+
+    public void addNewWish(WishDTO wishDTO) {
+
+        Wish wish = new Wish();
+        wish.setDescription(wishDTO.getDescription());
+        wish.setWishStatus(Constants.WISH_STATUS_NEW);
+        wish.setWishListId(wishDTO.getWishListID());
+        wishDao.createWish(wish);
+    }
+
+    public void deleteWish(WishDTO wishDTO) {
+        wishDao.deleteByWishListID(wishDTO.getWishListID());
+    }
+
+    public void updateWish(WishDTO wishDTO) {
+        Wish wish = new Wish();
+        wish.setDescription(wishDTO.getDescription());
+        wish.setWishStatus(wishDTO.getWishStatus());
+        wish.setWishListId(wishDTO.getWishListID());
+        wish.setImplementorOpenId(wishDTO.getImplementor().getOpenId());
+        wishDao.updateWish(wish);
     }
 }

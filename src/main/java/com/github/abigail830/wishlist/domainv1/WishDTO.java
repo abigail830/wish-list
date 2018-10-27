@@ -14,6 +14,9 @@ public class WishDTO {
     @ApiModelProperty(value = "愿望ID",  example = "1")
     private Integer wishID;
 
+    @ApiModelProperty(value = "愿望列表ID",  example = "1")
+    private Integer wishListID;
+
     @ApiModelProperty(value = "愿望概述",  example = "我要一台车！")
     private String description;
 
@@ -40,13 +43,14 @@ public class WishDTO {
     }
 
     public WishDTO(Integer wishID, String description, String createTime, String lastUpdateTime,
-                      String wishStatus, UserDTO implementor) {
+                      String wishStatus, UserDTO implementor, Integer wishListID) {
         this.wishID = wishID;
         this.description = description;
         this.createTime = createTime;
         this.lastUpdateTime = lastUpdateTime;
         this.wishStatus = wishStatus;
         this.implementor = implementor;
+        this.wishListID = wishListID;
     }
 
     public WishDTO(Wish wish) {
@@ -55,6 +59,7 @@ public class WishDTO {
         this.createTime = dateFormatter.get().format(wish.getCreateTime());
         this.lastUpdateTime = dateFormatter.get().format(wish.getLastUpdateTime());
         this.wishStatus = wish.getWishStatus();
+        this.wishListID = wish.getWishListId();
         if (wish.getImplementorOpenId() != null) {
             this.implementor = new UserDTO(wish.getImplementor());
         }
@@ -108,10 +113,19 @@ public class WishDTO {
         this.implementor = implementor;
     }
 
+    public Integer getWishListID() {
+        return wishListID;
+    }
+
+    public void setWishListID(Integer wishListID) {
+        this.wishListID = wishListID;
+    }
+
     @Override
     public String toString() {
         return "WishDTO{" +
                 "wishID=" + wishID +
+                ", wishListID='" + wishListID + '\'' +
                 ", description='" + description + '\'' +
                 ", createTime='" + createTime + '\'' +
                 ", lastUpdateTime='" + lastUpdateTime + '\'' +

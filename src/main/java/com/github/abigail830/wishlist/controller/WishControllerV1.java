@@ -2,6 +2,7 @@ package com.github.abigail830.wishlist.controller;
 
 import com.github.abigail830.wishlist.domain.WishListDetailResponse;
 import com.github.abigail830.wishlist.domain.WishListsResponse;
+import com.github.abigail830.wishlist.domainv1.WishDTO;
 import com.github.abigail830.wishlist.domainv1.WishDashboardDTO;
 import com.github.abigail830.wishlist.domainv1.WishListDTO;
 import com.github.abigail830.wishlist.entity.WishList;
@@ -115,6 +116,99 @@ public class WishControllerV1 {
         }
 
     }
+
+    @ApiOperation(value = "Delete Wish List",
+            notes = "删除新愿望清单",
+            response = WishDashboardDTO.class)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
+    @RequestMapping(value = "/lists", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public WishDashboardDTO deleteNewWishList(
+            @RequestBody WishListDTO wishList) throws ParseException {
+        logger.info("Delete new wish list {}", wishList);
+
+        if (StringUtils.isNotBlank(wishList.getListOpenId()) && wishList.getListId() != null) {
+            wishService.deleteWishList(wishList);
+            return getWishListsByUserOpenID(wishList.getListOpenId());
+        } else {
+            return new WishDashboardDTO(Collections.EMPTY_LIST, 0, 0);
+        }
+
+    }
+
+    @ApiOperation(value = "Update new Wish List",
+            notes = "修改新愿望清单",
+            response = WishDashboardDTO.class)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
+    @RequestMapping(value = "/lists", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public WishDashboardDTO updateNewWishList(
+            @RequestBody WishListDTO wishList) throws ParseException {
+        logger.info("Update new wish list {}", wishList);
+
+        if (StringUtils.isNotBlank(wishList.getListOpenId()) && wishList.getListId() != null) {
+            wishService.updateWishList(wishList);
+            return getWishListsByUserOpenID(wishList.getListOpenId());
+        } else {
+            return new WishDashboardDTO(Collections.EMPTY_LIST, 0, 0);
+        }
+    }
+
+    @ApiOperation(value = "Add new wish to wish list",
+            notes = "添加新愿望到愿望清单",
+            response = WishDTO.class)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
+    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public WishDTO addWishToWishList(
+            @RequestBody WishDTO wishDTO) throws ParseException {
+        logger.info("Add new wish to wish list {}", wishDTO);
+
+        if (wishDTO.getWishListID() != null && wishDTO.getDescription() != null) {
+            wishService.addNewWish(wishDTO);
+            return wishDTO;
+        } else {
+            throw new IllegalArgumentException("Wish information is invalid");
+        }
+    }
+
+    @ApiOperation(value = "Delete new wish to wish list",
+            notes = "删除愿望",
+            response = WishDashboardDTO.class)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
+    @RequestMapping(value = "", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public WishDTO deleteWish(
+            @RequestBody WishDTO wishDTO) throws ParseException {
+        logger.info("Delete wish from wish list {}", wishDTO);
+
+        if (wishDTO.getWishID() != null) {
+            wishService.deleteWish(wishDTO);
+            return wishDTO;
+        } else {
+            throw new IllegalArgumentException("Wish information is invalid");
+        }
+    }
+
+    @ApiOperation(value = "Update wish",
+            notes = "更新愿望信息",
+            response = WishDashboardDTO.class)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
+    @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public WishDTO updateWish(
+            @RequestBody WishDTO wishDTO) throws ParseException {
+        logger.info("Update wish", wishDTO);
+
+        if (wishDTO.getWishID() != null) {
+            wishService.updateWish(wishDTO);
+            return wishDTO;
+        } else {
+            throw new IllegalArgumentException("Wish information is invalid");
+        }
+    }
+
+
 
     private WishDashboardDTO getWishListsByUserOpenID(String openId) {
         int myCompletedWishCount = wishService.getMyCompletedWishCount(openId);

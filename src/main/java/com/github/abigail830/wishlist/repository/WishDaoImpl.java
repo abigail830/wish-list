@@ -75,4 +75,8 @@ public class WishDaoImpl {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
+	public void deleteByWishListID(Integer wishListID) {
+		logger.info("Delete Wish by WishList ID: {}", wishListID);
+		jdbcTemplate.update("Delete wish_tbl WHERE wish_list_id = ?", wishListID);
+	}
 }
