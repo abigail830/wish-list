@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.github.abigail830.wishlist.entity.Wish;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang.StringUtils;
 
 import java.text.SimpleDateFormat;
 
@@ -60,7 +61,7 @@ public class WishDTO {
         this.lastUpdateTime = dateFormatter.get().format(wish.getLastUpdateTime());
         this.wishStatus = wish.getWishStatus();
         this.wishListID = wish.getWishListId();
-        if (wish.getImplementorOpenId() != null) {
+        if (StringUtils.isNotBlank(wish.getImplementorOpenId())) {
             this.implementor = new UserDTO(wish.getImplementor());
         }
     }
