@@ -10,6 +10,7 @@ import com.github.abigail830.wishlist.repository.UserEventImpl;
 import com.github.abigail830.wishlist.repository.WishDaoImpl;
 import com.github.abigail830.wishlist.repository.WishListDaoImpl;
 import com.github.abigail830.wishlist.util.Constants;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,7 +156,9 @@ public class WishService {
         wish.setDescription(wishDTO.getDescription());
         wish.setWishStatus(wishDTO.getWishStatus());
         wish.setWishListId(wishDTO.getWishListID());
-        wish.setImplementorOpenId(wishDTO.getImplementor().getOpenId());
+        if (wishDTO.getImplementor() != null  && StringUtils.isNotBlank(wishDTO.getImplementor().getOpenId())) {
+            wish.setImplementorOpenId(wishDTO.getImplementor().getOpenId());
+        }
         wishDao.updateWish(wish);
     }
 }
