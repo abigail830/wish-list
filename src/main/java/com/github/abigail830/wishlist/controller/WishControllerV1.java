@@ -165,8 +165,7 @@ public class WishControllerV1 {
         logger.info("Add new wish to wish list {}", wishDTO);
 
         if (wishDTO.getWishListID() != null && wishDTO.getDescription() != null) {
-            wishService.addNewWish(wishDTO);
-            return wishDTO;
+            return wishService.addNewWish(wishDTO);
         } else {
             throw new IllegalArgumentException("Wish information is invalid");
         }

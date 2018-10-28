@@ -138,17 +138,24 @@ public class WishService {
         return wishList;
     }
 
-    public void addNewWish(WishDTO wishDTO) {
+    public WishDTO addNewWish(WishDTO wishDTO) {
 
         Wish wish = new Wish();
         wish.setDescription(wishDTO.getDescription());
         wish.setWishStatus(Constants.WISH_STATUS_NEW);
         wish.setWishListId(wishDTO.getWishListID());
         wishDao.createWish(wish);
+        Wish newWishInDB = wishDao.getWishByWishListId(wishDTO.getWishListID().toString())
+                .stream()
+                .filter(item -> wishDTO.getDescription().equals(item.getDescription()))
+                .max(((o1, o2) -> o1.getCreateTime().compareTo(o2.getCreateTime()))).get();
+
+       return new WishDTO(newWishInDB);
+
     }
 
     public void deleteWish(WishDTO wishDTO) {
-        wishDao.deleteByWishListID(wishDTO.getWishListID());
+        wishDao.deleteByWishID(wishDTO.getWishID());
     }
 
     public void updateWish(WishDTO wishDTO) {
