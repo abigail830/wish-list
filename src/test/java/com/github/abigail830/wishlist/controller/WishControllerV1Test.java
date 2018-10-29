@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.*;
 
 
@@ -79,8 +80,8 @@ public class WishControllerV1Test {
         wishListDTO.addWish(wishDTO);
         wishListDTO.addWish(wishDTO2);
 
-        WishDashboardDTO wishDashboardDTO = wishController.postNewWishList(wishListDTO);
-        assertThat(wishDashboardDTO.getWishLists().size(), is(1));
+        WishListDTO wishListDTOAsResponse = wishController.postNewWishList(wishListDTO);
+        assertThat(wishListDTOAsResponse.getListId(), is(notNullValue()));
         WishDashboardDTO wishListsByID = wishController.getWishListsByID("1", null);
         assertThat(wishListsByID.getWishLists().get(0).getWishes().size(), is(2));
     }

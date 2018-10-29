@@ -64,7 +64,7 @@ public class WishService {
         wishDao.createWish(wish);
     }
 
-    public void createWishList(WishListDTO wishListDTO) throws ParseException {
+    public WishListDTO createWishList(WishListDTO wishListDTO) throws ParseException {
         WishList wishList = convertWishListFromDTOToEntity(wishListDTO);
         wishListDao.createWishList(wishList);
         WishList wishListInDB = wishListDao.getWishListByOpenId(wishListDTO.getListOpenId())
@@ -72,6 +72,7 @@ public class WishService {
                 .filter(item -> wishListDTO.getListDescription().equals(item.getDescription()))
                 .max(((o1, o2) -> o1.getCreateTime().compareTo(o2.getCreateTime()))).get();
         wishListDTO.getWishes().forEach(wishItem -> insertNewWishItem(wishItem, wishListInDB.getId()));
+        return new WishListDTO(wishListInDB);
     }
 
     public List<WishList> getWishListByID(String id){

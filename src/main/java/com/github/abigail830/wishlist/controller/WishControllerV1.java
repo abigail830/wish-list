@@ -100,19 +100,18 @@ public class WishControllerV1 {
 
     @ApiOperation(value = "Add new Wish List",
             notes = "添加新愿望清单",
-            response = WishDashboardDTO.class)
+            response = WishListDTO.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
     @RequestMapping(value = "/lists", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public WishDashboardDTO postNewWishList(
+    public WishListDTO postNewWishList(
             @RequestBody WishListDTO wishList) throws ParseException {
         logger.info("Add new wish list {}", wishList);
 
         if (StringUtils.isNotBlank(wishList.getListOpenId()) && StringUtils.isNotBlank(wishList.getListDescription())) {
-            wishService.createWishList(wishList);
-            return getWishListsByUserOpenID(wishList.getListOpenId());
+            return wishService.createWishList(wishList);
         } else {
-            return new WishDashboardDTO(Collections.EMPTY_LIST, 0, 0);
+            return wishList;
         }
 
     }
