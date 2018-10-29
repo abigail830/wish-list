@@ -45,3 +45,7 @@ CREATE TABLE user_event (
   event_type varchar(255) NOT NULL,
   PRIMARY KEY (ID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+create INDEX open_id on wishlist.wishlist_tbl (open_id);
+
+create INDEX implementor_open_id on wishlist.wish_tbl (implementor_open_id);
