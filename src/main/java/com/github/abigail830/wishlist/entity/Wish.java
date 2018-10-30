@@ -11,6 +11,7 @@ public class Wish {
     private String wishStatus;
     private String implementorOpenId;
     private User implementor;
+    private User Creator;
 
 
     public Integer getId() {
@@ -75,6 +76,14 @@ public class Wish {
 
     public void setImplementor(User implementor) {
         this.implementor = implementor;
+    }
+
+    public User getCreator() {
+        return Creator;
+    }
+
+    public void setCreator(User creator) {
+        Creator = creator;
     }
 
     @Override

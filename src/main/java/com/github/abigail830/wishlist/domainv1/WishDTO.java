@@ -30,8 +30,11 @@ public class WishDTO {
     @ApiModelProperty(value = "愿望最新状态",  example = "实现啦！")
     private String wishStatus;
 
-    @ApiModelProperty(value = "愿望承接人",  example = "2018-09-01")
+    @ApiModelProperty(value = "愿望承接人",  example = "微信用户")
     private UserDTO implementor;
+
+    @ApiModelProperty(value = "愿望拥有人",  example = "微信用户")
+    private UserDTO creator;
 
     private static final ThreadLocal<SimpleDateFormat> dateFormatter = new ThreadLocal<SimpleDateFormat>() {
         @Override protected SimpleDateFormat initialValue() {
@@ -63,6 +66,9 @@ public class WishDTO {
         this.wishListID = wish.getWishListId();
         if (StringUtils.isNotBlank(wish.getImplementorOpenId())) {
             this.implementor = new UserDTO(wish.getImplementor());
+        }
+        if (wish.getCreator() != null) {
+            this.creator = new UserDTO(wish.getCreator());
         }
     }
 
@@ -120,6 +126,14 @@ public class WishDTO {
 
     public void setWishListID(Integer wishListID) {
         this.wishListID = wishListID;
+    }
+
+    public UserDTO getCreator() {
+        return creator;
+    }
+
+    public void setCreator(UserDTO creator) {
+        this.creator = creator;
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishListDetail;
 import com.github.abigail830.wishlist.util.Constants;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,8 @@ public class ComplexWishDaoImpl {
     private RowMapper<WishListDetail> wishListDetailRowMapper = new BeanPropertyRowMapper<>(WishListDetail.class);
 
     private RowMapper<User> userRowMapper = new BeanPropertyRowMapper<>(User.class);
+
+    private RowMapper<User> implementorUserMapper = new ImplementorUserMapper();
 
     /**
      * This is to query the wish complete count for:
@@ -80,17 +83,17 @@ public class ComplexWishDaoImpl {
                         "wish_tbl.last_update_time as last_update_time, " +
                         "wish_tbl.wish_status as wish_status, " +
                         "wish_tbl.implementor_open_id as implementor_open_id, " +
-                        "user_tbl.open_id as open_id, " +
-                        "user_tbl.gender as gender, " +
-                        "user_tbl.nick_name as nick_name, " +
-                        "user_tbl.city as city, " +
-                        "user_tbl.country as ountry, " +
-                        "user_tbl.province as province, " +
-                        "user_tbl.lang as lang, " +
-                        "user_tbl.avatar_url as avatar_url " +
+                        "implement_user_table.open_id as implement_user_open_id, " +
+                        "implement_user_table.gender as implement_user_gender, " +
+                        "implement_user_table.nick_name as implement_user_nick_name, " +
+                        "implement_user_table.city as implement_user_city, " +
+                        "implement_user_table.country as implement_user_ountry, " +
+                        "implement_user_table.province as implement_user_province, " +
+                        "implement_user_table.lang as implement_user_lang, " +
+                        "implement_user_table.avatar_url as implement_user_avatar_url " +
                         "from wishlist_tbl " +
-                        "join wish_tbl on wishlist_tbl.id = wish_tbl.wish_list_id " +
-                        "left join user_tbl on wish_tbl.implementor_open_id = user_tbl.open_id " +
+                        "left join wish_tbl on wishlist_tbl.id = wish_tbl.wish_list_id " +
+                        "left join user_tbl as implement_user_table on wish_tbl.implementor_open_id = implement_user_table.open_id " +
                         "where  wishlist_tbl.id = ?" ,
                 new ResultSetExtractor<WishListDetail>(){
 
@@ -102,10 +105,12 @@ public class ComplexWishDaoImpl {
                             if (wishListDetail == null) {
                                 wishListDetail = wishListDetailRowMapper.mapRow(resultSet, row);
                             }
+                            User implementorUser = implementorUserMapper.mapRow(resultSet, row);
                             User user = userRowMapper.mapRow(resultSet, row);
                             Wish wish = wishRowMapper.mapRow(resultSet, row);
-                            if (user != null && user.getOpenId() != null) {
-                                wish.setImplementor(user);
+                            wish.setCreator(user);
+                            if (implementorUser != null && implementorUser.getOpenId() != null) {
+                                wish.setImplementor(implementorUser);
                             }
 
                             wishListDetail.addWish(wish);
@@ -118,6 +123,25 @@ public class ComplexWishDaoImpl {
 
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public static class ImplementorUserMapper implements RowMapper<User> {
+        @Override
+        public User mapRow(ResultSet resultSet, int i) throws SQLException {
+            if (StringUtils.isNotBlank(resultSet.getString("implement_user_open_id"))) {
+                User user = new User();
+                user.setOpenId(resultSet.getString("implement_user_open_id"));
+                user.setGender(resultSet.getString("implement_user_gender"));
+                user.setNickName(resultSet.getString("implement_user_nick_name"));
+                user.setLang(resultSet.getString("implement_user_lang"));
+                user.setAvatarUrl(resultSet.getString("implement_user_avatar_url"));
+                return user;
+            } else {
+                return null;
+            }
+
+
+        }
     }
 
 }
