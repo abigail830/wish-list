@@ -166,6 +166,7 @@ public class WishService {
         wish.setDescription(wishDTO.getDescription());
         wish.setWishStatus(wishDTO.getWishStatus());
         wish.setWishListId(wishDTO.getWishListID());
+        wish.setId(wishDTO.getWishID());
         if (wishDTO.getImplementor() != null  && StringUtils.isNotBlank(wishDTO.getImplementor().getOpenId())) {
             wish.setImplementorOpenId(wishDTO.getImplementor().getOpenId());
         }

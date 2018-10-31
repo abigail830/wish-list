@@ -58,7 +58,7 @@ public class WishDaoImpl {
 	}
 
 	public void updateWish(Wish wish) {
-		logger.info("Update wish for wishlist [wish_list_id={}].", wish.getId());
+		logger.info("Update wish for wishlist [wish_id={}].", wish.getId());
 		jdbcTemplate.update("UPDATE wish_tbl set description=?, wish_status=?, implementor_open_id=? " +
 						"where ID=?",
 				wish.getDescription(),
