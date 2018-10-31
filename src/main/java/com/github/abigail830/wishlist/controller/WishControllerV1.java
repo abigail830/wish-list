@@ -2,6 +2,7 @@ package com.github.abigail830.wishlist.controller;
 
 import com.github.abigail830.wishlist.domain.WishListDetailResponse;
 import com.github.abigail830.wishlist.domain.WishListsResponse;
+import com.github.abigail830.wishlist.domainv1.UserDTO;
 import com.github.abigail830.wishlist.domainv1.WishDTO;
 import com.github.abigail830.wishlist.domainv1.WishDashboardDTO;
 import com.github.abigail830.wishlist.domainv1.WishListDTO;
@@ -206,6 +207,22 @@ public class WishControllerV1 {
         }
     }
 
+    @ApiOperation(value = "Taken up wish",
+            notes = "获取认领愿望信息",
+            response = WishDashboardDTO.class)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
+    @RequestMapping(value = "/taken", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public List<WishDTO> updateWish(
+            @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openID) throws ParseException {
+        logger.info("Get wish by {}", openID);
+
+        if (StringUtils.isNotBlank(openID)) {
+            return wishService.getTakenUpWish(openID);
+        } else {
+            throw new IllegalArgumentException("Wish information is invalid");
+        }
+    }
 
 
     private WishDashboardDTO getWishListsByUserOpenID(String openId) {

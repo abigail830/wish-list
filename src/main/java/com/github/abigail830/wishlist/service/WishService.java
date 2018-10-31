@@ -1,5 +1,6 @@
 package com.github.abigail830.wishlist.service;
 
+import com.github.abigail830.wishlist.domain.BriefWishList;
 import com.github.abigail830.wishlist.domainv1.WishDTO;
 import com.github.abigail830.wishlist.domainv1.WishListDTO;
 import com.github.abigail830.wishlist.entity.Wish;
@@ -21,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class WishService {
@@ -168,5 +170,9 @@ public class WishService {
             wish.setImplementorOpenId(wishDTO.getImplementor().getOpenId());
         }
         wishDao.updateWish(wish);
+    }
+
+    public List<WishDTO> getTakenUpWish(String openId) {
+        return wishDao.getWishByTakenupUserID(openId).stream().map(WishDTO::new).collect(Collectors.toList());
     }
 }

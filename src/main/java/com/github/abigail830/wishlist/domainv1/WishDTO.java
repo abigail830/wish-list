@@ -64,7 +64,7 @@ public class WishDTO {
         this.lastUpdateTime = dateFormatter.get().format(wish.getLastUpdateTime());
         this.wishStatus = wish.getWishStatus();
         this.wishListID = wish.getWishListId();
-        if (StringUtils.isNotBlank(wish.getImplementorOpenId())) {
+        if (StringUtils.isNotBlank(wish.getImplementorOpenId()) && wish.getImplementor() != null) {
             this.implementor = new UserDTO(wish.getImplementor());
         }
         if (wish.getCreator() != null) {
