@@ -142,15 +142,15 @@ public class WishControllerV1 {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
     @RequestMapping(value = "/lists", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public WishDashboardDTO updateNewWishList(
+    public WishListDTO updateNewWishList(
             @RequestBody WishListDTO wishList) throws ParseException {
         logger.info("Update new wish list {}", wishList);
 
-        if (StringUtils.isNotBlank(wishList.getListOpenId()) && wishList.getListId() != null) {
-            wishService.updateWishList(wishList);
-            return getWishListsByUserOpenID(wishList.getListOpenId());
+        if (wishList.getListId() != null) {
+             wishService.updateWishList(wishList);
+            return wishList;
         } else {
-            return new WishDashboardDTO(Collections.EMPTY_LIST, 0, 0);
+            throw new IllegalArgumentException("Wish information is invalid");
         }
     }
 

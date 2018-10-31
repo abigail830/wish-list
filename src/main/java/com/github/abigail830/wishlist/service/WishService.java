@@ -135,7 +135,7 @@ public class WishService {
 
     private WishList convertWishListFromDTOToEntity(WishListDTO wishListDTO) throws ParseException {
         WishList wishList = new WishList();
-        wishList.setOpenId(wishListDTO.getListOpenId());
+        wishList.setId(wishListDTO.getListId());
         wishList.setDescription(wishListDTO.getListDescription());
         wishList.setDueTime(new java.sql.Timestamp(dateFormatter.get().parse(wishListDTO.getListDueTime()).getTime()));
         return wishList;
