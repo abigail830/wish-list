@@ -177,4 +177,8 @@ public class WishService {
     public List<WishDTO> getTakenUpWish(String openId) {
         return wishDao.getWishByTakenupUserID(openId).stream().map(WishDTO::new).collect(Collectors.toList());
     }
+
+    public void takeupWish(String id, String takeUpOpenID) {
+        wishDao.takeupWish(id, takeUpOpenID);
+    }
 }

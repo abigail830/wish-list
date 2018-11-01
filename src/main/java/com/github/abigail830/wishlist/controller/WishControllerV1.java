@@ -225,22 +225,23 @@ public class WishControllerV1 {
     }
 
 
-//    @ApiOperation(value = "Taken up wish",
-//            notes = "认领愿望",
-//            response = WishDashboardDTO.class)
-//    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-//    @RequestMapping(value = "/taken", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    @ResponseBody
-//    public List<WishDTO> takeUpWish(
-//            @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openID) throws ParseException {
-//        logger.info("Get wish by {}", openID);
-//
-//        if (StringUtils.isNotBlank(openID)) {
-//            return wishService.getTakenUpWish(openID);
-//        } else {
-//            throw new IllegalArgumentException("Wish information is invalid");
-//        }
-//    }
+    @ApiOperation(value = "Taken up wish",
+            notes = "认领愿望",
+            response = WishDashboardDTO.class)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
+    @RequestMapping(value = "/taken", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public void takeUpWish(
+            @ApiParam(example = "1") @RequestParam(value = "id", required = false) String id,
+            @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String takeUpOpenID) throws ParseException {
+        logger.info("Take up {} wish by {}", id,takeUpOpenID);
+
+        if (StringUtils.isNotBlank(takeUpOpenID) && StringUtils.isNotBlank(id)) {
+            wishService.takeupWish(id, takeUpOpenID);
+        } else {
+            throw new IllegalArgumentException("Wish information is invalid");
+        }
+    }
 
     private WishDashboardDTO getWishListsByUserOpenID(String openId) {
         int myCompletedWishCount = wishService.getMyCompletedWishCount(openId);

@@ -3,6 +3,7 @@ package com.github.abigail830.wishlist.repository;
 import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishListDetail;
+import com.github.abigail830.wishlist.util.Constants;
 import com.github.abigail830.wishlist.util.Toggle;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -116,6 +117,14 @@ public class WishDaoImpl {
 						"join user_tbl as user_table on wishlist_tbl.open_id = user_table.open_id " +
 						"where wish_tbl.implementor_open_id = ?" ,
 				wishRowMapperWithCreator, openId);
+	}
+
+	public void takeupWish(String id, String takeUpOpenID) {
+		logger.info("Taking up Wish by Wish ID: {}", id);
+		jdbcTemplate.update("Update wish_tbl set implementor_open_id=?, wish_status=? WHERE ID=?",
+				takeUpOpenID,
+				Constants.WISH_STATUS_TAKEUP,
+				id);
 	}
 
 	public static class WishRowMapper implements RowMapper<Wish> {
