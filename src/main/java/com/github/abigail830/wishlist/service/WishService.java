@@ -137,6 +137,7 @@ public class WishService {
         WishList wishList = new WishList();
         wishList.setId(wishListDTO.getListId());
         wishList.setDescription(wishListDTO.getListDescription());
+        wishList.setOpenId(wishListDTO.getListOpenId());
         wishList.setDueTime(new java.sql.Timestamp(dateFormatter.get().parse(wishListDTO.getListDueTime()).getTime()));
         return wishList;
     }
