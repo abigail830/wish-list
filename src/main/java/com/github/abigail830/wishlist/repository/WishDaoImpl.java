@@ -136,7 +136,8 @@ public class WishDaoImpl {
 
 	public void removeTakenupWish(String id) {
 		logger.info("remove take up for Wish ID: {}", id);
-		jdbcTemplate.update("Update wish_tbl set  wish_status=? WHERE ID=?",
+		jdbcTemplate.update("Update wish_tbl set implementor_open_id=?, wish_status=? WHERE ID=?",
+				null,
 				Constants.WISH_STATUS_NEW,
 				id);
 	}
