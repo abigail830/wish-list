@@ -181,4 +181,12 @@ public class WishService {
     public void takeupWish(String id, String takeUpOpenID) {
         wishDao.takeupWish(id, takeUpOpenID);
     }
+
+    public void completeWish(String id) {
+        wishDao.completeWish(id);
+    }
+
+    public void removeTakeUp(String id) {
+        wishDao.removeTakenupWish(id);
+    }
 }

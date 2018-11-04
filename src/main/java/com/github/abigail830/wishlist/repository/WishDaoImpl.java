@@ -127,6 +127,20 @@ public class WishDaoImpl {
 				id);
 	}
 
+	public void completeWish(String id) {
+		logger.info("Complete Wish ID: {}", id);
+		jdbcTemplate.update("Update wish_tbl set  wish_status=? WHERE ID=?",
+				Constants.WISH_STATUS_DONE,
+				id);
+	}
+
+	public void removeTakenupWish(String id) {
+		logger.info("remove take up for Wish ID: {}", id);
+		jdbcTemplate.update("Update wish_tbl set  wish_status=? WHERE ID=?",
+				Constants.WISH_STATUS_NEW,
+				id);
+	}
+
 	public static class WishRowMapper implements RowMapper<Wish> {
 		@Override
 		public Wish mapRow(ResultSet resultSet, int i) throws SQLException {

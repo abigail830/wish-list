@@ -243,6 +243,41 @@ public class WishControllerV1 {
         }
     }
 
+    @ApiOperation(value = "Taken up wish",
+            notes = "取消认领",
+            response = WishDashboardDTO.class)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
+    @RequestMapping(value = "/taken", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public void rollbackTakeUpWish(
+            @ApiParam(example = "1") @RequestParam(value = "id", required = false) String id) throws ParseException {
+        logger.info("Delete take up wish id : {}", id);
+
+        if (StringUtils.isNotBlank(id)) {
+            wishService.removeTakeUp(id);
+        } else {
+            throw new IllegalArgumentException("Wish information is invalid");
+        }
+    }
+
+    @ApiOperation(value = "Complete wish",
+            notes = "完成愿望",
+            response = WishDashboardDTO.class)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
+    @RequestMapping(value = "/completed", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public void completeWish(
+            @ApiParam(example = "1") @RequestParam(value = "id", required = false) String id) throws ParseException {
+        logger.info("Complete wish {}", id);
+
+        if (StringUtils.isNotBlank(id)) {
+            wishService.completeWish(id);
+        } else {
+            throw new IllegalArgumentException("Wish information is invalid");
+        }
+    }
+
+
     private WishDashboardDTO getWishListsByUserOpenID(String openId) {
         int myCompletedWishCount = wishService.getMyCompletedWishCount(openId);
         int myFriendCompletedWishCount = wishService.getFriendsCompletedWishCountByImplementorID(openId);
