@@ -184,6 +184,8 @@ public class WishService {
 
     public void completeWish(String id) {
         wishDao.completeWish(id);
+        List<Wish> wishByID = wishDao.getWishByID(id);
+        logger.info("The latest wish updated as {}", wishByID);
     }
 
     public void removeTakeUp(String id) {
