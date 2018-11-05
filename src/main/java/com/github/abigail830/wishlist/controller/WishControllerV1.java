@@ -209,7 +209,7 @@ public class WishControllerV1 {
 
     @ApiOperation(value = "Get Taken up wish",
             notes = "获取认领愿望信息",
-            response = WishDashboardDTO.class)
+            response = WishDTO.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
     @RequestMapping(value = "/taken", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
@@ -227,7 +227,7 @@ public class WishControllerV1 {
 
     @ApiOperation(value = "Taken up wish",
             notes = "认领愿望",
-            response = WishDashboardDTO.class)
+            response = WishDTO.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
     @RequestMapping(value = "/taken", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
@@ -245,7 +245,7 @@ public class WishControllerV1 {
 
     @ApiOperation(value = "Taken up wish",
             notes = "取消认领",
-            response = WishDashboardDTO.class)
+            response = WishDTO.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
     @RequestMapping(value = "/taken", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
@@ -262,16 +262,17 @@ public class WishControllerV1 {
 
     @ApiOperation(value = "Complete wish",
             notes = "完成愿望",
-            response = WishDashboardDTO.class)
+            response = WishDTO.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
     @RequestMapping(value = "/completed", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public void completeWish(
-            @ApiParam(example = "1") @RequestParam(value = "id", required = false) String id) throws ParseException {
+    public List<WishDTO>  completeWish(
+            @ApiParam(example = "1") @RequestParam(value = "id", required = false) String id,
+            @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String takeUpOpenID) throws ParseException {
         logger.info("Complete wish {}", id);
 
         if (StringUtils.isNotBlank(id)) {
-            wishService.completeWish(id);
+            return wishService.completeWish(id, takeUpOpenID);
         } else {
             throw new IllegalArgumentException("Wish information is invalid");
         }

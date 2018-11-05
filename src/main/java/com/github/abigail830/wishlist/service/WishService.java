@@ -182,10 +182,9 @@ public class WishService {
         wishDao.takeupWish(id, takeUpOpenID);
     }
 
-    public void completeWish(String id) {
+    public List<WishDTO>  completeWish(String id, String takeUpOpenID) {
         wishDao.completeWish(id);
-        List<Wish> wishByID = wishDao.getWishByID(id);
-        logger.info("The latest wish updated as {}", wishByID);
+        return wishDao.getWishByTakenupUserID(takeUpOpenID).stream().map(WishDTO::new).collect(Collectors.toList());
     }
 
     public void removeTakeUp(String id) {
