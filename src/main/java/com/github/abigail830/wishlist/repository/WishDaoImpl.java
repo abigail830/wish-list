@@ -2,17 +2,13 @@ package com.github.abigail830.wishlist.repository;
 
 import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.Wish;
-import com.github.abigail830.wishlist.entity.WishListDetail;
 import com.github.abigail830.wishlist.util.Constants;
 import com.github.abigail830.wishlist.util.Toggle;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -31,6 +27,8 @@ public class WishDaoImpl {
 	private RowMapper<Wish> rowMapper = new BeanPropertyRowMapper<>(Wish.class);
 
 	private RowMapper<Wish> wishRowMapperWithCreator = new WishRowMapper();
+
+	private RowMapper<Wish> wishRowMapperWithImplementor = new WishWithTakenUPInfoRowMapper();
 
 	public void createWish(Wish wish) {
 		logger.info("Create wish for wishlist [wish_list_id={}].", wish.getWishListId());
@@ -71,7 +69,24 @@ public class WishDaoImpl {
 
 	public List<Wish> getWishByWishListId(String wishListID) {
 		logger.info("Query Wish by WishList ID: {}", wishListID);
-		List<Wish> wishes = jdbcTemplate.query("SELECT * FROM wish_tbl WHERE wish_list_id = ?", rowMapper, wishListID);
+		List<Wish> wishes = jdbcTemplate.query("select wish_tbl.ID as ID, " +
+				"wish_tbl.wish_list_id as wish_list_id, " +
+				"wish_tbl.description as description, " +
+				"wish_tbl.create_time as create_time, " +
+				"wish_tbl.last_update_time as last_update_time, " +
+				"wish_tbl.wish_status as wish_status, " +
+				"wish_tbl.implementor_open_id as implementor_open_id, " +
+				"user_table.open_id as implementor_open_id, " +
+				"user_table.gender as implementor_gender, " +
+				"user_table.nick_name as implementor_nick_name, " +
+				"user_table.city as implementor_city, " +
+				"user_table.country as implementor_country, " +
+				"user_table.province as implementor_province, " +
+				"user_table.lang as implementor_lang, " +
+				"user_table.avatar_url as implementor_avatar_url " +
+				"from wish_tbl " +
+				"left join user_tbl as user_table on wish_tbl.implementor_open_id = user_table.open_id " +
+				"where wish_tbl.wish_list_id = ?", wishRowMapperWithImplementor, wishListID);
 		return wishes;
 	}
 
@@ -163,6 +178,32 @@ public class WishDaoImpl {
 			user.setAvatarUrl(resultSet.getString("avatar_url"));
 
 			wish.setCreator(user);
+			return wish;
+
+		}
+	}
+
+	public static class WishWithTakenUPInfoRowMapper implements RowMapper<Wish> {
+		@Override
+		public Wish mapRow(ResultSet resultSet, int i) throws SQLException {
+
+			Wish wish = new Wish();
+			wish.setId(resultSet.getInt("ID"));
+			wish.setWishListId(resultSet.getInt("wish_list_id"));
+			wish.setDescription(resultSet.getString("description"));
+			wish.setCreateTime(resultSet.getTimestamp("create_time"));
+			wish.setLastUpdateTime(resultSet.getTimestamp("last_update_time"));
+			wish.setWishStatus(resultSet.getString("wish_status"));
+			wish.setImplementorOpenId("implementor_open_id");
+
+			User user = new User();
+			user.setOpenId(resultSet.getString("implementor_open_id"));
+			user.setGender(resultSet.getString("implementor_gender"));
+			user.setNickName(resultSet.getString("implementor_nick_name"));
+			user.setLang(resultSet.getString("implementor_lang"));
+			user.setAvatarUrl(resultSet.getString("implementor_avatar_url"));
+
+			wish.setImplementor(user);
 			return wish;
 
 		}

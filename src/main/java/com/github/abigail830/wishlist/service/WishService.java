@@ -178,8 +178,16 @@ public class WishService {
         return wishDao.getWishByTakenupUserID(openId).stream().map(WishDTO::new).collect(Collectors.toList());
     }
 
-    public void takeupWish(String id, String takeUpOpenID) {
-        wishDao.takeupWish(id, takeUpOpenID);
+    public List<WishDTO> takeupWish(String id, String takeUpOpenID) {
+        List<Wish> wishByID = wishDao.getWishByID(id);
+        if (wishByID.size() > 0) {
+            wishDao.takeupWish(id, takeUpOpenID);
+            return wishDao.getWishByWishListId(wishByID.get(0).getWishListId().toString())
+                    .stream()
+                    .map(WishDTO::new).collect(Collectors.toList()) ;
+        } else {
+            throw new IllegalArgumentException("wish not found by ID");
+        }
     }
 
     public List<WishDTO>  completeWish(String id, String takeUpOpenID) {

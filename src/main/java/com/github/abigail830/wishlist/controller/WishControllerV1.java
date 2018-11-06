@@ -231,13 +231,13 @@ public class WishControllerV1 {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
     @RequestMapping(value = "/taken", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public void takeUpWish(
+    public List<WishDTO> takeUpWish(
             @ApiParam(example = "1") @RequestParam(value = "id", required = false) String id,
             @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String takeUpOpenID) throws ParseException {
         logger.info("Take up {} wish by {}", id,takeUpOpenID);
 
         if (StringUtils.isNotBlank(takeUpOpenID) && StringUtils.isNotBlank(id)) {
-            wishService.takeupWish(id, takeUpOpenID);
+            return wishService.takeupWish(id, takeUpOpenID);
         } else {
             throw new IllegalArgumentException("Wish information is invalid");
         }
