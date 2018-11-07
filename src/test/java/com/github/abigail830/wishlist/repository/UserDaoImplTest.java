@@ -29,11 +29,16 @@ public class UserDaoImplTest {
         jdbcTemplate.execute(insertSQL);
     }
 
-    //TODO: H2 doesn't support insert ignore, so no test for create user
+
     @After
     public void tearDown() throws Exception {
-        flyway.clean();
+        jdbcTemplate.update("DELETE FROM user_event WHERE ID is not null");
+        jdbcTemplate.update("DELETE FROM wish_tbl WHERE ID is not null");
+        jdbcTemplate.update("DELETE FROM wishlist_tbl WHERE ID is not null");
+        jdbcTemplate.update("DELETE FROM user_tbl WHERE ID is not null");
     }
+
+    //TODO: H2 doesn't support insert ignore, so no test for create user
 
     @Test
     public void testCanGetUserByOpenID() throws Exception {
