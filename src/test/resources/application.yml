@@ -1,0 +1,6 @@
+spring:
+  flyway:
+    baselineOnMigrate: true
+
+
+

@@ -21,7 +21,6 @@ public class UserEventImplTest{
         ds = new JdbcDataSource();
         ds.setURL("jdbc:h2:mem:UserEventImplTest;DB_CLOSE_DELAY=-1;MODE=MYSQL");
         Flyway flyway = Flyway.configure().dataSource(ds).load();
-        flyway.baseline();
         flyway.migrate();
         jdbcTemplate = new JdbcTemplate(ds);
     }

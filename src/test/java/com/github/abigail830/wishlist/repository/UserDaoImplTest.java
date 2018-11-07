@@ -20,7 +20,6 @@ public class UserDaoImplTest {
         ds = new JdbcDataSource();
         ds.setURL("jdbc:h2:mem:UserDaoImplTest;DB_CLOSE_DELAY=-1;MODE=MYSQL");
         Flyway flyway = Flyway.configure().dataSource(ds).load();
-        flyway.baseline();
         flyway.migrate();
         jdbcTemplate = new JdbcTemplate(ds);
         String insertSQL = "INSERT INTO user_tbl (open_id, gender, nick_name, city, country, province, lang, avatar_url) " +
