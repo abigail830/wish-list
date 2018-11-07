@@ -61,17 +61,20 @@ public class WishControllerTest {
                 "country", "province", "lang", "imageUrl2"));
 
         WishList wishList = new WishList();
-        wishList.setId(Integer.valueOf(1));
         wishList.setOpenId("openID1");
         wishList.setDescription("THIS IS FOR TEST");
         WishListDaoImpl wishListDao = new WishListDaoImpl();
         wishListDao.setJdbcTemplate(jdbcTemplate);
         wishListDao.createWishList(wishList);
 
+        Integer id = wishListDao.getWishListByOpenId("openID1").stream()
+                .filter(item -> "THIS IS FOR TEST".equals(item.getDescription()))
+                .collect(Collectors.toList()).get(0).getId();
+
         WishDaoImpl wishDaoImpl = new WishDaoImpl();
         wishDaoImpl.setJdbcTemplate(jdbcTemplate);
         Wish wish = new Wish();
-        wish.setWishListId(Integer.valueOf(1));
+        wish.setWishListId(id);
         wish.setWishStatus(Constants.WISH_STATUS_DONE);
         wish.setDescription("DESC1");
         wish.setImplementorOpenId("openID2");
