@@ -3,13 +3,11 @@ package com.github.abigail830.wishlist.repository;
 import com.github.abigail830.wishlist.domain.UserInfo;
 import org.flywaydb.core.Flyway;
 import org.h2.jdbcx.JdbcDataSource;
-import org.junit.*;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class UserDaoImplTest {
@@ -22,6 +20,7 @@ public class UserDaoImplTest {
         ds = new JdbcDataSource();
         ds.setURL("jdbc:h2:mem:UserDaoImplTest;DB_CLOSE_DELAY=-1;MODE=MYSQL");
         Flyway flyway = Flyway.configure().dataSource(ds).load();
+        flyway.baseline();
         flyway.migrate();
         jdbcTemplate = new JdbcTemplate(ds);
         String insertSQL = "INSERT INTO user_tbl (open_id, gender, nick_name, city, country, province, lang, avatar_url) " +

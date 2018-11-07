@@ -1,17 +1,13 @@
 package com.github.abigail830.wishlist.controller;
 
 import com.github.abigail830.wishlist.domain.UserInfo;
-import com.github.abigail830.wishlist.domain.WishListsResponse;
 import com.github.abigail830.wishlist.domainv1.WishDTO;
 import com.github.abigail830.wishlist.domainv1.WishDashboardDTO;
 import com.github.abigail830.wishlist.domainv1.WishListDTO;
-import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishList;
-import com.github.abigail830.wishlist.entity.WishListDetail;
 import com.github.abigail830.wishlist.repository.*;
 import com.github.abigail830.wishlist.service.UserService;
 import com.github.abigail830.wishlist.service.WishService;
-import com.github.abigail830.wishlist.util.Constants;
 import com.github.abigail830.wishlist.util.Toggle;
 import org.flywaydb.core.Flyway;
 import org.h2.jdbcx.JdbcDataSource;
@@ -20,13 +16,10 @@ import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 
 public class WishControllerV1Test {
@@ -39,6 +32,7 @@ public class WishControllerV1Test {
         ds = new JdbcDataSource();
         ds.setURL("jdbc:h2:mem:WishControllerTest;DB_CLOSE_DELAY=-1;MODE=MYSQL");
         Flyway flyway = Flyway.configure().dataSource(ds).load();
+        flyway.baseline();
         flyway.migrate();
         jdbcTemplate = new JdbcTemplate(ds);
         Toggle.TEST_MODE.setStatus(true);

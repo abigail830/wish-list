@@ -25,6 +25,7 @@ public class WishListDaoImplTest {
         ds = new JdbcDataSource();
         ds.setURL("jdbc:h2:mem:WishListDaoImplTest;DB_CLOSE_DELAY=-1;MODE=MYSQL");
         Flyway flyway = Flyway.configure().dataSource(ds).load();
+        flyway.baseline();
         flyway.migrate();
         jdbcTemplate = new JdbcTemplate(ds);
         Toggle.TEST_MODE.setStatus(true);

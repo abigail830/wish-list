@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 
@@ -25,6 +24,7 @@ public class WishDaoImplTest {
         ds = new JdbcDataSource();
         ds.setURL("jdbc:h2:mem:WishDaoImplTest;DB_CLOSE_DELAY=-1;MODE=MYSQL");
         Flyway flyway = Flyway.configure().dataSource(ds).load();
+        flyway.baseline();
         flyway.migrate();
         jdbcTemplate = new JdbcTemplate(ds);
         Toggle.TEST_MODE.setStatus(true);
