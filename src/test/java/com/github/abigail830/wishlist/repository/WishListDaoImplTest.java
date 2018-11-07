@@ -5,6 +5,7 @@ import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.util.Toggle;
 import org.flywaydb.core.Flyway;
 import org.h2.jdbcx.JdbcDataSource;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,12 +20,13 @@ public class WishListDaoImplTest {
 
     private static JdbcTemplate jdbcTemplate;
     private static JdbcDataSource ds;
+    private static Flyway flyway;
 
     @BeforeClass
     public static void setup() {
         ds = new JdbcDataSource();
         ds.setURL("jdbc:h2:mem:WishListDaoImplTest;DB_CLOSE_DELAY=-1;MODE=MYSQL");
-        Flyway flyway = Flyway.configure().dataSource(ds).load();
+        flyway = Flyway.configure().dataSource(ds).load();
         flyway.migrate();
         jdbcTemplate = new JdbcTemplate(ds);
         Toggle.TEST_MODE.setStatus(true);
@@ -32,6 +34,11 @@ public class WishListDaoImplTest {
         userDao.setJdbcTemplate(jdbcTemplate);
         userDao.createUser(new UserInfo("openID1", "M", "nickname2", "city",
                 "country", "province", "lang", "imageUrl"));
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        flyway.clean();
     }
 
 

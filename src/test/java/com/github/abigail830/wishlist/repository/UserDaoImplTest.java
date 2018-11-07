@@ -3,6 +3,7 @@ package com.github.abigail830.wishlist.repository;
 import com.github.abigail830.wishlist.domain.UserInfo;
 import org.flywaydb.core.Flyway;
 import org.h2.jdbcx.JdbcDataSource;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,12 +15,13 @@ public class UserDaoImplTest {
 
     private static JdbcTemplate jdbcTemplate;
     private static JdbcDataSource ds;
+    private static Flyway flyway;
 
     @BeforeClass
     public static void setup() {
         ds = new JdbcDataSource();
         ds.setURL("jdbc:h2:mem:UserDaoImplTest;DB_CLOSE_DELAY=-1;MODE=MYSQL");
-        Flyway flyway = Flyway.configure().dataSource(ds).load();
+        flyway = Flyway.configure().dataSource(ds).load();
         flyway.migrate();
         jdbcTemplate = new JdbcTemplate(ds);
         String insertSQL = "INSERT INTO user_tbl (open_id, gender, nick_name, city, country, province, lang, avatar_url) " +
@@ -28,7 +30,10 @@ public class UserDaoImplTest {
     }
 
     //TODO: H2 doesn't support insert ignore, so no test for create user
-
+    @After
+    public void tearDown() throws Exception {
+        flyway.clean();
+    }
 
     @Test
     public void testCanGetUserByOpenID() throws Exception {
