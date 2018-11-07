@@ -32,7 +32,7 @@ public class WishControllerV1Test {
     @BeforeClass
     public static void setup() {
         ds = new JdbcDataSource();
-        ds.setURL("jdbc:h2:mem:WishControllerTest;DB_CLOSE_DELAY=-1;MODE=MYSQL");
+        ds.setURL("jdbc:h2:mem:WishControllerV1Test;DB_CLOSE_DELAY=-1;MODE=MYSQL");
         flyway = Flyway.configure().dataSource(ds).load();
         flyway.migrate();
         jdbcTemplate = new JdbcTemplate(ds);
