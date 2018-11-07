@@ -30,6 +30,7 @@ public class WishControllerTest {
     private static JdbcTemplate jdbcTemplate;
     private static JdbcDataSource ds;
     private static Flyway flyway;
+    private static Integer wishListId;
 
     @BeforeClass
     public static void setup() {
@@ -67,14 +68,14 @@ public class WishControllerTest {
         wishListDao.setJdbcTemplate(jdbcTemplate);
         wishListDao.createWishList(wishList);
 
-        Integer id = wishListDao.getWishListByOpenId("openID1").stream()
+        wishListId = wishListDao.getWishListByOpenId("openID1").stream()
                 .filter(item -> "THIS IS FOR TEST".equals(item.getDescription()))
                 .collect(Collectors.toList()).get(0).getId();
 
         WishDaoImpl wishDaoImpl = new WishDaoImpl();
         wishDaoImpl.setJdbcTemplate(jdbcTemplate);
         Wish wish = new Wish();
-        wish.setWishListId(id);
+        wish.setWishListId(wishListId);
         wish.setWishStatus(Constants.WISH_STATUS_DONE);
         wish.setDescription("DESC1");
         wish.setImplementorOpenId("openID2");
@@ -119,7 +120,7 @@ public class WishControllerTest {
     public void testGetWishListDetail() throws Exception {
         WishController wishController = getWishController();
 
-        WishListDetailResponse response = wishController.getWishListDetail("1");
+        WishListDetailResponse response = wishController.getWishListDetail(wishListId.toString());
         assertThat(response.getResultCode(), is(Constants.HTTP_STATUS_SUCCESS));
         assertThat(response.getListOpenId(), is("openID1"));
         assertThat(response.getListDescription(), is("THIS IS FOR TEST"));
@@ -145,7 +146,7 @@ public class WishControllerTest {
     @Test
     public void testGetWishesByID() throws Exception {
         WishController wishController = getWishController();
-        WishesResponse response = wishController.getWishesByID("1", null);
+        WishesResponse response = wishController.getWishesByID(wishListId.toString(), null);
 
 
         assertThat(response.getResultCode(), is(Constants.HTTP_STATUS_SUCCESS));
