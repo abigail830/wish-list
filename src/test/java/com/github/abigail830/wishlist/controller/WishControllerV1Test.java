@@ -11,7 +11,7 @@ import com.github.abigail830.wishlist.service.WishService;
 import com.github.abigail830.wishlist.util.Toggle;
 import org.flywaydb.core.Flyway;
 import org.h2.jdbcx.JdbcDataSource;
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -38,27 +38,26 @@ public class WishControllerV1Test {
         jdbcTemplate = new JdbcTemplate(ds);
         Toggle.TEST_MODE.setStatus(true);
         positionData();
+
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterClass
+    public static void tearDown() throws Exception {
         jdbcTemplate.update("DELETE FROM user_event WHERE ID is not null");
         jdbcTemplate.update("DELETE FROM wish_tbl WHERE ID is not null");
         jdbcTemplate.update("DELETE FROM wishlist_tbl WHERE ID is not null");
         jdbcTemplate.update("DELETE FROM user_tbl WHERE ID is not null");
     }
 
-    private static void positionData() {
+
+    public static void positionData() {
         UserDaoImpl userDao = new UserDaoImpl();
         userDao.setJdbcTemplate(jdbcTemplate);
         userDao.createUser(new UserInfo("openID1", "M", "nickname1", "city",
                 "country", "province", "lang", "imageUrl"));
         userDao.createUser(new UserInfo("openID2", "M", "nickname2", "city",
                 "country", "province", "lang", "imageUrl2"));
-
     }
-
-
 
 
     @Test
@@ -84,8 +83,10 @@ public class WishControllerV1Test {
         wishListDTO.addWish(wishDTO2);
 
         WishListDTO wishListDTOAsResponse = wishController.postNewWishList(wishListDTO);
+        System.out.println(wishListDTOAsResponse);
         assertThat(wishListDTOAsResponse.getListId(), is(notNullValue()));
-        WishDashboardDTO wishListsByID = wishController.getWishListsByID("1", null);
+        String id = wishListDTOAsResponse.getListId().toString();
+        WishDashboardDTO wishListsByID = wishController.getWishListsByID(id, null);
         assertThat(wishListsByID.getWishLists().get(0).getWishes().size(), is(2));
     }
 

@@ -3,7 +3,7 @@ package com.github.abigail830.wishlist.repository;
 import com.github.abigail830.wishlist.domain.UserInfo;
 import org.flywaydb.core.Flyway;
 import org.h2.jdbcx.JdbcDataSource;
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,14 +24,14 @@ public class UserDaoImplTest {
         flyway = Flyway.configure().dataSource(ds).load();
         flyway.migrate();
         jdbcTemplate = new JdbcTemplate(ds);
+
         String insertSQL = "INSERT INTO user_tbl (open_id, gender, nick_name, city, country, province, lang, avatar_url) " +
                 "VALUES ('openID1','M', 'nickname', 'city', 'country', 'province', 'lang', 'imageUrl')";
         jdbcTemplate.execute(insertSQL);
     }
 
-
-    @After
-    public void tearDown() throws Exception {
+    @AfterClass
+    public static void tearDown() throws Exception {
         jdbcTemplate.update("DELETE FROM user_event WHERE ID is not null");
         jdbcTemplate.update("DELETE FROM wish_tbl WHERE ID is not null");
         jdbcTemplate.update("DELETE FROM wishlist_tbl WHERE ID is not null");

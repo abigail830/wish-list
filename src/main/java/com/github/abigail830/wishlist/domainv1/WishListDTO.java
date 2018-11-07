@@ -111,4 +111,15 @@ public class WishListDTO {
         this.wishes.add(wish);
     }
 
+    @Override
+    public String toString() {
+        return "WishListDTO{" +
+                "listOpenId='" + listOpenId + '\'' +
+                ", listId=" + listId +
+                ", listDescription='" + listDescription + '\'' +
+                ", listCreateTime='" + listCreateTime + '\'' +
+                ", listDueTime='" + listDueTime + '\'' +
+                ", wishes=" + wishes +
+                '}';
+    }
 }
