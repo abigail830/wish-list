@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.abigail830</groupId>
     <artifactId>wish-list</artifactId>
-    <version>0.1.7.5-SNAPSHOT</version>
+    <version>0.1.7.5</version>
     <packaging>jar</packaging>
 
     <name>wish-list</name>
@@ -15,7 +14,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.0.5.RELEASE</version>
-        <relativePath/>
+        <relativePath />
         <!-- lookup parent from repository -->
     </parent>
 
@@ -23,7 +22,7 @@
         <connection>scm:git:https://github.com/abigail830/wish-list.git</connection>
         <developerConnection>scm:git:https://github.com/abigail830/wish-list.git</developerConnection>
         <url>https://github.com/abigail830/wish-list</url>
-        <tag>HEAD</tag>
+        <tag>v0.1.7.5</tag>
     </scm>
 
     <distributionManagement>
