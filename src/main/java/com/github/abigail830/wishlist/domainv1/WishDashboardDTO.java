@@ -2,7 +2,6 @@ package com.github.abigail830.wishlist.domainv1;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.abigail830.wishlist.domain.BriefWishList;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -28,8 +27,11 @@ public class WishDashboardDTO {
     @JsonProperty("myFriendsCompletedWishCount")
     private int myFriendsCompletedWishCount;
 
+    public WishDashboardDTO() {
+    }
+
     public WishDashboardDTO(List<WishListDTO> wishLists,
-                             int myCompletedWishCount, int myFriendsCompletedWishCount) {
+                            int myCompletedWishCount, int myFriendsCompletedWishCount) {
         this.wishLists = wishLists;
         if(!wishLists.isEmpty())
             this.hasWishList = true;

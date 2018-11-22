@@ -1,4 +1,4 @@
-package com.github.abigail830.wishlist;
+package Integration;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
