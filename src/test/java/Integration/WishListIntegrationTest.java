@@ -6,18 +6,21 @@ import com.github.abigail830.wishlist.service.UserService;
 import com.github.abigail830.wishlist.service.WishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.client.RestTemplate;
 
 
-@SpringBootTest(classes = WishListApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(classes = WishListApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration
 @DirtiesContext
 public class WishListIntegrationTest {
 
-    protected static final String PORT = "8080";
+    @LocalServerPort
+    private int port;
+
     private final String SERVER_URL = "http://localhost";
     @Autowired
     protected WishService wishService;
@@ -33,7 +36,7 @@ public class WishListIntegrationTest {
     }
 
     private String serverEndpoint() {
-        return SERVER_URL + ":" + PORT;
+        return SERVER_URL + ":" + port;
     }
 
     public int post(final String content) {
