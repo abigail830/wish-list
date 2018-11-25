@@ -8,6 +8,7 @@ import com.github.abigail830.wishlist.util.Constants;
 import com.github.abigail830.wishlist.util.Toggle;
 import org.flywaydb.core.Flyway;
 import org.h2.jdbcx.JdbcDataSource;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,15 +25,17 @@ public class ComplexWishDaoImplTest {
 
     private static JdbcTemplate jdbcTemplate;
     private static JdbcDataSource ds;
+    private static Flyway flyway;
 
     @BeforeClass
     public static void setup() {
         ds = new JdbcDataSource();
         ds.setURL("jdbc:h2:mem:ComplexWishDaoImplTest;DB_CLOSE_DELAY=-1;MODE=MYSQL");
-        Flyway flyway = Flyway.configure().dataSource(ds).load();
+        flyway = Flyway.configure().dataSource(ds).load();
         flyway.migrate();
         jdbcTemplate = new JdbcTemplate(ds);
         Toggle.TEST_MODE.setStatus(true);
+
         UserDaoImpl userDao = new UserDaoImpl();
         userDao.setJdbcTemplate(jdbcTemplate);
         userDao.createUser(new UserInfo("openID1", "M", "nickname1", "city",
@@ -64,6 +67,15 @@ public class ComplexWishDaoImplTest {
         wish2.setDescription("DESC2");
         wishDaoImpl.createWish(wish2);
     }
+
+    @AfterClass
+    public static void tearDown() throws Exception {
+        jdbcTemplate.update("DELETE FROM user_event WHERE ID is not null");
+        jdbcTemplate.update("DELETE FROM wish_tbl WHERE ID is not null");
+        jdbcTemplate.update("DELETE FROM wishlist_tbl WHERE ID is not null");
+        jdbcTemplate.update("DELETE FROM user_tbl WHERE ID is not null");
+    }
+
 
     @Test
     public void getFriendsWishCompletedCountByImplementorOpenID() {

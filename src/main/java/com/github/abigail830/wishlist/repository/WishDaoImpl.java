@@ -37,7 +37,7 @@ public class WishDaoImpl {
 			jdbcTemplate.update(
 					"INSERT INTO wish_tbl (wish_list_id, description, wish_status, implementor_open_id) " +
 							"VALUES (?, ?, ?, ?)",
-					wish.getWishListId(),
+					(int) wish.getWishListId(),
 					wish.getDescription(),
 					wish.getWishStatus(),
 					wish.getImplementorOpenId()
@@ -47,7 +47,7 @@ public class WishDaoImpl {
 			jdbcTemplate.update(
 					"REPLACE INTO wish_tbl (wish_list_id, description, wish_status, implementor_open_id) " +
 							"VALUES (?, ?, ?, ?)",
-					wish.getWishListId(),
+					(int) wish.getWishListId(),
 					wish.getDescription(),
 					wish.getWishStatus(),
 					wish.getImplementorOpenId()
@@ -57,6 +57,7 @@ public class WishDaoImpl {
 	}
 
 	public void updateWish(Wish wish) {
+		logger.debug(wish.toString());
 		logger.info("Update wish for wishlist [wish_id={}].", wish.getId());
 		jdbcTemplate.update("UPDATE wish_tbl set description=?, wish_status=?, implementor_open_id=? " +
 						"where ID=?",

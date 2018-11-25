@@ -13,6 +13,7 @@ import com.github.abigail830.wishlist.util.Constants;
 import com.github.abigail830.wishlist.util.Toggle;
 import org.flywaydb.core.Flyway;
 import org.h2.jdbcx.JdbcDataSource;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,7 +21,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 
 public class WishControllerTest {
@@ -28,19 +29,31 @@ public class WishControllerTest {
 
     private static JdbcTemplate jdbcTemplate;
     private static JdbcDataSource ds;
+    private static Flyway flyway;
+    private static Integer wishListId;
 
     @BeforeClass
     public static void setup() {
         ds = new JdbcDataSource();
         ds.setURL("jdbc:h2:mem:WishControllerTest;DB_CLOSE_DELAY=-1;MODE=MYSQL");
-        Flyway flyway = Flyway.configure().dataSource(ds).load();
+        flyway = Flyway.configure().dataSource(ds).load();
         flyway.migrate();
         jdbcTemplate = new JdbcTemplate(ds);
         Toggle.TEST_MODE.setStatus(true);
         positionData();
+
     }
 
-    private static void positionData() {
+    @AfterClass
+    public static void tearDown() throws Exception {
+        jdbcTemplate.update("DELETE FROM user_event WHERE ID is not null");
+        jdbcTemplate.update("DELETE FROM wish_tbl WHERE ID is not null");
+        jdbcTemplate.update("DELETE FROM wishlist_tbl WHERE ID is not null");
+        jdbcTemplate.update("DELETE FROM user_tbl WHERE ID is not null");
+    }
+
+
+    public static void positionData() {
         UserDaoImpl userDao = new UserDaoImpl();
         userDao.setJdbcTemplate(jdbcTemplate);
         userDao.createUser(new UserInfo("openID1", "M", "nickname1", "city",
@@ -49,17 +62,20 @@ public class WishControllerTest {
                 "country", "province", "lang", "imageUrl2"));
 
         WishList wishList = new WishList();
-        wishList.setId(1);
         wishList.setOpenId("openID1");
         wishList.setDescription("THIS IS FOR TEST");
         WishListDaoImpl wishListDao = new WishListDaoImpl();
         wishListDao.setJdbcTemplate(jdbcTemplate);
         wishListDao.createWishList(wishList);
 
+        wishListId = wishListDao.getWishListByOpenId("openID1").stream()
+                .filter(item -> "THIS IS FOR TEST".equals(item.getDescription()))
+                .collect(Collectors.toList()).get(0).getId();
+
         WishDaoImpl wishDaoImpl = new WishDaoImpl();
         wishDaoImpl.setJdbcTemplate(jdbcTemplate);
         Wish wish = new Wish();
-        wish.setWishListId(Integer.valueOf(1));
+        wish.setWishListId(wishListId);
         wish.setWishStatus(Constants.WISH_STATUS_DONE);
         wish.setDescription("DESC1");
         wish.setImplementorOpenId("openID2");
@@ -104,7 +120,7 @@ public class WishControllerTest {
     public void testGetWishListDetail() throws Exception {
         WishController wishController = getWishController();
 
-        WishListDetailResponse response = wishController.getWishListDetail("1");
+        WishListDetailResponse response = wishController.getWishListDetail(wishListId.toString());
         assertThat(response.getResultCode(), is(Constants.HTTP_STATUS_SUCCESS));
         assertThat(response.getListOpenId(), is("openID1"));
         assertThat(response.getListDescription(), is("THIS IS FOR TEST"));
@@ -130,7 +146,7 @@ public class WishControllerTest {
     @Test
     public void testGetWishesByID() throws Exception {
         WishController wishController = getWishController();
-        WishesResponse response = wishController.getWishesByID("1", null);
+        WishesResponse response = wishController.getWishesByID(wishListId.toString(), null);
 
 
         assertThat(response.getResultCode(), is(Constants.HTTP_STATUS_SUCCESS));
