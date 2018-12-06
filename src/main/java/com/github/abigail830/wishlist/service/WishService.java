@@ -197,7 +197,8 @@ public class WishService {
     }
 
     public WishListTimeline getWishListTimeLine(String openId) {
-
+        int myCompletedWishCount = getMyCompletedWishCount(openId);
+        int myFriendCompletedWishCount = getFriendsCompletedWishCountByImplementorID(openId);
         List<WishListDTO> wishListDTOs = getWishListByOpenID(openId)
                 .stream().map(WishListDTO::new).collect(Collectors.toList());
 
@@ -217,6 +218,9 @@ public class WishService {
 
         }
 
-        return new WishListTimeline(new ArrayList<WishListTimelineEntry>(wishListTimelineEntryMap.values()));
+        return new WishListTimeline(new ArrayList<WishListTimelineEntry>(wishListTimelineEntryMap.values()),
+                wishListDTOs,
+                myCompletedWishCount,
+                myFriendCompletedWishCount);
     }
 }
