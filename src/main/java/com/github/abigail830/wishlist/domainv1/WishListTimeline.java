@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public class WishListTimeline {
-    @JsonProperty("wishListTimeLinesªªª")
     private List<WishListTimelineEntry> wishListTimelineEntryList;
 
 
