@@ -202,7 +202,7 @@ public class WishService {
             wishListDTO.setProgress(100);
         } else {
             long doneCount = wishes.stream().filter(item -> Constants.WISH_STATUS_DONE.equals(item.getWishStatus())).count();
-            int percentage = Math.round((wishes.size() - doneCount)/wishes.size());
+            int percentage = Math.round(((wishes.size() - doneCount)/wishes.size()) * 100);
             wishListDTO.setProgress(percentage);
         }
     }
