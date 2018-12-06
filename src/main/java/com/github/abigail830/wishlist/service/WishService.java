@@ -210,7 +210,9 @@ public class WishService {
             if (wishListTimelineEntry == null) {
                 String[] yearAndMonth = month.split("-");
                 String dateToPresent = yearAndMonth[0] + "年" + yearAndMonth[1] + "月";
-                WishListTimelineEntry newWishListTimelineEntry = new WishListTimelineEntry(dateToPresent, Arrays.asList(wishListDTO));
+                ArrayList<WishListDTO> wishListDTOList = new ArrayList<>();
+                wishListDTOList.add(wishListDTO);
+                WishListTimelineEntry newWishListTimelineEntry = new WishListTimelineEntry(dateToPresent, wishListDTOList);
                 wishListTimelineEntryMap.put(month, newWishListTimelineEntry);
             } else {
                 wishListTimelineEntry.getWishListDTOList().add(wishListDTO);
