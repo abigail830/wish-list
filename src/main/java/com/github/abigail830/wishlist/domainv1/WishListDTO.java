@@ -125,6 +125,10 @@ public class WishListDTO{
         return dateInMonth;
     }
 
+    public String getYearAndMonth() {
+        return yearAndMonth;
+    }
+
     @Override
     public String toString() {
         return "WishListDTO{" +

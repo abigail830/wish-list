@@ -205,7 +205,7 @@ public class WishService {
         TreeMap<String, WishListTimelineEntry> wishListTimelineEntryMap = new TreeMap<String, WishListTimelineEntry>();
 
         for (WishListDTO wishListDTO : wishListDTOs) {
-            String month = wishListDTO.getListDueTime();
+            String month = wishListDTO.getYearAndMonth();
             WishListTimelineEntry wishListTimelineEntry = wishListTimelineEntryMap.get(month);
             if (wishListTimelineEntry == null) {
                 String[] yearAndMonth = month.split("-");
