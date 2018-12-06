@@ -197,7 +197,8 @@ public class WishService {
     }
 
     public void enrichProgress(WishListDTO wishListDTO) {
-        List<Wish> wishes = wishDao.getWishByWishListId(wishListDTO.getListId().toString());
+        List<Wish> wishes = wishDao.getWishByWishListId(wishListDTO.getListId().toString())
+                .stream().filter(item -> item.getDescription() != null).collect(Collectors.toList());
         if (wishes == null || wishes.size() == 0) {
             wishListDTO.setProgress(100);
         } else {

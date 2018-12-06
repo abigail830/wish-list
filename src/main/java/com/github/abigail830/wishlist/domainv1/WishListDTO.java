@@ -56,7 +56,7 @@ public class WishListDTO{
         this.listCreateTime = dateFormatter.get().format(wishListDetail.getListCreateTime());
         this.listDueTime = dateFormatter.get().format(wishListDetail.getListDueTime());
         if (wishListDetail.getWishes() != null && wishListDetail.getWishes().size() > 0) {
-            this.wishes = wishListDetail.getWishes().stream().map(WishDTO::new).collect(Collectors.toList());
+            this.wishes = wishListDetail.getWishes().stream().filter(item -> item.getDescription() != null).map(WishDTO::new).collect(Collectors.toList());
         }
 
         this.dateInMonth = this.listDueTime.substring(8);
