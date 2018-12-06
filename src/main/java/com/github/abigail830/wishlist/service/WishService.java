@@ -196,12 +196,29 @@ public class WishService {
         wishDao.removeTakenupWish(id);
     }
 
+    public void enrichProgress(WishListDTO wishListDTO) {
+        List<Wish> wishes = wishDao.getWishByWishListId(wishListDTO.getListId().toString());
+        if (wishes == null || wishes.size() == 0) {
+            wishListDTO.setProgress(100);
+        } else {
+            long doneCount = wishes.stream().filter(item -> Constants.WISH_STATUS_DONE.equals(item.getWishStatus())).count();
+            int percentage = Math.round((wishes.size() - doneCount)/wishes.size());
+            wishListDTO.setProgress(percentage);
+        }
+    }
+
+    public void enrichWishListProgress (List<WishListDTO> wishListDTOs) {
+        for (WishListDTO wishListDTO : wishListDTOs) {
+            enrichProgress(wishListDTO);
+        }
+    }
+
     public WishListTimeline getWishListTimeLine(String openId) {
         int myCompletedWishCount = getMyCompletedWishCount(openId);
         int myFriendCompletedWishCount = getFriendsCompletedWishCountByImplementorID(openId);
         List<WishListDTO> wishListDTOs = getWishListByOpenID(openId)
                 .stream().map(WishListDTO::new).collect(Collectors.toList());
-
+        enrichWishListProgress(wishListDTOs);
         TreeMap<String, WishListTimelineEntry> wishListTimelineEntryMap = new TreeMap<String, WishListTimelineEntry>();
 
         for (WishListDTO wishListDTO : wishListDTOs) {

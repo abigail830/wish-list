@@ -32,6 +32,9 @@ public class WishListDTO{
     @ApiModelProperty(value = "月份",  example = "2018-10")
     private String yearAndMonth;
 
+    @ApiModelProperty(value = "进度",  example = "50")
+    private Integer progress;
+
     @ApiModelProperty(value = "愿望列表")
     List<WishDTO> wishes = new ArrayList<>();
 
@@ -119,6 +122,14 @@ public class WishListDTO{
 
     public void addWish(WishDTO wish){
         this.wishes.add(wish);
+    }
+
+    public Integer getProgress() {
+        return progress;
+    }
+
+    public void setProgress(Integer progress) {
+        this.progress = progress;
     }
 
     public String getDateInMonth() {
