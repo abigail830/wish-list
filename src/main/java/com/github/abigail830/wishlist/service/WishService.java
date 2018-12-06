@@ -219,8 +219,9 @@ public class WishService {
             }
 
         }
-
-        return new WishListTimeline(new ArrayList<WishListTimelineEntry>(wishListTimelineEntryMap.values()),
+        List<WishListTimelineEntry> resultList = new ArrayList<WishListTimelineEntry>(wishListTimelineEntryMap.values());
+        Collections.reverse(resultList);
+        return new WishListTimeline(resultList,
                 wishListDTOs,
                 myCompletedWishCount,
                 myFriendCompletedWishCount);
