@@ -60,8 +60,12 @@ public class WishDTO {
     public WishDTO(Wish wish) {
         this.wishID = wish.getId();
         this.description = wish.getDescription();
-        this.createTime = dateFormatter.get().format(wish.getCreateTime());
-        this.lastUpdateTime = dateFormatter.get().format(wish.getLastUpdateTime());
+        if (wish.getCreateTime() != null) {
+            this.createTime = dateFormatter.get().format(wish.getCreateTime());
+        }
+        if (wish.getLastUpdateTime() != null) {
+            this.lastUpdateTime = dateFormatter.get().format(wish.getLastUpdateTime());
+        }
         this.wishStatus = wish.getWishStatus();
         this.wishListID = wish.getWishListId();
         if (StringUtils.isNotBlank(wish.getImplementorOpenId()) && wish.getImplementor() != null) {
