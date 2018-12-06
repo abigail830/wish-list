@@ -2,10 +2,7 @@ package com.github.abigail830.wishlist.controller;
 
 import com.github.abigail830.wishlist.domain.WishListDetailResponse;
 import com.github.abigail830.wishlist.domain.WishListsResponse;
-import com.github.abigail830.wishlist.domainv1.UserDTO;
-import com.github.abigail830.wishlist.domainv1.WishDTO;
-import com.github.abigail830.wishlist.domainv1.WishDashboardDTO;
-import com.github.abigail830.wishlist.domainv1.WishListDTO;
+import com.github.abigail830.wishlist.domainv1.*;
 import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.entity.WishListDetail;
 import com.github.abigail830.wishlist.service.UserService;
@@ -97,6 +94,25 @@ public class WishControllerV1 {
 
         logger.info("Query WishList missing param either wish list Id or openId");
         return new WishDashboardDTO(Collections.EMPTY_LIST, 0, 0);
+    }
+
+
+    @ApiOperation(value = "Collect wish list by open_id in timeline",
+            notes = "根据ID或者openID搜索愿望清单，ID和openID只需要填一个，ID优先查询，只返回清单概述",
+            response = WishListTimeline.class)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
+    @RequestMapping(value = "/lists/timeline", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public WishListTimeline getWishListsTimeLineByOpenID(
+            @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openId) {
+
+        logger.info("Query Timeline by openID {}", openId);
+        if (StringUtils.isNotBlank(openId)){
+            return wishService.getWishListTimeLine(openId);
+
+        } else {
+            throw new IllegalArgumentException("Open ID is null");
+        }
     }
 
     @ApiOperation(value = "Add new Wish List",

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class WishListDTO {
+public class WishListDTO{
     @ApiModelProperty(value = "用户openID",  example = "troEmJ75YWmBSDgyz4KLi_yGL8MBV4ue")
     private String listOpenId;
 
@@ -25,6 +25,12 @@ public class WishListDTO {
 
     @ApiModelProperty(value = "愿望清单目标兑现时间",  example = "2018-10-10")
     private String listDueTime;
+
+    @ApiModelProperty(value = "日期",  example = "01")
+    private String dateInMonth;
+
+    @ApiModelProperty(value = "月份",  example = "2018-10")
+    private String yearAndMonth;
 
     @ApiModelProperty(value = "愿望列表")
     List<WishDTO> wishes = new ArrayList<>();
@@ -47,6 +53,8 @@ public class WishListDTO {
         this.listCreateTime = dateFormatter.get().format(wishListDetail.getListCreateTime());
         this.listDueTime = dateFormatter.get().format(wishListDetail.getListDueTime());
         this.wishes = wishListDetail.getWishes().stream().map(WishDTO::new).collect(Collectors.toList());
+        this.dateInMonth = this.listCreateTime.substring(8);
+        this.yearAndMonth = this.listCreateTime.substring(0, 7);
     }
 
 
@@ -56,6 +64,8 @@ public class WishListDTO {
         this.listDescription = wishList.getDescription();
         this.listCreateTime = dateFormatter.get().format(wishList.getCreateTime());
         this.listDueTime = dateFormatter.get().format(wishList.getDueTime());
+        this.dateInMonth = this.listCreateTime.substring(8);
+        this.yearAndMonth = this.listCreateTime.substring(0, 7);
     }
 
 
@@ -109,6 +119,10 @@ public class WishListDTO {
 
     public void addWish(WishDTO wish){
         this.wishes.add(wish);
+    }
+
+    public String getDateInMonth() {
+        return dateInMonth;
     }
 
     @Override

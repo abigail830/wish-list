@@ -1,8 +1,7 @@
 package com.github.abigail830.wishlist.service;
 
 import com.github.abigail830.wishlist.domain.BriefWishList;
-import com.github.abigail830.wishlist.domainv1.WishDTO;
-import com.github.abigail830.wishlist.domainv1.WishListDTO;
+import com.github.abigail830.wishlist.domainv1.*;
 import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.entity.WishListDetail;
@@ -19,9 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -197,5 +194,29 @@ public class WishService {
 
     public void removeTakeUp(String id) {
         wishDao.removeTakenupWish(id);
+    }
+
+    public WishListTimeline getWishListTimeLine(String openId) {
+
+        List<WishListDTO> wishListDTOs = getWishListByOpenID(openId)
+                .stream().map(WishListDTO::new).collect(Collectors.toList());
+
+        TreeMap<String, WishListTimelineEntry> wishListTimelineEntryMap = new TreeMap<String, WishListTimelineEntry>();
+
+        for (WishListDTO wishListDTO : wishListDTOs) {
+            String month = wishListDTO.getDateInMonth();
+            WishListTimelineEntry wishListTimelineEntry = wishListTimelineEntryMap.get(month);
+            if (wishListTimelineEntry == null) {
+                String[] yearAndMonth = month.split("-");
+                String dateToPresent = yearAndMonth[0] + "年" + yearAndMonth[1] + "月";
+                WishListTimelineEntry newWishListTimelineEntry = new WishListTimelineEntry(dateToPresent, Arrays.asList(wishListDTO));
+                wishListTimelineEntryMap.put(dateToPresent, newWishListTimelineEntry);
+            } else {
+                wishListTimelineEntry.getWishListDTOList().add(wishListDTO);
+            }
+
+        }
+
+        return new WishListTimeline(new ArrayList<WishListTimelineEntry>(wishListTimelineEntryMap.values()));
     }
 }
