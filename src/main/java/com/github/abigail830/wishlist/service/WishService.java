@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -196,21 +197,26 @@ public class WishService {
         wishDao.removeTakenupWish(id);
     }
 
-    public void enrichProgress(WishListDTO wishListDTO) {
-        List<Wish> wishes = wishDao.getWishByWishListId(wishListDTO.getListId().toString())
+    public List<Wish> getWishes(WishListDTO wishListDTO) {
+        return wishDao.getWishByWishListId(wishListDTO.getListId().toString())
                 .stream().filter(item -> item.getDescription() != null).collect(Collectors.toList());
+    }
+
+    public int calculateProgress(List<Wish> wishes) {
         if (wishes == null || wishes.size() == 0) {
-            wishListDTO.setProgress(100);
+            return 100;
         } else {
-            long doneCount = wishes.stream().filter(item -> Constants.WISH_STATUS_DONE.equals(item.getWishStatus())).count();
-            int percentage = Math.round(((wishes.size() - doneCount)/wishes.size()) * 100);
-            wishListDTO.setProgress(percentage);
+            double doneCount = wishes.stream().filter(item -> Constants.WISH_STATUS_DONE.equals(item.getWishStatus())).count();
+            BigDecimal total = BigDecimal.valueOf(wishes.size());
+            return total.subtract(BigDecimal.valueOf(doneCount)).divide(total, BigDecimal.ROUND_HALF_EVEN).multiply(BigDecimal.valueOf(100)).intValue();
         }
     }
 
     public void enrichWishListProgress (List<WishListDTO> wishListDTOs) {
         for (WishListDTO wishListDTO : wishListDTOs) {
-            enrichProgress(wishListDTO);
+            int progress = calculateProgress(getWishes(wishListDTO));
+            wishListDTO.setProgress(progress);
+
         }
     }
 

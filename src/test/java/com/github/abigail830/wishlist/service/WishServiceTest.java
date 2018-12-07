@@ -1,32 +1,102 @@
 package com.github.abigail830.wishlist.service;
 
-import org.junit.After;
-import org.junit.Before;
+import com.github.abigail830.wishlist.entity.Wish;
+import com.github.abigail830.wishlist.util.Constants;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+
 public class WishServiceTest {
 
-    @Autowired
-    WishService service;
 
-    @Before
-    public void setUp() throws Exception {
-    }
+    @Test
+    public void testCanCalculateProgress() throws Exception {
+        Wish wish1 = new Wish();
+        Wish wish2 = new Wish();
+        Wish wish3 = new Wish();
+        Wish wish4 = new Wish();
 
-    @After
-    public void tearDown() throws Exception {
+        wish1.setDescription("wish1");
+        wish1.setWishStatus(Constants.WISH_STATUS_NEW);
+
+        wish2.setDescription("wish2");
+        wish2.setWishStatus(Constants.WISH_STATUS_TAKEUP);
+
+        wish3.setDescription("wish3");
+        wish3.setWishStatus(Constants.WISH_STATUS_DONE);
+
+        wish4.setDescription("wish4");
+        wish4.setWishStatus(Constants.WISH_STATUS_DONE);
+
+        WishService wishService = new WishService();
+        int progress = wishService.calculateProgress(Arrays.asList(wish1, wish2, wish3, wish4));
+
+        assertEquals(50, progress);
     }
 
     @Test
-    public void getWishListDetailByWishListID() {
-        System.out.println(service.getWishListDetailByWishListID("2"));
+    public void testCanCalculateProgressForEmptyWishList() throws Exception {
+
+        WishService wishService = new WishService();
+        int progress = wishService.calculateProgress(new ArrayList<>());
+
+        assertEquals(100, progress);
     }
+
+    @Test
+    public void testCanCalculateProgressForNothingDone() throws Exception {
+
+        Wish wish1 = new Wish();
+        Wish wish2 = new Wish();
+        Wish wish3 = new Wish();
+        Wish wish4 = new Wish();
+
+        wish1.setDescription("wish1");
+        wish1.setWishStatus(Constants.WISH_STATUS_NEW);
+
+        wish2.setDescription("wish2");
+        wish2.setWishStatus(Constants.WISH_STATUS_TAKEUP);
+
+        wish3.setDescription("wish3");
+        wish3.setWishStatus(Constants.WISH_STATUS_TAKEUP);
+
+        wish4.setDescription("wish4");
+        wish4.setWishStatus(Constants.WISH_STATUS_TAKEUP);
+
+        WishService wishService = new WishService();
+        int progress = wishService.calculateProgress(Arrays.asList(wish1, wish2, wish3, wish4));
+
+        assertEquals(100, progress);
+    }
+
+    @Test
+    public void testCanCalculateProgressForAllDone() throws Exception {
+
+        Wish wish1 = new Wish();
+        Wish wish2 = new Wish();
+        Wish wish3 = new Wish();
+        Wish wish4 = new Wish();
+
+        wish1.setDescription("wish1");
+        wish1.setWishStatus(Constants.WISH_STATUS_DONE);
+
+        wish2.setDescription("wish2");
+        wish2.setWishStatus(Constants.WISH_STATUS_DONE);
+
+        wish3.setDescription("wish3");
+        wish3.setWishStatus(Constants.WISH_STATUS_DONE);
+
+        wish4.setDescription("wish4");
+        wish4.setWishStatus(Constants.WISH_STATUS_DONE);
+
+        WishService wishService = new WishService();
+        int progress = wishService.calculateProgress(Arrays.asList(wish1, wish2, wish3, wish4));
+
+        assertEquals(0, progress);
+    }
+
 }
