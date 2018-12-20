@@ -40,6 +40,14 @@ public class WishService {
 
     private static final ThreadLocal<SimpleDateFormat> dateFormatter = new ThreadLocal<SimpleDateFormat>() {
         @Override protected SimpleDateFormat initialValue() {
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            return formatter;
+        }
+    };
+
+    private static final ThreadLocal<SimpleDateFormat> legacyDateFormatter = new ThreadLocal<SimpleDateFormat>() {
+        @Override protected SimpleDateFormat initialValue() {
             return new SimpleDateFormat("yyyy-MM-dd");
         }
     };
@@ -136,7 +144,11 @@ public class WishService {
         wishList.setId(wishListDTO.getListId());
         wishList.setDescription(wishListDTO.getListDescription());
         wishList.setOpenId(wishListDTO.getListOpenId());
-        wishList.setDueTime(new java.sql.Timestamp(dateFormatter.get().parse(wishListDTO.getListDueTime()).getTime()));
+        if (wishListDTO.getListDueTime().length() > 10) {
+            wishList.setDueTime(new java.sql.Timestamp(dateFormatter.get().parse(wishListDTO.getListDueTime()).getTime()));
+        } else {
+            wishList.setDueTime(new java.sql.Timestamp(legacyDateFormatter.get().parse(wishListDTO.getListDueTime()).getTime()));
+        }
         return wishList;
     }
 

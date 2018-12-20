@@ -5,8 +5,7 @@ import com.github.abigail830.wishlist.entity.WishListDetail;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -41,7 +40,8 @@ public class WishListDTO{
 
     private static final ThreadLocal<SimpleDateFormat> dateFormatter = new ThreadLocal<SimpleDateFormat>() {
         @Override protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            return formatter;
         }
     };
 
@@ -59,7 +59,7 @@ public class WishListDTO{
             this.wishes = wishListDetail.getWishes().stream().filter(item -> item.getDescription() != null).map(WishDTO::new).collect(Collectors.toList());
         }
 
-        this.dateInMonth = this.listDueTime.substring(8);
+        this.dateInMonth = this.listDueTime.substring(8, 10);
         this.yearAndMonth = this.listDueTime.substring(0, 7);
     }
 
@@ -70,7 +70,7 @@ public class WishListDTO{
         this.listDescription = wishList.getDescription();
         this.listCreateTime = dateFormatter.get().format(wishList.getCreateTime());
         this.listDueTime = dateFormatter.get().format(wishList.getDueTime());
-        this.dateInMonth = this.listDueTime.substring(8);
+        this.dateInMonth = this.listDueTime.substring(8, 10);
         this.yearAndMonth = this.listDueTime.substring(0, 7);
     }
 
