@@ -20,6 +20,9 @@ public class WishListDTO{
     @ApiModelProperty(value = "愿望清单标题", example = "新年愿望清单")
     private String listDescription;
 
+    @ApiModelProperty(value = "愿望清单描述", example = "我想要大家送我很多很多礼物")
+    private String listDescription2;
+
     @ApiModelProperty(value = "愿望清单创建日期",  example = "2018-09-01")
     private String listCreateTime;
 
@@ -54,6 +57,7 @@ public class WishListDTO{
         this.listOpenId = wishListDetail.getListOpenId();
         this.listId = wishListDetail.getListId();
         this.listDescription = wishListDetail.getListTitle();
+        this.listDescription2 = wishListDetail.getListBrief();
         this.listCreateTime = dateFormatter.get().format(wishListDetail.getListCreateTime());
         this.listDueTime = dateFormatter.get().format(wishListDetail.getListDueTime());
         if (wishListDetail.getWishes() != null && wishListDetail.getWishes().size() > 0) {
@@ -69,6 +73,7 @@ public class WishListDTO{
         this.listOpenId = wishList.getOpenId();
         this.listId = wishList.getId();
         this.listDescription = wishList.getTitle();
+        this.listDescription2 = wishList.getBrief();
         this.listCreateTime = dateFormatter.get().format(wishList.getCreateTime());
         this.listDueTime = dateFormatter.get().format(wishList.getDueTime());
         this.dateInMonth = this.listDueTime.substring(8, 10);
@@ -98,6 +103,14 @@ public class WishListDTO{
 
     public void setListDescription(String listDescription) {
         this.listDescription = listDescription;
+    }
+
+    public String getListDescription2() {
+        return listDescription2;
+    }
+
+    public void setListDescription2(String listDescription2) {
+        this.listDescription2 = listDescription2;
     }
 
     public String getListCreateTime() {
@@ -150,8 +163,12 @@ public class WishListDTO{
                 "listOpenId='" + listOpenId + '\'' +
                 ", listId=" + listId +
                 ", listDescription='" + listDescription + '\'' +
+                ", listDescription2='" + listDescription2 + '\'' +
                 ", listCreateTime='" + listCreateTime + '\'' +
                 ", listDueTime='" + listDueTime + '\'' +
+                ", dateInMonth='" + dateInMonth + '\'' +
+                ", yearAndMonth='" + yearAndMonth + '\'' +
+                ", progress=" + progress +
                 ", wishes=" + wishes +
                 '}';
     }

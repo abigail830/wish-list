@@ -9,10 +9,19 @@ public class WishListDetail {
     private Integer listId;
     private String listOpenId;
     private String listTitle;
+    private String listBrief;
     private Timestamp listCreateTime;
     private Timestamp listDueTime;
 
     List<Wish> wishes = new ArrayList<>();
+
+    public String getListBrief() {
+        return listBrief;
+    }
+
+    public void setListBrief(String listBrief) {
+        this.listBrief = listBrief;
+    }
 
     public Integer getListId() {
         return listId;
@@ -72,6 +81,7 @@ public class WishListDetail {
                 "listId=" + listId +
                 ", listOpenId='" + listOpenId + '\'' +
                 ", listTitle='" + listTitle + '\'' +
+                ", listBrief='" + listBrief + '\'' +
                 ", listCreateTime=" + listCreateTime +
                 ", listDueTime=" + listDueTime +
                 ", wishes=" + wishes +

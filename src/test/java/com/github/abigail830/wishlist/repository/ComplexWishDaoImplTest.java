@@ -49,6 +49,7 @@ public class ComplexWishDaoImplTest {
         wishList.setId(1);
         wishList.setOpenId("openID1");
         wishList.setTitle("THIS IS FOR TEST");
+        wishList.setBrief("THIS IS BRIEF TEST");
         WishListDaoImpl wishListDao = new WishListDaoImpl();
         wishListDao.setJdbcTemplate(jdbcTemplate);
         wishListDao.createWishList(wishList);
@@ -98,6 +99,8 @@ public class ComplexWishDaoImplTest {
         WishListDetail wishListDetail = complexWishDao.getWishListDetail("1");
         assertThat(wishListDetail.getListOpenId(), is("openID1"));
         assertThat(wishListDetail.getWishes().size(), is(2));
+        assertThat(wishListDetail.getListTitle(), is("THIS IS FOR TEST"));
+        assertThat(wishListDetail.getListBrief(), is("THIS IS BRIEF TEST"));
         Wish doneWish = wishListDetail.getWishes().stream()
                 .filter(item -> Constants.WISH_STATUS_DONE.equals(item.getWishStatus()))
                 .collect(Collectors.toList())

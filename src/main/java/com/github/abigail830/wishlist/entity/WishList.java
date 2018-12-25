@@ -7,6 +7,7 @@ public class WishList implements Comparable{
     private Integer id;
     private String openId;
     private String title;
+    private String brief;
     private Timestamp createTime;
     private Timestamp dueTime;
 
@@ -50,13 +51,21 @@ public class WishList implements Comparable{
         this.createTime = createTime;
     }
 
+    public String getBrief() {
+        return brief;
+    }
+
+    public void setBrief(String brief) {
+        this.brief = brief;
+    }
 
     @Override
     public String toString() {
         return "WishList{" +
                 "id=" + id +
-                ", openId ='" + openId + '\'' +
+                ", openId='" + openId + '\'' +
                 ", title='" + title + '\'' +
+                ", brief='" + brief + '\'' +
                 ", createTime=" + createTime +
                 ", dueTime=" + dueTime +
                 '}';

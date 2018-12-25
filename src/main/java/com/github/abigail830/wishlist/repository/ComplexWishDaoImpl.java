@@ -74,6 +74,7 @@ public class ComplexWishDaoImpl {
         return jdbcTemplate.query("select wishlist_tbl.ID as list_id, " +
                         "wishlist_tbl.open_id as list_open_id, " +
                         "wishlist_tbl.title as list_title, " +
+                        "wishlist_tbl.brief as list_brief, " +
                         "wishlist_tbl.create_time as list_create_time, " +
                         "wishlist_tbl.due_time as list_due_time, " +
                         "wish_tbl.ID as ID, " +

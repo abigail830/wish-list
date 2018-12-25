@@ -1,13 +1,12 @@
 package com.github.abigail830.wishlist.controller;
 
-import com.github.abigail830.wishlist.domain.WishListDetailResponse;
-import com.github.abigail830.wishlist.domain.WishListsResponse;
-import com.github.abigail830.wishlist.domainv1.*;
-import com.github.abigail830.wishlist.entity.WishList;
+import com.github.abigail830.wishlist.domainv1.WishDTO;
+import com.github.abigail830.wishlist.domainv1.WishDashboardDTO;
+import com.github.abigail830.wishlist.domainv1.WishListDTO;
+import com.github.abigail830.wishlist.domainv1.WishListTimeline;
 import com.github.abigail830.wishlist.entity.WishListDetail;
 import com.github.abigail830.wishlist.service.UserService;
 import com.github.abigail830.wishlist.service.WishService;
-import com.github.abigail830.wishlist.util.Constants;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;

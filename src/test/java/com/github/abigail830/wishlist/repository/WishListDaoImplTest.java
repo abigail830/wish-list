@@ -52,6 +52,7 @@ public class WishListDaoImplTest {
         wishList.setId(1);
         wishList.setOpenId("openID1");
         wishList.setTitle("THIS IS FOR TEST");
+        wishList.setBrief("THIS IS FOR BRIEF TEST");
         WishListDaoImpl wishListDao = new WishListDaoImpl();
         wishListDao.setJdbcTemplate(jdbcTemplate);
         wishListDao.createWishList(wishList);
@@ -66,6 +67,7 @@ public class WishListDaoImplTest {
         wishList.setId(2);
         wishList.setOpenId("openID1");
         wishList.setTitle("THIS IS FOR TEST");
+        wishList.setBrief("THIS IS FOR BRIEF TEST");
         WishListDaoImpl wishListDao = new WishListDaoImpl();
         wishListDao.setJdbcTemplate(jdbcTemplate);
         wishListDao.createWishList(wishList);
