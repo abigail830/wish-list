@@ -6,7 +6,7 @@ public class WishList implements Comparable{
 
     private Integer id;
     private String openId;
-    private String description;
+    private String title;
     private Timestamp createTime;
     private Timestamp dueTime;
 
@@ -34,12 +34,12 @@ public class WishList implements Comparable{
         this.openId = openId;
     }
 
-    public String getDescription() {
-        return description;
+    public String getTitle() {
+        return title;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Timestamp getCreateTime() {
@@ -56,7 +56,7 @@ public class WishList implements Comparable{
         return "WishList{" +
                 "id=" + id +
                 ", openId ='" + openId + '\'' +
-                ", description='" + description + '\'' +
+                ", title='" + title + '\'' +
                 ", createTime=" + createTime +
                 ", dueTime=" + dueTime +
                 '}';

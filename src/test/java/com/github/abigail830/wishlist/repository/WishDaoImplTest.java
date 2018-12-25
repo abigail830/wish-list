@@ -41,7 +41,7 @@ public class WishDaoImplTest {
         WishList wishList = new WishList();
         wishList.setId(Integer.valueOf(1));
         wishList.setOpenId("openID1");
-        wishList.setDescription("THIS IS FOR TEST");
+        wishList.setTitle("THIS IS FOR TEST");
         WishListDaoImpl wishListDao = new WishListDaoImpl();
         wishListDao.setJdbcTemplate(jdbcTemplate);
         wishListDao.createWishList(wishList);

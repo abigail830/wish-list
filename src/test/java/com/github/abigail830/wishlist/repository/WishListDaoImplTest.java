@@ -51,13 +51,13 @@ public class WishListDaoImplTest {
         WishList wishList = new WishList();
         wishList.setId(1);
         wishList.setOpenId("openID1");
-        wishList.setDescription("THIS IS FOR TEST");
+        wishList.setTitle("THIS IS FOR TEST");
         WishListDaoImpl wishListDao = new WishListDaoImpl();
         wishListDao.setJdbcTemplate(jdbcTemplate);
         wishListDao.createWishList(wishList);
         assertThat(wishListDao.getWishListByOpenId("openID1")
                 .stream()
-                .filter(wl -> "THIS IS FOR TEST".equals(wl.getDescription())).count(), is(1L));
+                .filter(wl -> "THIS IS FOR TEST".equals(wl.getTitle())).count(), is(1L));
     }
 
     @Test
@@ -65,15 +65,15 @@ public class WishListDaoImplTest {
         WishList wishList = new WishList();
         wishList.setId(2);
         wishList.setOpenId("openID1");
-        wishList.setDescription("THIS IS FOR TEST");
+        wishList.setTitle("THIS IS FOR TEST");
         WishListDaoImpl wishListDao = new WishListDaoImpl();
         wishListDao.setJdbcTemplate(jdbcTemplate);
         wishListDao.createWishList(wishList);
-        wishList.setDescription("THIS IS FOR TEST2");
+        wishList.setTitle("THIS IS FOR TEST2");
         wishListDao.updateWishListByID(wishList);
         assertThat(wishListDao.getWishListByOpenId("openID1")
                 .stream()
-                .filter(wl -> "THIS IS FOR TEST2".equals(wl.getDescription())).count(), is(1L));
+                .filter(wl -> "THIS IS FOR TEST2".equals(wl.getTitle())).count(), is(1L));
 
     }
 
@@ -81,20 +81,20 @@ public class WishListDaoImplTest {
     public void testDeleteWishListByID() throws Exception {
         WishList wishList = new WishList();
         wishList.setOpenId("openID1");
-        wishList.setDescription("THIS IS FOR DELETE TEST");
+        wishList.setTitle("THIS IS FOR DELETE TEST");
         WishListDaoImpl wishListDao = new WishListDaoImpl();
         wishListDao.setJdbcTemplate(jdbcTemplate);
         wishListDao.createWishList(wishList);
 
         List<WishList> wishLists = wishListDao.getWishListByOpenId("openID1")
                 .stream()
-                .filter(wl -> "THIS IS FOR DELETE TEST".equals(wl.getDescription()))
+                .filter(wl -> "THIS IS FOR DELETE TEST".equals(wl.getTitle()))
                 .collect(Collectors.toList());
 
         wishListDao.deleteWishList(wishLists.get(0).getId());
         assertThat(wishListDao.getWishListByOpenId("openID1")
                 .stream()
-                .filter(wl -> "THIS IS FOR DELETE TEST".equals(wl.getDescription()))
+                .filter(wl -> "THIS IS FOR DELETE TEST".equals(wl.getTitle()))
                 .count(), is(0L));
     }
 
@@ -103,12 +103,12 @@ public class WishListDaoImplTest {
         WishList wishList = new WishList();
         wishList.setId(3);
         wishList.setOpenId("openID1");
-        wishList.setDescription("THIS IS FOR TEST 3");
+        wishList.setTitle("THIS IS FOR TEST 3");
         WishListDaoImpl wishListDao = new WishListDaoImpl();
         wishListDao.setJdbcTemplate(jdbcTemplate);
         wishListDao.createWishList(wishList);
         List<WishList> wishLists = wishListDao.getWishListByOpenId("openID1");
-        assertThat(wishLists.stream().filter(wl -> "THIS IS FOR TEST 3".equals(wl.getDescription())).count(), is(1L));
+        assertThat(wishLists.stream().filter(wl -> "THIS IS FOR TEST 3".equals(wl.getTitle())).count(), is(1L));
     }
 
 }

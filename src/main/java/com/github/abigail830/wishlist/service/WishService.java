@@ -1,7 +1,9 @@
 package com.github.abigail830.wishlist.service;
 
-import com.github.abigail830.wishlist.domain.BriefWishList;
-import com.github.abigail830.wishlist.domainv1.*;
+import com.github.abigail830.wishlist.domainv1.WishDTO;
+import com.github.abigail830.wishlist.domainv1.WishListDTO;
+import com.github.abigail830.wishlist.domainv1.WishListTimeline;
+import com.github.abigail830.wishlist.domainv1.WishListTimelineEntry;
 import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.entity.WishListDetail;
@@ -19,7 +21,10 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,7 +82,7 @@ public class WishService {
         wishListDao.createWishList(wishList);
         WishList wishListInDB = wishListDao.getWishListByOpenId(wishListDTO.getListOpenId())
                 .stream()
-                .filter(item -> wishListDTO.getListDescription().equals(item.getDescription()))
+                .filter(item -> wishListDTO.getListDescription().equals(item.getTitle()))
                 .max(((o1, o2) -> o1.getCreateTime().compareTo(o2.getCreateTime()))).get();
         wishListDTO.getWishes().forEach(wishItem -> insertNewWishItem(wishItem, wishListInDB.getId()));
         return new WishListDTO(wishListInDB);
@@ -142,7 +147,7 @@ public class WishService {
     private WishList convertWishListFromDTOToEntity(WishListDTO wishListDTO) throws ParseException {
         WishList wishList = new WishList();
         wishList.setId(wishListDTO.getListId());
-        wishList.setDescription(wishListDTO.getListDescription());
+        wishList.setTitle(wishListDTO.getListDescription());
         wishList.setOpenId(wishListDTO.getListOpenId());
         if (wishListDTO.getListDueTime().length() > 10) {
             wishList.setDueTime(new java.sql.Timestamp(dateFormatter.get().parse(wishListDTO.getListDueTime()).getTime()));

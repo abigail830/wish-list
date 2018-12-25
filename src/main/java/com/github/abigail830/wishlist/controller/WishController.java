@@ -3,7 +3,6 @@ package com.github.abigail830.wishlist.controller;
 import com.github.abigail830.wishlist.domain.*;
 import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishList;
-import com.github.abigail830.wishlist.entity.WishListDetail;
 import com.github.abigail830.wishlist.service.UserService;
 import com.github.abigail830.wishlist.service.WishService;
 import com.github.abigail830.wishlist.util.Constants;
@@ -18,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -92,7 +90,7 @@ public class WishController {
             @RequestBody WishList wishList) {
         logger.info("Add new wish list {}", wishList);
 
-        if (StringUtils.isNotBlank(wishList.getOpenId()) && StringUtils.isNotBlank(wishList.getDescription())) {
+        if (StringUtils.isNotBlank(wishList.getOpenId()) && StringUtils.isNotBlank(wishList.getTitle())) {
             wishService.createWishList(wishList);
             return getWishListsByUserOpenID(wishList.getOpenId());
         } else {

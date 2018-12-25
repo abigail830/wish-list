@@ -39,7 +39,7 @@ public class BriefWishList {
     public BriefWishList(WishList wishList) {
         this.wishListID = wishList.getId();
         this.openId = wishList.getOpenId();
-        this.description = wishList.getDescription();
+        this.description = wishList.getTitle();
         this.createTime = f.format(wishList.getCreateTime());
         this.dueTime = f.format(wishList.getDueTime());
     }

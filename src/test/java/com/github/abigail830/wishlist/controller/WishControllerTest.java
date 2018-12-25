@@ -63,13 +63,13 @@ public class WishControllerTest {
 
         WishList wishList = new WishList();
         wishList.setOpenId("openID1");
-        wishList.setDescription("THIS IS FOR TEST");
+        wishList.setTitle("THIS IS FOR TEST");
         WishListDaoImpl wishListDao = new WishListDaoImpl();
         wishListDao.setJdbcTemplate(jdbcTemplate);
         wishListDao.createWishList(wishList);
 
         wishListId = wishListDao.getWishListByOpenId("openID1").stream()
-                .filter(item -> "THIS IS FOR TEST".equals(item.getDescription()))
+                .filter(item -> "THIS IS FOR TEST".equals(item.getTitle()))
                 .collect(Collectors.toList()).get(0).getId();
 
         WishDaoImpl wishDaoImpl = new WishDaoImpl();
@@ -90,7 +90,7 @@ public class WishControllerTest {
 
         WishList wishList = new WishList();
         wishList.setOpenId("openID1");
-        wishList.setDescription("THIS IS FOR WISE LIST ROUNDTRIP TEST");
+        wishList.setTitle("THIS IS FOR WISE LIST ROUNDTRIP TEST");
 
         WishListsResponse wishListsResponse = wishController.postNewWishList(wishList);
         assertThat(wishListsResponse.getResultCode(), is(Constants.HTTP_STATUS_SUCCESS));

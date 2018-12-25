@@ -1,6 +1,5 @@
 package com.github.abigail830.wishlist.repository;
 
-import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.WishList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +24,9 @@ public class WishListDaoImpl {
 	public void createWishList(WishList wishList) {
 		logger.info("Going to create wish list for user: {}", wishList.toString());
 		jdbcTemplate.update(
-				"INSERT INTO wishlist_tbl (open_id, description, create_time, due_time) VALUES (?, ?,?,?)",
+				"INSERT INTO wishlist_tbl (open_id, title, create_time, due_time) VALUES (?, ?,?,?)",
 				wishList.getOpenId(),
-				wishList.getDescription(),
+				wishList.getTitle(),
 				wishList.getCreateTime(),
 				wishList.getDueTime()
 		);
@@ -36,8 +35,8 @@ public class WishListDaoImpl {
 	public void updateWishListByID(WishList wishList) {
 		logger.info("Going to update wish list for user : {}", wishList.toString());
 		jdbcTemplate.update(
-				"UPDATE wishlist_tbl set description=?, due_time=? where ID=?",
-				wishList.getDescription(),
+				"UPDATE wishlist_tbl set title=?, due_time=? where ID=?",
+				wishList.getTitle(),
 				wishList.getDueTime(),
 				wishList.getId()
 		);

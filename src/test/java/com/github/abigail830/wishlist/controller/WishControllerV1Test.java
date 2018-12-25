@@ -66,7 +66,7 @@ public class WishControllerV1Test {
 
         WishList wishList = new WishList();
         wishList.setOpenId("openID1");
-        wishList.setDescription("THIS IS FOR WISE LIST ROUNDTRIP TEST");
+        wishList.setTitle("THIS IS FOR WISE LIST ROUNDTRIP TEST");
 
         WishListDTO wishListDTO = new WishListDTO();
         wishListDTO.setListDescription("this is the test list");

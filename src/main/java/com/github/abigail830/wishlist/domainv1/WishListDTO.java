@@ -5,7 +5,8 @@ import com.github.abigail830.wishlist.entity.WishListDetail;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -16,7 +17,7 @@ public class WishListDTO{
     @ApiModelProperty(value = "愿望清单的ID",  example = "2")
     private Integer listId;
 
-    @ApiModelProperty(value = "愿望清单概述",  example = "新年愿望清单")
+    @ApiModelProperty(value = "愿望清单标题", example = "新年愿望清单")
     private String listDescription;
 
     @ApiModelProperty(value = "愿望清单创建日期",  example = "2018-09-01")
@@ -67,7 +68,7 @@ public class WishListDTO{
     public WishListDTO(WishList wishList) {
         this.listOpenId = wishList.getOpenId();
         this.listId = wishList.getId();
-        this.listDescription = wishList.getDescription();
+        this.listDescription = wishList.getTitle();
         this.listCreateTime = dateFormatter.get().format(wishList.getCreateTime());
         this.listDueTime = dateFormatter.get().format(wishList.getDueTime());
         this.dateInMonth = this.listDueTime.substring(8, 10);
