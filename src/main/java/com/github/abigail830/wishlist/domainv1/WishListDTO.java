@@ -53,7 +53,7 @@ public class WishListDTO{
     public WishListDTO(WishListDetail wishListDetail) {
         this.listOpenId = wishListDetail.getListOpenId();
         this.listId = wishListDetail.getListId();
-        this.listDescription = wishListDetail.getListDescription();
+        this.listDescription = wishListDetail.getListTitle();
         this.listCreateTime = dateFormatter.get().format(wishListDetail.getListCreateTime());
         this.listDueTime = dateFormatter.get().format(wishListDetail.getListDueTime());
         if (wishListDetail.getWishes() != null && wishListDetail.getWishes().size() > 0) {

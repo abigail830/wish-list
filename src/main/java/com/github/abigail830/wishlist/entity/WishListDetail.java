@@ -8,7 +8,7 @@ public class WishListDetail {
 
     private Integer listId;
     private String listOpenId;
-    private String listDescription;
+    private String listTitle;
     private Timestamp listCreateTime;
     private Timestamp listDueTime;
 
@@ -30,12 +30,12 @@ public class WishListDetail {
         this.listOpenId = listOpenId;
     }
 
-    public String getListDescription() {
-        return listDescription;
+    public String getListTitle() {
+        return listTitle;
     }
 
-    public void setListDescription(String listDescription) {
-        this.listDescription = listDescription;
+    public void setListTitle(String listTitle) {
+        this.listTitle = listTitle;
     }
 
     public Timestamp getListCreateTime() {
@@ -71,7 +71,7 @@ public class WishListDetail {
         return "WishListDetail{" +
                 "listId=" + listId +
                 ", listOpenId='" + listOpenId + '\'' +
-                ", listDescription='" + listDescription + '\'' +
+                ", listTitle='" + listTitle + '\'' +
                 ", listCreateTime=" + listCreateTime +
                 ", listDueTime=" + listDueTime +
                 ", wishes=" + wishes +

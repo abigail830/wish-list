@@ -40,7 +40,7 @@ public class WishListDetailResponse {
 
     public WishListDetailResponse(WishListDetail wishListDetail) {
         this.listOpenId = wishListDetail.getListOpenId();
-        this.listDescription = wishListDetail.getListDescription();
+        this.listDescription = wishListDetail.getListTitle();
         this.listCreateTime = f.format(wishListDetail.getListCreateTime());
         this.listDueTime = f.format(wishListDetail.getListDueTime());
         this.wishes = wishListDetail.getWishes().stream().map(WishDomain::new).collect(Collectors.toList());
