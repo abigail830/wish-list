@@ -148,6 +148,7 @@ public class WishService {
         WishList wishList = new WishList();
         wishList.setId(wishListDTO.getListId());
         wishList.setTitle(wishListDTO.getListDescription());
+        wishList.setBrief(wishListDTO.getListDescription2());
         wishList.setOpenId(wishListDTO.getListOpenId());
         if (wishListDTO.getListDueTime().length() > 10) {
             wishList.setDueTime(new java.sql.Timestamp(dateFormatter.get().parse(wishListDTO.getListDueTime()).getTime()));
