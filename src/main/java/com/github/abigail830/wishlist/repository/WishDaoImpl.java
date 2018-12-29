@@ -127,7 +127,8 @@ public class WishDaoImpl {
 						"user_table.country as country, " +
 						"user_table.province as province, " +
 						"user_table.lang as lang, " +
-						"user_table.avatar_url as avatar_url " +
+						"user_table.avatar_url as avatar_url, " +
+						"wishlist_tbl.due_time as due_time " +
 						"from wish_tbl " +
 						"join wishlist_tbl on wishlist_tbl.id = wish_tbl.wish_list_id " +
 						"join user_tbl as user_table on wishlist_tbl.open_id = user_table.open_id " +
@@ -170,6 +171,7 @@ public class WishDaoImpl {
 			wish.setLastUpdateTime(resultSet.getTimestamp("last_update_time"));
 			wish.setWishStatus(resultSet.getString("wish_status"));
 			wish.setImplementorOpenId("implementor_open_id");
+			wish.setDueTime(resultSet.getTimestamp("due_time"));
 
 			User user = new User();
 			user.setOpenId(resultSet.getString("open_id"));

@@ -1,9 +1,6 @@
 package com.github.abigail830.wishlist.service;
 
-import com.github.abigail830.wishlist.domainv1.WishDTO;
-import com.github.abigail830.wishlist.domainv1.WishListDTO;
-import com.github.abigail830.wishlist.domainv1.WishListTimeline;
-import com.github.abigail830.wishlist.domainv1.WishListTimelineEntry;
+import com.github.abigail830.wishlist.domainv1.*;
 import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.entity.WishListDetail;
@@ -267,5 +264,29 @@ public class WishService {
                 wishListDTOs,
                 myCompletedWishCount,
                 myFriendCompletedWishCount);
+    }
+
+    public TakenWishTimeline getTakenWishTimeline(String openId) {
+        List<TakenWishDTO> takenWishDTOs = wishDao.getWishByTakenupUserID(openId).stream().map(TakenWishDTO::new).collect(Collectors.toList());
+
+        TreeMap<String, TakenWishTimelineEntry> takenWishTimelineEntryMap = new TreeMap<String, TakenWishTimelineEntry>();
+        for (TakenWishDTO takenWishDTO : takenWishDTOs) {
+            String month = takenWishDTO.getYearAndMonth();
+            TakenWishTimelineEntry takenWishTimelineEntry = takenWishTimelineEntryMap.get(month);
+            if (takenWishTimelineEntry == null) {
+                String[] yearAndMonth = month.split("-");
+                String dateToPresent = yearAndMonth[0] + "年" + yearAndMonth[1] + "月";
+                ArrayList<TakenWishDTO> takenWishDTOList = new ArrayList<>();
+                takenWishDTOList.add(takenWishDTO);
+                TakenWishTimelineEntry newTakenWishTimelineEntry = new TakenWishTimelineEntry(dateToPresent, takenWishDTOList);
+                takenWishTimelineEntryMap.put(month, newTakenWishTimelineEntry);
+            } else {
+                takenWishTimelineEntry.getTakenWishDTOList().add(takenWishDTO);
+            }
+
+        }
+        List<TakenWishTimelineEntry> resultList = new ArrayList<TakenWishTimelineEntry>(takenWishTimelineEntryMap.values());
+        Collections.reverse(resultList);
+        return new TakenWishTimeline(resultList);
     }
 }

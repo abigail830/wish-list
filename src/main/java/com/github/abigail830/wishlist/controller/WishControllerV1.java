@@ -1,9 +1,6 @@
 package com.github.abigail830.wishlist.controller;
 
-import com.github.abigail830.wishlist.domainv1.WishDTO;
-import com.github.abigail830.wishlist.domainv1.WishDashboardDTO;
-import com.github.abigail830.wishlist.domainv1.WishListDTO;
-import com.github.abigail830.wishlist.domainv1.WishListTimeline;
+import com.github.abigail830.wishlist.domainv1.*;
 import com.github.abigail830.wishlist.entity.WishListDetail;
 import com.github.abigail830.wishlist.service.UserService;
 import com.github.abigail830.wishlist.service.WishService;
@@ -234,6 +231,23 @@ public class WishControllerV1 {
 
         if (StringUtils.isNotBlank(openID)) {
             return wishService.getTakenUpWish(openID);
+        } else {
+            throw new IllegalArgumentException("Wish information is invalid");
+        }
+    }
+
+    @ApiOperation(value = "Get Taken up wish timeline",
+            notes = "获取认领愿望信息",
+            response = TakenWishTimeline.class)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
+    @RequestMapping(value = "/taken/timeline", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public TakenWishTimeline getTakenUpWishTimeline(
+            @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openID) throws ParseException {
+        logger.info("Get taken wish timeline by {}", openID);
+
+        if (StringUtils.isNotBlank(openID)) {
+            return wishService.getTakenWishTimeline(openID);
         } else {
             throw new IllegalArgumentException("Wish information is invalid");
         }

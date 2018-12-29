@@ -12,6 +12,7 @@ public class Wish {
     private String implementorOpenId;
     private User implementor;
     private User Creator;
+    private Timestamp dueTime;
 
 
     public Integer getId() {
@@ -84,6 +85,14 @@ public class Wish {
 
     public void setCreator(User creator) {
         Creator = creator;
+    }
+
+    public Timestamp getDueTime() {
+        return dueTime;
+    }
+
+    public void setDueTime(Timestamp dueTime) {
+        this.dueTime = dueTime;
     }
 
     @Override
