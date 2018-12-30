@@ -62,17 +62,6 @@ public class TakenWishDTO {
 
     }
 
-    public TakenWishDTO(Integer wishID, String description, String createTime, String lastUpdateTime,
-                   String wishStatus, UserDTO implementor, Integer wishListID) {
-        this.wishID = wishID;
-        this.description = description;
-        this.createTime = createTime;
-        this.lastUpdateTime = lastUpdateTime;
-        this.wishStatus = wishStatus;
-        this.implementor = implementor;
-        this.wishListID = wishListID;
-    }
-
     public TakenWishDTO(Wish wish) {
         this.wishID = wish.getId();
         this.description = wish.getDescription();
@@ -85,7 +74,7 @@ public class TakenWishDTO {
         this.wishStatus = wish.getWishStatus();
         this.wishListID = wish.getWishListId();
         if (wish.getDueTime() != null) {
-            this.listDueTime = dateFormatter.get().format(wish.getDueTime());
+            this.listDueTime = duedateFormatter.get().format(wish.getDueTime());
             this.dateInMonth = this.listDueTime.substring(8, 10);
             this.yearAndMonth = this.listDueTime.substring(0, 7);
         }
