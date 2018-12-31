@@ -261,9 +261,10 @@ public class WishControllerV1 {
     @RequestMapping(value = "/taken", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public List<WishDTO> takeUpWish(
-            @ApiParam(example = "1") @RequestParam(value = "id", required = false) String id,
-            @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String takeUpOpenID) throws ParseException {
-        logger.info("Take up {} wish by {}", id,takeUpOpenID);
+            @ApiParam(example = "1") @RequestParam(value = "id", required = true) String id,
+            @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = true) String takeUpOpenID,
+            @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formID", required = false) String formID) throws ParseException {
+        logger.info("Take up {} wish by {} with form ID", id,takeUpOpenID,formID);
 
         if (StringUtils.isNotBlank(takeUpOpenID) && StringUtils.isNotBlank(id)) {
             return wishService.takeupWish(id, takeUpOpenID);
