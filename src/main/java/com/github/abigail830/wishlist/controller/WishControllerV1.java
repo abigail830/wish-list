@@ -2,6 +2,7 @@ package com.github.abigail830.wishlist.controller;
 
 import com.github.abigail830.wishlist.domainv1.*;
 import com.github.abigail830.wishlist.entity.WishListDetail;
+import com.github.abigail830.wishlist.service.NotificationService;
 import com.github.abigail830.wishlist.service.UserService;
 import com.github.abigail830.wishlist.service.WishService;
 import io.swagger.annotations.ApiOperation;
@@ -12,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +32,9 @@ public class WishControllerV1 {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @ApiOperation(value = "Collect wish list detail by wish list id",
             notes = "根据愿望清单的ID获取清单内所有具体内容",
@@ -263,8 +268,12 @@ public class WishControllerV1 {
     public List<WishDTO> takeUpWish(
             @ApiParam(example = "1") @RequestParam(value = "id", required = true) String id,
             @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = true) String takeUpOpenID,
-            @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formID", required = false) String formID) throws ParseException {
-        logger.info("Take up {} wish by {} with form ID", id,takeUpOpenID,formID);
+            @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formID) throws ParseException {
+        logger.info("Take up {} wish by {} with form ID {}", id,takeUpOpenID,formID);
+        if (StringUtils.isNotBlank(formID)) {
+            logger.info("get token");
+            logger.info(notificationService.getWxToken().toString());
+        }
 
         if (StringUtils.isNotBlank(takeUpOpenID) && StringUtils.isNotBlank(id)) {
             return wishService.takeupWish(id, takeUpOpenID);
