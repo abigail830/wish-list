@@ -2,8 +2,8 @@ package com.github.abigail830.wishlist.service;
 
 
 
-import com.github.abigail830.wishlist.domainv1.WishDTO;
 import com.github.abigail830.wishlist.domainv1.WxToken;
+import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.util.HttpClientUtil;
@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -34,6 +33,8 @@ public class NotificationService {
 
     public final static String TEMPLATE_ID = "iOYn0MAVCf5w9bdy5V3aA_jA_-f2xXt9uTRE5_pggt4";
 
+    public final static String MESSAGE_TEMPLATE = "您的【listName】-【wishName】被朋友领取啦！";
+
     @Value("${app.appId}")
     private String appId;
 
@@ -47,7 +48,7 @@ public class NotificationService {
 
     }
 
-    public void notifyUser(String userOpenID, String listName, String wishDesc, String formID) {
+    public void notifyUser(String userOpenID, String takeupUserNickName, String listName, String wishDesc, String formID) {
         String access_token = getWxToken().getAccess_token();
 
         try {
@@ -72,11 +73,12 @@ public class NotificationService {
 
             JSONObject jsonObject = new JSONObject();
 
-            List<String> wishes = Arrays.asList(listName, wishDesc);
+            List<String> params = Arrays.asList(takeupUserNickName,
+                    MESSAGE_TEMPLATE.replace("listName", listName).replace("wishName", wishDesc));
 
-            for (int i = 0; i < wishes.size(); i++) {
+            for (int i = 0; i < params.size(); i++) {
                 JSONObject dataInfo = new JSONObject();
-                dataInfo.put("value", wishes.get(i));
+                dataInfo.put("value", params.get(i));
                 jsonObject.put("keyword" + (i + 1), dataInfo);
             }
 
@@ -102,9 +104,9 @@ public class NotificationService {
         }
     }
 
-    public void notifyUser(WishList wishList, Wish wish, String formID) {
+    public void notifyUser(User takeupUser, WishList wishList, Wish wish, String formID) {
 
-        notifyUser(wishList.getOpenId(),wishList.getTitle(),wish.getDescription(),formID);
+        notifyUser(wishList.getOpenId(), takeupUser.getNickName(), wishList.getTitle(),wish.getDescription(),formID);
 
     }
 

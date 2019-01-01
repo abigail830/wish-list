@@ -100,9 +100,10 @@ public class WxController {
 	@ResponseBody
 	public void notify(
 			@ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "wishOwnerOpen", required = true) String wishOwnerOpenID,
+			@ApiParam(example = "nickname") @RequestParam(value = "nickname", required = true) String takeupUserNickName,
 			@ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = true) String formID,
 			@ApiParam(example = "wishListTitle") @RequestParam(value = "title", required = true) String wishListTitle,
 			@ApiParam(example = "wishDesc") @RequestParam(value = "description", required = true) String wishDesc) {
-		notificationService.notifyUser(wishOwnerOpenID, wishListTitle, wishDesc, formID);
+		notificationService.notifyUser(wishOwnerOpenID, takeupUserNickName, wishListTitle, wishDesc, formID);
 	}
 }
