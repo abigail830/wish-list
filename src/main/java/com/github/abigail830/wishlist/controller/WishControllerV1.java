@@ -1,6 +1,7 @@
 package com.github.abigail830.wishlist.controller;
 
 import com.github.abigail830.wishlist.domainv1.*;
+import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.entity.WishListDetail;
 import com.github.abigail830.wishlist.service.NotificationService;
 import com.github.abigail830.wishlist.service.UserService;
@@ -270,13 +271,16 @@ public class WishControllerV1 {
             @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = true) String takeUpOpenID,
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formID) throws ParseException {
         logger.info("Take up {} wish by {} with form ID {}", id,takeUpOpenID,formID);
-        if (StringUtils.isNotBlank(formID)) {
-            logger.info("get token");
-            logger.info(notificationService.getWxToken().toString());
-        }
 
         if (StringUtils.isNotBlank(takeUpOpenID) && StringUtils.isNotBlank(id)) {
-            return wishService.takeupWish(id, takeUpOpenID);
+            List<WishDTO> wishDTOs = wishService.takeupWish(id, takeUpOpenID);
+            if (StringUtils.isNotBlank(formID) && wishDTOs.size() == 1 ) {
+                WishDTO takenUpWish = wishDTOs.get(0);
+                logger.info("Start to notify taken up wish {}", takenUpWish);
+                List<WishList> wishLists = wishService.getWishListByID(takenUpWish.getWishListID().toString());
+                notificationService.notifyUser(wishLists.get(0), takenUpWish, formID);
+            }
+            return wishDTOs;
         } else {
             throw new IllegalArgumentException("Wish information is invalid");
         }

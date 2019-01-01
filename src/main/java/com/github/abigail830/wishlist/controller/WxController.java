@@ -4,21 +4,20 @@ import com.github.abigail830.wishlist.domain.UserInfo;
 import com.github.abigail830.wishlist.domain.WxDecryptResponse;
 import com.github.abigail830.wishlist.domain.WxLoginResponse;
 import com.github.abigail830.wishlist.repository.UserDaoImpl;
+import com.github.abigail830.wishlist.service.NotificationService;
 import com.github.abigail830.wishlist.service.UserService;
 import com.github.abigail830.wishlist.util.HttpClientUtil;
 import com.github.abigail830.wishlist.util.JsonUtil;
 import com.github.abigail830.wishlist.util.WXBizDataCrypt;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +40,9 @@ public class WxController {
     @Resource
     private UserService userService;
 
+	@Resource
+	private NotificationService notificationService;
+
 	@ApiOperation(value = "Handle wechat login",
 			notes = "小程序用户登陆处理",
 			response = String.class)
@@ -59,6 +61,7 @@ public class WxController {
         if(wxLoginResponse.getOpenid() != null){
             userService.createUser(new UserInfo(wxLoginResponse.getOpenid()));
         }else {
+			logger.error("not able to process ws response " + resultData);
             logger.error("Fail to get openID from wechat API");
         }
 
@@ -88,5 +91,18 @@ public class WxController {
         }
 
 		return resultDate;
+	}
+
+	@ApiOperation(value = "Handle wechat notification",
+			response = String.class)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
+	@RequestMapping(value = "/notification", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public void notify(
+			@ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "wishOwnerOpen", required = true) String wishOwnerOpenID,
+			@ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = true) String formID,
+			@ApiParam(example = "wishListTitle") @RequestParam(value = "title", required = true) String wishListTitle,
+			@ApiParam(example = "wishDesc") @RequestParam(value = "description", required = true) String wishDesc) {
+		notificationService.notifyUser(wishOwnerOpenID, wishListTitle, wishDesc, formID);
 	}
 }
