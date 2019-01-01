@@ -102,7 +102,7 @@ public class NotificationService {
         }
     }
 
-    public void notifyUser(WishList wishList, WishDTO wish, String formID) {
+    public void notifyUser(WishList wishList, Wish wish, String formID) {
 
         notifyUser(wishList.getOpenId(),wishList.getTitle(),wish.getDescription(),formID);
 

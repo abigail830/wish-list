@@ -203,6 +203,10 @@ public class WishService {
         }
     }
 
+    public List<Wish> getWishByID(String id) {
+        return wishDao.getWishByID(id);
+    }
+
     public List<WishDTO>  completeWish(String id, String takeUpOpenID) {
         wishDao.completeWish(id);
         return wishDao.getWishByTakenupUserID(takeUpOpenID).stream().map(WishDTO::new).collect(Collectors.toList());

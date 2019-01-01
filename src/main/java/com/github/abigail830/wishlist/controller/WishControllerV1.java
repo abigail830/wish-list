@@ -1,6 +1,7 @@
 package com.github.abigail830.wishlist.controller;
 
 import com.github.abigail830.wishlist.domainv1.*;
+import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.entity.WishListDetail;
 import com.github.abigail830.wishlist.service.NotificationService;
@@ -274,10 +275,11 @@ public class WishControllerV1 {
 
         if (StringUtils.isNotBlank(takeUpOpenID) && StringUtils.isNotBlank(id)) {
             List<WishDTO> wishDTOs = wishService.takeupWish(id, takeUpOpenID);
-            if (StringUtils.isNotBlank(formID) && wishDTOs.size() == 1 ) {
-                WishDTO takenUpWish = wishDTOs.get(0);
+            List<Wish> wishByID = wishService.getWishByID(id);
+            if (StringUtils.isNotBlank(formID) && wishByID.size() == 1 ) {
+                Wish takenUpWish = wishByID.get(0);
                 logger.info("Start to notify taken up wish {}", takenUpWish);
-                List<WishList> wishLists = wishService.getWishListByID(takenUpWish.getWishListID().toString());
+                List<WishList> wishLists = wishService.getWishListByID(takenUpWish.getWishListId().toString());
                 notificationService.notifyUser(wishLists.get(0), takenUpWish, formID);
             }
             return wishDTOs;
