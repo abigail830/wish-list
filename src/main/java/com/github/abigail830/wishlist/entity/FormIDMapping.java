@@ -10,6 +10,16 @@ public class FormIDMapping {
     private Timestamp createTime;
     private Timestamp dueTime;
 
+    public FormIDMapping() {
+
+    }
+
+    public FormIDMapping(String openId, String formId, Timestamp createTime, Timestamp dueTime) {
+        this.openId = openId;
+        this.formId = formId;
+        this.createTime = createTime;
+        this.dueTime = dueTime;
+    }
 
     public String getOpenId() {
         return openId;

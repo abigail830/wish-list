@@ -49,3 +49,11 @@ CREATE TABLE user_event (
 create INDEX open_id on wishlist.wishlist_tbl (open_id);
 
 create INDEX implementor_open_id on wishlist.wish_tbl (implementor_open_id);
+
+CREATE TABLE form_id_map_tbl (
+  open_id varchar(100) NOT NULL,
+  form_id varchar(100) NOT NULL,
+  create_time TIMESTAMP NOT NULL,
+  due_time TIMESTAMP NOT NULL,
+  PRIMARY KEY (form_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

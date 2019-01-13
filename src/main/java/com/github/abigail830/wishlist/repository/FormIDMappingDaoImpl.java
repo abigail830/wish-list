@@ -7,11 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Date;
 import java.util.List;
 
+@Repository
 public class FormIDMappingDaoImpl {
 
     private static final Logger logger = LoggerFactory.getLogger(FormIDMappingDaoImpl.class);
@@ -23,6 +24,7 @@ public class FormIDMappingDaoImpl {
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
 
     public boolean createFormIDMapping(String openID, String formID, Date createTime, Date dueTime) {
         logger.info("Going to create form id mapping: openID={}, formID={}, createTime={}, dueTime={}",
@@ -42,8 +44,6 @@ public class FormIDMappingDaoImpl {
             logger.error("Failed to insert form id mapping. ", ex);
             return false;
         }
-
-
     }
 
     public boolean deleteFormIDMapping(String formID) {
