@@ -119,7 +119,7 @@ public class WxController {
 	@ApiOperation(value = "Get wechat form id mapping - read only",
 			response = List.class)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-	@RequestMapping(value = "/formid", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value = "/formid/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public List<FormIDMappingDTO> getFormID(
 			@ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openID", required = true) String openID) {
