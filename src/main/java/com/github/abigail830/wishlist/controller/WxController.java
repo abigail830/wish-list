@@ -3,7 +3,9 @@ package com.github.abigail830.wishlist.controller;
 import com.github.abigail830.wishlist.domain.UserInfo;
 import com.github.abigail830.wishlist.domain.WxDecryptResponse;
 import com.github.abigail830.wishlist.domain.WxLoginResponse;
+import com.github.abigail830.wishlist.domainv1.FormIDMappingDTO;
 import com.github.abigail830.wishlist.repository.UserDaoImpl;
+import com.github.abigail830.wishlist.service.FormIDMappingService;
 import com.github.abigail830.wishlist.service.NotificationService;
 import com.github.abigail830.wishlist.service.UserService;
 import com.github.abigail830.wishlist.util.HttpClientUtil;
@@ -21,6 +23,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 小程序相关登录和解密接口
@@ -42,6 +47,9 @@ public class WxController {
 
 	@Resource
 	private NotificationService notificationService;
+
+	@Resource
+	private FormIDMappingService formIDMappingService;
 
 	@ApiOperation(value = "Handle wechat login",
 			notes = "小程序用户登陆处理",
@@ -106,4 +114,15 @@ public class WxController {
 			@ApiParam(example = "wishDesc") @RequestParam(value = "description", required = true) String wishDesc) {
 		notificationService.notifyUser(wishOwnerOpenID, takeupUserNickName, wishListTitle, wishDesc, formID);
 	}
+
+	@ApiOperation(value = "Get wechat form id mapping",
+			response = List.class)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
+	@RequestMapping(value = "/formid", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public List<FormIDMappingDTO> getFormID(
+			@ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openID", required = true) String openID) {
+		return formIDMappingService.getFormIDs(openID).stream().map(FormIDMappingDTO::new).collect(Collectors.toList());
+	}
+
 }
