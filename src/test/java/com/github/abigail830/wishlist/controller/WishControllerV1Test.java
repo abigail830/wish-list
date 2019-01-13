@@ -82,11 +82,11 @@ public class WishControllerV1Test {
         wishListDTO.addWish(wishDTO);
         wishListDTO.addWish(wishDTO2);
 
-        WishListDTO wishListDTOAsResponse = wishController.postNewWishList(wishListDTO);
+        WishListDTO wishListDTOAsResponse = wishController.postNewWishList(wishListDTO, null);
         System.out.println(wishListDTOAsResponse);
         assertThat(wishListDTOAsResponse.getListId(), is(notNullValue()));
         String id = wishListDTOAsResponse.getListId().toString();
-        WishDashboardDTO wishListsByID = wishController.getWishListsByID(id, null);
+        WishDashboardDTO wishListsByID = wishController.getWishListsByID(id, null, null);
         assertThat(wishListsByID.getWishLists().get(0).getWishes().size(), is(2));
     }
 

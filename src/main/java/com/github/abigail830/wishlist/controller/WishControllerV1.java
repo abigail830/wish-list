@@ -5,6 +5,7 @@ import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.entity.WishListDetail;
+import com.github.abigail830.wishlist.service.FormIDMappingService;
 import com.github.abigail830.wishlist.service.NotificationService;
 import com.github.abigail830.wishlist.service.UserService;
 import com.github.abigail830.wishlist.service.WishService;
@@ -39,6 +40,9 @@ public class WishControllerV1 {
     @Autowired
     private NotificationService notificationService;
 
+    @Autowired
+    private FormIDMappingService formIDMappingService;
+
     @ApiOperation(value = "Collect wish list detail by wish list id",
             notes = "根据愿望清单的ID获取清单内所有具体内容",
             response = WishListDTO.class)
@@ -70,8 +74,12 @@ public class WishControllerV1 {
     @ResponseBody
     public WishDashboardDTO getWishListsByID(
             @ApiParam(example = "1") @RequestParam(value = "id", required = false) String id,
-            @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openId) {
+            @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openId,
+            @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) {
 
+        if (StringUtils.isNotBlank(openId) && StringUtils.isNotBlank(formId)) {
+            formIDMappingService.contributeFormID(openId,formId);
+        }
 
         if (StringUtils.isNotBlank(id)){
             logger.info("User query wishService.getWishListByID: {}", id);
@@ -108,9 +116,12 @@ public class WishControllerV1 {
     @RequestMapping(value = "/lists/timeline", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public WishListTimeline getWishListsTimeLineByOpenID(
-            @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openId) {
-
+            @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openId,
+            @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "openId", required = false) String formId) {
         logger.info("Query Timeline by openID {}", openId);
+        if (StringUtils.isNotBlank(openId) && StringUtils.isNotBlank(formId)) {
+            formIDMappingService.contributeFormID(openId,formId);
+        }
         if (StringUtils.isNotBlank(openId)){
             return wishService.getWishListTimeLine(openId);
 
@@ -126,8 +137,13 @@ public class WishControllerV1 {
     @RequestMapping(value = "/lists", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public WishListDTO postNewWishList(
-            @RequestBody WishListDTO wishList) throws ParseException {
+            @RequestBody WishListDTO wishList,
+            @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
         logger.info("Add new wish list {}", wishList);
+
+        if (StringUtils.isNotBlank(wishList.getListOpenId()) && StringUtils.isNotBlank(formId)) {
+            formIDMappingService.contributeFormID(wishList.getListOpenId(),formId);
+        }
 
         if (StringUtils.isNotBlank(wishList.getListOpenId()) && StringUtils.isNotBlank(wishList.getListDescription())) {
             return wishService.createWishList(wishList);
@@ -144,8 +160,14 @@ public class WishControllerV1 {
     @RequestMapping(value = "/lists", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public WishDashboardDTO deleteNewWishList(
-            @RequestBody WishListDTO wishList) throws ParseException {
+            @RequestBody WishListDTO wishList,
+            @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
         logger.info("Delete new wish list {}", wishList);
+
+        if (StringUtils.isNotBlank(wishList.getListOpenId()) && StringUtils.isNotBlank(formId)) {
+            formIDMappingService.contributeFormID(wishList.getListOpenId(),formId);
+        }
+
 
         if (StringUtils.isNotBlank(wishList.getListOpenId()) && wishList.getListId() != null) {
             wishService.deleteWishList(wishList);
@@ -163,8 +185,13 @@ public class WishControllerV1 {
     @RequestMapping(value = "/lists", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public WishListDTO updateNewWishList(
-            @RequestBody WishListDTO wishList) throws ParseException {
+            @RequestBody WishListDTO wishList,
+            @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
         logger.info("Update new wish list {}", wishList);
+
+        if (StringUtils.isNotBlank(wishList.getListOpenId()) && StringUtils.isNotBlank(formId)) {
+            formIDMappingService.contributeFormID(wishList.getListOpenId(),formId);
+        }
 
         if (wishList.getListId() != null) {
              wishService.updateWishList(wishList);
@@ -181,8 +208,11 @@ public class WishControllerV1 {
     @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public WishDTO addWishToWishList(
-            @RequestBody WishDTO wishDTO) throws ParseException {
+            @RequestBody WishDTO wishDTO,
+            @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
         logger.info("Add new wish to wish list {}", wishDTO);
+
+        formIDMappingService.contributeFormID(wishDTO,formId);
 
         if (wishDTO.getWishListID() != null && wishDTO.getDescription() != null) {
             return wishService.addNewWish(wishDTO);
@@ -198,8 +228,11 @@ public class WishControllerV1 {
     @RequestMapping(value = "", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public WishDTO deleteWish(
-            @RequestBody WishDTO wishDTO) throws ParseException {
+            @RequestBody WishDTO wishDTO,
+            @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
         logger.info("Delete wish from wish list {}", wishDTO);
+
+        formIDMappingService.contributeFormID(wishDTO,formId);
 
         if (wishDTO.getWishID() != null) {
             wishService.deleteWish(wishDTO);
@@ -216,8 +249,11 @@ public class WishControllerV1 {
     @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public WishDTO updateWish(
-            @RequestBody WishDTO wishDTO) throws ParseException {
+            @RequestBody WishDTO wishDTO,
+            @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
         logger.info("Update wish", wishDTO);
+
+        formIDMappingService.contributeFormID(wishDTO,formId);
 
         if (wishDTO.getWishID() != null) {
             wishService.updateWish(wishDTO);
@@ -234,8 +270,13 @@ public class WishControllerV1 {
     @RequestMapping(value = "/taken", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public List<WishDTO> getTakenUpWish(
-            @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openID) throws ParseException {
+            @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openID,
+            @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
         logger.info("Get wish by {}", openID);
+
+        if (StringUtils.isNotBlank(openID) && StringUtils.isNotBlank(formId)) {
+            formIDMappingService.contributeFormID(openID,formId);
+        }
 
         if (StringUtils.isNotBlank(openID)) {
             return wishService.getTakenUpWish(openID);
@@ -251,8 +292,13 @@ public class WishControllerV1 {
     @RequestMapping(value = "/taken/timeline", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public TakenWishTimeline getTakenUpWishTimeline(
-            @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openID) throws ParseException {
+            @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openID,
+            @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
         logger.info("Get taken wish timeline by {}", openID);
+
+        if (StringUtils.isNotBlank(openID) && StringUtils.isNotBlank(formId)) {
+            formIDMappingService.contributeFormID(openID,formId);
+        }
 
         if (StringUtils.isNotBlank(openID)) {
             return wishService.getTakenWishTimeline(openID);
@@ -274,17 +320,12 @@ public class WishControllerV1 {
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formID) throws ParseException {
         logger.info("Take up {} wish by {} with form ID {}", id,takeUpOpenID,formID);
 
+        if (StringUtils.isNotBlank(takeUpOpenID) && StringUtils.isNotBlank(formID)) {
+            formIDMappingService.contributeFormID(takeUpOpenID,formID);
+        }
+
         if (StringUtils.isNotBlank(takeUpOpenID) && StringUtils.isNotBlank(id)) {
-            List<WishDTO> wishDTOs = wishService.takeupWish(id, takeUpOpenID);
-            List<Wish> wishByID = wishService.getWishByID(id);
-            if (StringUtils.isNotBlank(formID) && wishByID.size() == 1 ) {
-                Wish takenUpWish = wishByID.get(0);
-                logger.info("Start to notify taken up wish {}", takenUpWish);
-                List<WishList> wishLists = wishService.getWishListByID(takenUpWish.getWishListId().toString());
-                User takeUpUser = userService.getUserByOpenId(takeUpOpenID);
-                notificationService.notifyUser(takeUpUser, wishLists.get(0), takenUpWish, formID);
-            }
-            return wishDTOs;
+            return wishService.takeupWish(id, takeUpOpenID);
         } else {
             throw new IllegalArgumentException("Wish information is invalid");
         }
@@ -315,8 +356,13 @@ public class WishControllerV1 {
     @ResponseBody
     public List<WishDTO>  completeWish(
             @ApiParam(example = "1") @RequestParam(value = "id", required = false) String id,
-            @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String takeUpOpenID) throws ParseException {
+            @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String takeUpOpenID,
+            @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formID) throws ParseException {
         logger.info("Complete wish {}", id);
+
+        if (StringUtils.isNotBlank(takeUpOpenID) && StringUtils.isNotBlank(formID)) {
+            formIDMappingService.contributeFormID(takeUpOpenID,formID);
+        }
 
         if (StringUtils.isNotBlank(id)) {
             return wishService.completeWish(id, takeUpOpenID);
