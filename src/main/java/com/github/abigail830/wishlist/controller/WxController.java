@@ -4,6 +4,7 @@ import com.github.abigail830.wishlist.domain.UserInfo;
 import com.github.abigail830.wishlist.domain.WxDecryptResponse;
 import com.github.abigail830.wishlist.domain.WxLoginResponse;
 import com.github.abigail830.wishlist.domainv1.FormIDMappingDTO;
+import com.github.abigail830.wishlist.entity.FormIDMapping;
 import com.github.abigail830.wishlist.repository.UserDaoImpl;
 import com.github.abigail830.wishlist.service.FormIDMappingService;
 import com.github.abigail830.wishlist.service.NotificationService;
@@ -115,7 +116,7 @@ public class WxController {
 		notificationService.notifyUser(wishOwnerOpenID, takeupUserNickName, wishListTitle, wishDesc, formID);
 	}
 
-	@ApiOperation(value = "Get wechat form id mapping",
+	@ApiOperation(value = "Get wechat form id mapping - read only",
 			response = List.class)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
 	@RequestMapping(value = "/formid", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -125,4 +126,19 @@ public class WxController {
 		return formIDMappingService.getFormIDs(openID).stream().map(FormIDMappingDTO::new).collect(Collectors.toList());
 	}
 
+
+	@ApiOperation(value = "Take one wechat form id mapping - the taken up will be deleted ",
+			response = FormIDMappingDTO.class)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
+	@RequestMapping(value = "/formid", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public FormIDMappingDTO takeFormID(
+			@ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openID", required = true) String openID) {
+		FormIDMapping formIDMapping = formIDMappingService.takeFormID(openID);
+		if (formIDMapping != null) {
+			return new FormIDMappingDTO(formIDMapping);
+		} else {
+			return null;
+		}
+	}
 }
