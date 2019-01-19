@@ -21,4 +21,8 @@ public class Constants {
     public static final String HTTP_STATUS_SUCCESS = "SUCCESS";
     public static final String HTTP_STATUS_VALIDATION_FAIL = "VALIDATION_FAIL";
 
+    public static final String COUPON_TYPE_WELCOME = "WELCOME_COUPON";
+
+    public static final String COUPON_STATUS_NEW = "NEW";
+    public static final String COUPON_STATUS_TAKEUP = "TAKEUP";
 }
