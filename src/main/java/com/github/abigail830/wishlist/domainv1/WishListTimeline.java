@@ -23,15 +23,21 @@ public class WishListTimeline {
     @JsonProperty("myFriendsCompletedWishCount")
     private int myFriendsCompletedWishCount;
 
+    @JsonProperty("outstandingCoupon")
+    private CouponDTO outstandingCoupon;
+
 
     public WishListTimeline(List<WishListTimelineEntry> wishListTimelineEntryList,
                             List<WishListDTO> wishLists,
-                            int myCompletedWishCount, int myFriendsCompletedWishCount) {
+                            int myCompletedWishCount,
+                            int myFriendsCompletedWishCount,
+                            CouponDTO outstandingCoupon) {
         this.wishListTimelineEntryList = wishListTimelineEntryList;
         this.wishLists = wishLists;
         this.hasWishList = !wishLists.isEmpty();
         this.myCompletedWishCount = myCompletedWishCount;
         this.myFriendsCompletedWishCount = myFriendsCompletedWishCount;
+        this.outstandingCoupon = outstandingCoupon;
     }
 
 
@@ -54,5 +60,13 @@ public class WishListTimeline {
 
     public int getMyFriendsCompletedWishCount() {
         return myFriendsCompletedWishCount;
+    }
+
+    public CouponDTO getOutstandingCoupon() {
+        return outstandingCoupon;
+    }
+
+    public void setOutstandingCoupon(CouponDTO outstandingCoupon) {
+        this.outstandingCoupon = outstandingCoupon;
     }
 }

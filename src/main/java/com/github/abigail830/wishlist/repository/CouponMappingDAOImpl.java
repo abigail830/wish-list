@@ -62,6 +62,11 @@ public class CouponMappingDAOImpl {
         return jdbcTemplate.query("SELECT * FROM coupon_map_tbl WHERE open_id=?", rowMapper, openId);
     }
 
+    public List<CouponMapping> queryCouponByCouponType(String couponType) {
+        logger.info("Going to query coupon mapping by coupon type: couponType={}", couponType);
+        return jdbcTemplate.query("SELECT * FROM coupon_map_tbl WHERE coupon_type=?", rowMapper, couponType);
+    }
+
     public List<CouponMapping> queryCoupon(String openId, String couponType) {
         logger.info("Going to query coupon mapping by open id: openID={}, couponType={}", openId, couponType);
         return jdbcTemplate.query("SELECT * FROM coupon_map_tbl WHERE open_id=? AND coupon_type=?", rowMapper, openId, couponType);

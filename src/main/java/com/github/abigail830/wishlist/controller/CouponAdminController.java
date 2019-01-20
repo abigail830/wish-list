@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -33,9 +34,24 @@ public class CouponAdminController {
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public List<CouponDTO> getWelcomeCoupon(
-            @ApiParam(example = "oEmJ75T7IHx-3zUjMteodZu5g09A") @RequestParam(value = "openID", required = true) String openID) {
-        return welcomeCouponService.getWelcomeCoupon(openID).stream().map(CouponDTO::new).collect(Collectors.toList());
+            @ApiParam(example = "oEmJ75T7IHx-3zUjMteodZu5g09A") @RequestParam(value = "openID", required = false) String openID) {
+        if (StringUtils.isNotBlank(openID)) {
+            return welcomeCouponService.getWelcomeCoupon(openID).stream().map(CouponDTO::new).collect(Collectors.toList());
+        } else {
+            return welcomeCouponService.getWelcomeCoupon().stream().map(CouponDTO::new).collect(Collectors.toList());
+        }
     }
+
+    @ApiOperation(value = "Get outstanding welcome coupon which is in NEW status",
+            response = List.class)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
+    @RequestMapping(value = "/outstanding", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public CouponDTO getOutstandingWelcomeCoupon(
+            @ApiParam(example = "oEmJ75T7IHx-3zUjMteodZu5g09A") @RequestParam(value = "openID", required = true) String openID) {
+        return welcomeCouponService.getOutstandingWelcomeCoupon(openID);
+    }
+
 
 
     @ApiOperation(value = "Make coupon as taken up, so it won't be outstanding anymore",

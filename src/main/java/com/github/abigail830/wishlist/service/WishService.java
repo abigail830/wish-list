@@ -40,8 +40,6 @@ public class WishService {
     @Autowired
     private ComplexWishDaoImpl complexWishDao;
 
-    @Autowired
-    private UserEventImpl userEventDao;
 
     private static final ThreadLocal<SimpleDateFormat> dateFormatter = new ThreadLocal<SimpleDateFormat>() {
         @Override protected SimpleDateFormat initialValue() {
@@ -123,10 +121,6 @@ public class WishService {
 
     public void setComplexWishDao (ComplexWishDaoImpl complexWishDao) {
         this.complexWishDao = complexWishDao;
-    }
-
-    public void setUserEventDao(UserEventImpl userEventDao) {
-        this.userEventDao = userEventDao;
     }
 
     public WelcomeCouponService getWelcomeCouponService() {
@@ -273,10 +267,14 @@ public class WishService {
         }
         List<WishListTimelineEntry> resultList = new ArrayList<WishListTimelineEntry>(wishListTimelineEntryMap.values());
         Collections.reverse(resultList);
+
+        CouponDTO outstandingWelcomeCoupon = welcomeCouponService.getOutstandingWelcomeCoupon(openId);
+
         return new WishListTimeline(resultList,
                 wishListDTOs,
                 myCompletedWishCount,
-                myFriendCompletedWishCount);
+                myFriendCompletedWishCount,
+                outstandingWelcomeCoupon);
     }
 
     public TakenWishTimeline getTakenWishTimeline(String openId) {

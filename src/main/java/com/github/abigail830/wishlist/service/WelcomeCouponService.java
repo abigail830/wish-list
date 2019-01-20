@@ -1,5 +1,6 @@
 package com.github.abigail830.wishlist.service;
 
+import com.github.abigail830.wishlist.domainv1.CouponDTO;
 import com.github.abigail830.wishlist.entity.CouponMapping;
 import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.Wish;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class WelcomeCouponService {
@@ -37,6 +39,10 @@ public class WelcomeCouponService {
         return couponMappingDAO.queryCoupon(openID, Constants.COUPON_TYPE_WELCOME);
     }
 
+    public List<CouponMapping> getWelcomeCoupon() {
+        return couponMappingDAO.queryCouponByCouponType(Constants.COUPON_TYPE_WELCOME);
+    }
+
     public boolean hasWelcomeCoupon(String openID) {
         List<CouponMapping> couponMappings = getWelcomeCoupon(openID);
         return isCouponExists(couponMappings);
@@ -45,6 +51,20 @@ public class WelcomeCouponService {
     public boolean hasWelcomeCouponOutstanding(String openID) {
         List<CouponMapping> couponMappings = getWelcomeCoupon(openID);
         return isCouponOutstanding(couponMappings);
+    }
+
+    public CouponDTO getOutstandingWelcomeCoupon(String openID) {
+        List<CouponMapping> couponMappings = getWelcomeCoupon(openID);
+        if (isCouponExists(couponMappings)) {
+            List<CouponMapping> coupons = couponMappings.stream().filter(item -> Constants.COUPON_STATUS_NEW.equals(item.getCouponStatus())).collect(Collectors.toList());
+            if (coupons.size() > 0) {
+                return new CouponDTO(coupons.get(0));
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
     public CouponMapping takeUpWelcomeCoupon(String openID) {

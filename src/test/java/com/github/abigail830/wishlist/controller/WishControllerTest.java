@@ -176,7 +176,6 @@ public class WishControllerTest {
         wishService.setComplexWishDao(complexWishDao);
         wishService.setWishDao(wishDao);
         wishService.setWishListDao(wishListDao);
-        wishService.setUserEventDao(userEvent);
 
         UserService userService = new UserService();
         userService.setUserEventDao(userEvent);
