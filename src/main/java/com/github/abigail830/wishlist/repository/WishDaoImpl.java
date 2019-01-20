@@ -157,7 +157,7 @@ public class WishDaoImpl {
 						"from wish_tbl " +
 						"join wishlist_tbl on wishlist_tbl.id = wish_tbl.wish_list_id " +
 						"join user_tbl as user_table on wishlist_tbl.open_id = user_table.open_id " +
-						"where wishlist_tbl.wish_list_id = ?" ,
+						"where wishlist_tbl.id = ?" ,
 				wishRowMapperWithCreator, wishListID);
 	}
 
