@@ -29,6 +29,9 @@ public class WishService {
     private static final Logger logger = LoggerFactory.getLogger(WishService.class);
 
     @Autowired
+    private WelcomeCouponService welcomeCouponService;
+
+    @Autowired
     private WishListDaoImpl wishListDao;
 
     @Autowired
@@ -126,6 +129,10 @@ public class WishService {
         this.userEventDao = userEventDao;
     }
 
+    public WelcomeCouponService getWelcomeCouponService() {
+        return welcomeCouponService;
+    }
+
     public void deleteWishList(WishListDTO wishListDTO) {
         List<WishList> wishLists = wishListDao.getWishListById(wishListDTO.getListId().toString());
         if (wishLists.size() > 0 ) {
@@ -195,6 +202,8 @@ public class WishService {
         List<Wish> wishByID = wishDao.getWishByID(id);
         if (wishByID.size() > 0) {
             wishDao.takeupWish(id, takeUpOpenID);
+            List<Wish> wishList = wishDao.getWishDetailByWishListID(wishByID.get(0).getWishListId().toString());
+            welcomeCouponService.deliverWelcomeCoupon(wishList);
             return wishDao.getWishByWishListId(wishByID.get(0).getWishListId().toString())
                     .stream()
                     .map(WishDTO::new).collect(Collectors.toList()) ;

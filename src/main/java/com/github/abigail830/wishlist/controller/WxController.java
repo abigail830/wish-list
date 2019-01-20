@@ -47,9 +47,6 @@ public class WxController {
     private UserService userService;
 
 	@Resource
-	private NotificationService notificationService;
-
-	@Resource
 	private FormIDMappingService formIDMappingService;
 
 	@ApiOperation(value = "Handle wechat login",
@@ -100,20 +97,6 @@ public class WxController {
         }
 
 		return resultDate;
-	}
-
-	@ApiOperation(value = "Handle wechat notification",
-			response = String.class)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-	@RequestMapping(value = "/notification", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
-	public void notify(
-			@ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "wishOwnerOpen", required = true) String wishOwnerOpenID,
-			@ApiParam(example = "nickname") @RequestParam(value = "nickname", required = true) String takeupUserNickName,
-			@ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = true) String formID,
-			@ApiParam(example = "wishListTitle") @RequestParam(value = "title", required = true) String wishListTitle,
-			@ApiParam(example = "wishDesc") @RequestParam(value = "description", required = true) String wishDesc) {
-		notificationService.notifyUser(wishOwnerOpenID, takeupUserNickName, wishListTitle, wishDesc, formID);
 	}
 
 	@ApiOperation(value = "Get wechat form id mapping - read only",

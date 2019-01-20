@@ -3,6 +3,7 @@ package com.github.abigail830.wishlist.service;
 
 
 import com.github.abigail830.wishlist.domainv1.WxToken;
+import com.github.abigail830.wishlist.entity.FormIDMapping;
 import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishList;
@@ -11,6 +12,7 @@ import com.github.abigail830.wishlist.util.JsonUtil;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +37,11 @@ public class NotificationService {
 
     public final static String MESSAGE_TEMPLATE = "您的【listName】-【wishName】被朋友领取啦！";
 
+    public final static String COUPON_MESSAGE_TEMPLATE = "您有新的卡券,请登陆小程序领取！";
+
+    @Autowired
+    FormIDMappingService formIDMappingService;
+
     @Value("${app.appId}")
     private String appId;
 
@@ -48,7 +55,7 @@ public class NotificationService {
 
     }
 
-    public void notifyUser(String userOpenID, String takeupUserNickName, String listName, String wishDesc, String formID) {
+    public void notifyUser(String userOpenID, List<String> params, String formID) {
         String access_token = getWxToken().getAccess_token();
 
         try {
@@ -72,9 +79,6 @@ public class NotificationService {
             obj.put("form_id", formID);
 
             JSONObject jsonObject = new JSONObject();
-
-            List<String> params = Arrays.asList(takeupUserNickName,
-                    MESSAGE_TEMPLATE.replace("listName", listName).replace("wishName", wishDesc));
 
             for (int i = 0; i < params.size(); i++) {
                 JSONObject dataInfo = new JSONObject();
@@ -105,10 +109,24 @@ public class NotificationService {
     }
 
     public void notifyUser(User takeupUser, WishList wishList, Wish wish, String formID) {
-
-        notifyUser(wishList.getOpenId(), takeupUser.getNickName(), wishList.getTitle(),wish.getDescription(),formID);
+        List<String> params = Arrays.asList(takeupUser.getNickName(),
+                MESSAGE_TEMPLATE.replace("listName", wishList.getTitle()).replace("wishName", wish.getDescription()));
+        notifyUser(wishList.getOpenId(), params, formID);
 
     }
 
 
+    public void notifyCoupon(User user) {
+        FormIDMapping formIDMapping =
+                formIDMappingService.takeFormID(user.getOpenId());
+        if (formIDMapping != null) {
+            logger.info("This form ID {} is used for notify user: {}", formIDMapping, user);
+            List<String> params = Arrays.asList(user.getNickName(),
+                    COUPON_MESSAGE_TEMPLATE);
+            notifyUser(user.getOpenId(), params, formIDMapping.getFormId());
+        } else {
+            logger.info("There is no form id for this user: {} ", user);
+        }
+
+    }
 }

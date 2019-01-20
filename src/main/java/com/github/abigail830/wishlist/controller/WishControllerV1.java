@@ -1,9 +1,6 @@
 package com.github.abigail830.wishlist.controller;
 
 import com.github.abigail830.wishlist.domainv1.*;
-import com.github.abigail830.wishlist.entity.User;
-import com.github.abigail830.wishlist.entity.Wish;
-import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.entity.WishListDetail;
 import com.github.abigail830.wishlist.service.FormIDMappingService;
 import com.github.abigail830.wishlist.service.NotificationService;
@@ -17,7 +14,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 

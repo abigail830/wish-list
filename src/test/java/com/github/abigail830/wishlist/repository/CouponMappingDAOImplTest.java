@@ -90,4 +90,17 @@ public class CouponMappingDAOImplTest {
         assertThat(couponMappings.get(0).getOpenId(), is("test-open-id1"));
         assertThat(couponMappings.get(0).getCoupon(), is("coupon1"));
     }
+
+    @Test
+    public void testCanDeleteCoupon() throws Exception {
+        CouponMappingDAOImpl couponMappingDAO = new CouponMappingDAOImpl();
+        couponMappingDAO.setJdbcTemplate(jdbcTemplate);
+        assertThat(couponMappingDAO.createCouponMapping(
+                new CouponMapping("test-open-id1", "coupon1", Constants.COUPON_TYPE_WELCOME, Constants.COUPON_STATUS_NEW)), is(true));
+        List<CouponMapping> couponMappings = couponMappingDAO.queryCoupon("test-open-id1", Constants.COUPON_TYPE_WELCOME);
+        assertThat(couponMappings.size(), is(1));
+        assertThat(couponMappingDAO.deleteCoupon("test-open-id1", Constants.COUPON_TYPE_WELCOME), is(true));
+        couponMappings = couponMappingDAO.queryCoupon("test-open-id1", Constants.COUPON_TYPE_WELCOME);
+        assertThat(couponMappings.size(), is(0));
+    }
 }

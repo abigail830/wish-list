@@ -68,4 +68,15 @@ public class CouponMappingDAOImpl {
     }
 
 
+    public boolean deleteCoupon(String openID, String couponType) {
+        try {
+            logger.info("Delete coupon record for openID {} couponType {}", openID, couponType);
+            int result = jdbcTemplate.update(
+                    "DELETE FROM coupon_map_tbl WHERE open_id=? AND coupon_type=?", openID, couponType);
+            return result == 1;
+        } catch (Exception ex) {
+            logger.error("Failed to delete coupon mapping. ", ex);
+            return false;
+        }
+    }
 }
