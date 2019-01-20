@@ -77,6 +77,7 @@ public class NotificationService {
             obj.put("touser", userOpenID);
             obj.put("template_id", TEMPLATE_ID);
             obj.put("form_id", formID);
+            obj.put("page", "pages/index_new/index_new");
 
             JSONObject jsonObject = new JSONObject();
 
