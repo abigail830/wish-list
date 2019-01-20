@@ -35,6 +35,9 @@ mybatis:
 app:
   appId: "wxa823794835f994b3"
   appSecret: "1e0d9911438978e850061262a1c58889"
+wxservice:
+  appId: "wxf21ef2401686aaf5"
+  secret: "d5d152323f6baf256b7dd748d5bb3e80"
 info:
   github: https://github.com/abigail830/wish-list
   jitpack: https://jitpack.io/#abigail830/wish-list
