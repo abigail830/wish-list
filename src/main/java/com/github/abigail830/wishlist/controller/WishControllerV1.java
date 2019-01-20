@@ -31,12 +31,6 @@ public class WishControllerV1 {
     private WishService wishService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private NotificationService notificationService;
-
-    @Autowired
     private FormIDMappingService formIDMappingService;
 
     @ApiOperation(value = "Collect wish list detail by wish list id",
@@ -72,13 +66,13 @@ public class WishControllerV1 {
             @ApiParam(example = "1") @RequestParam(value = "id", required = false) String id,
             @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openId,
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) {
+        logger.info("User query wishService.getWishListByID: {} , fromID: {} ", id, formId);
 
         if (StringUtils.isNotBlank(openId) && StringUtils.isNotBlank(formId)) {
             formIDMappingService.contributeFormID(openId,formId);
         }
 
         if (StringUtils.isNotBlank(id)){
-            logger.info("User query wishService.getWishListByID: {}", id);
             WishListDetail wishListDetail = wishService.getWishListDetailByWishListID(id);
             if(wishListDetail != null){
                 WishDashboardDTO response = new WishDashboardDTO(new WishListDTO(wishListDetail) ,
@@ -113,8 +107,8 @@ public class WishControllerV1 {
     @ResponseBody
     public WishListTimeline getWishListsTimeLineByOpenID(
             @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openId,
-            @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "openId", required = false) String formId) {
-        logger.info("Query Timeline by openID {}", openId);
+            @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) {
+        logger.info("Query Timeline by openID {} , formID {}", openId, formId);
         if (StringUtils.isNotBlank(openId) && StringUtils.isNotBlank(formId)) {
             formIDMappingService.contributeFormID(openId,formId);
         }
@@ -135,7 +129,7 @@ public class WishControllerV1 {
     public WishListDTO postNewWishList(
             @RequestBody WishListDTO wishList,
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
-        logger.info("Add new wish list {}", wishList);
+        logger.info("Add new wish list {}, formID {} ", wishList, formId);
 
         if (StringUtils.isNotBlank(wishList.getListOpenId()) && StringUtils.isNotBlank(formId)) {
             formIDMappingService.contributeFormID(wishList.getListOpenId(),formId);
@@ -158,7 +152,7 @@ public class WishControllerV1 {
     public WishDashboardDTO deleteNewWishList(
             @RequestBody WishListDTO wishList,
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
-        logger.info("Delete new wish list {}", wishList);
+        logger.info("Delete new wish list {}, formID {}", wishList, formId);
 
         if (StringUtils.isNotBlank(wishList.getListOpenId()) && StringUtils.isNotBlank(formId)) {
             formIDMappingService.contributeFormID(wishList.getListOpenId(),formId);
@@ -183,7 +177,7 @@ public class WishControllerV1 {
     public WishListDTO updateNewWishList(
             @RequestBody WishListDTO wishList,
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
-        logger.info("Update new wish list {}", wishList);
+        logger.info("Update new wish list {}, formID {}", wishList, formId);
 
         if (StringUtils.isNotBlank(wishList.getListOpenId()) && StringUtils.isNotBlank(formId)) {
             formIDMappingService.contributeFormID(wishList.getListOpenId(),formId);
@@ -206,7 +200,7 @@ public class WishControllerV1 {
     public WishDTO addWishToWishList(
             @RequestBody WishDTO wishDTO,
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
-        logger.info("Add new wish to wish list {}", wishDTO);
+        logger.info("Add new wish to wish list {}, formID {}", wishDTO, formId);
 
         formIDMappingService.contributeFormID(wishDTO,formId);
 
@@ -226,7 +220,7 @@ public class WishControllerV1 {
     public WishDTO deleteWish(
             @RequestBody WishDTO wishDTO,
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
-        logger.info("Delete wish from wish list {}", wishDTO);
+        logger.info("Delete wish from wish list {} formID {}", wishDTO, formId);
 
         formIDMappingService.contributeFormID(wishDTO,formId);
 
@@ -247,7 +241,7 @@ public class WishControllerV1 {
     public WishDTO updateWish(
             @RequestBody WishDTO wishDTO,
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
-        logger.info("Update wish", wishDTO);
+        logger.info("Update wish {}, formID {}", wishDTO, formId);
 
         formIDMappingService.contributeFormID(wishDTO,formId);
 
@@ -268,7 +262,7 @@ public class WishControllerV1 {
     public List<WishDTO> getTakenUpWish(
             @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openID,
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
-        logger.info("Get wish by {}", openID);
+        logger.info("Get wish by {}, formID {}", openID, formId);
 
         if (StringUtils.isNotBlank(openID) && StringUtils.isNotBlank(formId)) {
             formIDMappingService.contributeFormID(openID,formId);
@@ -290,7 +284,7 @@ public class WishControllerV1 {
     public TakenWishTimeline getTakenUpWishTimeline(
             @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openID,
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
-        logger.info("Get taken wish timeline by {}", openID);
+        logger.info("Get taken wish timeline by {}, formID {}", openID, formId);
 
         if (StringUtils.isNotBlank(openID) && StringUtils.isNotBlank(formId)) {
             formIDMappingService.contributeFormID(openID,formId);
@@ -390,8 +384,5 @@ public class WishControllerV1 {
         this.wishService = wishService;
     }
 
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
 
 }

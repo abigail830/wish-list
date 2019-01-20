@@ -118,7 +118,6 @@ public class WishControllerV1Test {
         userService.setUserDao(userDao);
 
         WishControllerV1 wishController = new WishControllerV1();
-        wishController.setUserService(userService);
         wishController.setWishService(wishService);
         return wishController;
     }

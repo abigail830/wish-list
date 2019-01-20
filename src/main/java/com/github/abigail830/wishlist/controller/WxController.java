@@ -124,4 +124,24 @@ public class WxController {
 			return null;
 		}
 	}
+
+	@ApiOperation(value = "Get all form id mapping - read only",
+			response = List.class)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
+	@RequestMapping(value = "/formids", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public List<FormIDMappingDTO> getAllFormID() {
+		return formIDMappingService.getAllFormIDs().stream().map(FormIDMappingDTO::new).collect(Collectors.toList());
+	}
+
+	@ApiOperation(value = "Delete form ID",
+			response = List.class)
+	@ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
+	@RequestMapping(value = "/formids", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public void  deleteFormID(
+			@ApiParam(example = "formid") @RequestParam(value = "formID", required = true) String formID) {
+		formIDMappingService.deleteFormID(formID);
+	}
+
 }

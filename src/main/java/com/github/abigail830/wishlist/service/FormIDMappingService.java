@@ -30,6 +30,10 @@ public class FormIDMappingService {
                 .collect(Collectors.toList());
     }
 
+    public List<FormIDMapping> getAllFormIDs() {
+        return formIDMappingDao.queryAllFormID();
+    }
+
     public FormIDMapping takeFormID(String openID) {
         List<FormIDMapping> formIDMappings = getFormIDs(openID);
         if (formIDMappings.size() > 0) {
@@ -70,5 +74,9 @@ public class FormIDMappingService {
 
     public void setFormIDMappingDao(FormIDMappingDaoImpl formIDMappingDao) {
         this.formIDMappingDao = formIDMappingDao;
+    }
+
+    public void deleteFormID(String formID) {
+        formIDMappingDao.deleteFormIDMapping(formID);
     }
 }
