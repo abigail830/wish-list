@@ -71,7 +71,7 @@ public class HttpClientUtil {
 		return httpClient.newCall(requestBuilder.build()).execute();
 	}
 
-	private Response postBody(String urlString, String body, Map<String, String> headers)
+	public Response postBody(String urlString, String body, Map<String, String> headers)
 			throws IOException {
 		OkHttpClient httpClient = buildHttpClient(urlString, DEFAULT_CONNECT_TIMEOUT, DEFAULT_READ_TIMEOUT);
 		HttpUrl url = HttpUrl.parse(urlString);

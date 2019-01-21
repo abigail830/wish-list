@@ -1,5 +1,7 @@
 package com.github.abigail830.wishlist.util;
 
+import com.github.abigail830.wishlist.domainv1.card.*;
+
 public class Constants {
 
     public static final String WISH_STATUS_NEW = "NEW";
@@ -25,4 +27,30 @@ public class Constants {
 
     public static final String COUPON_STATUS_NEW = "NEW";
     public static final String COUPON_STATUS_TAKEUP = "TAKEUP";
+
+    public static final String GENERAL_COUPON = "GENERAL_COUPON";
+
+    public static final CouponDTO verificationCoupon =
+            new CouponDTO(
+                    new CardDTO(
+                            GENERAL_COUPON,
+                            new GeneralCouponInfoDTO(
+                                    new BaseInfoDTO(
+                                            "http://mmbiz.qpic.cn/mmbiz/iaL1LJM1mF9aRKPZJkmG8xXhiaHqkKSVMMWeN3hLut7X7hicFNjakmxibMLGWpXrEXB33367o7zHN0CwngnQY7zb7g/0",
+                                            "CODE_TYPE_QRCODE",
+                                            "友爱契约",
+                                            "友爱契约卡券",
+                                            "Color090",
+                                            "请出示二维码",
+                                            "不可与其他优惠同享",
+                                            new SkuDTO(10),
+                                            new DateInfoDTO(
+                                                    "DATE_TYPE_FIX_TIME_RANGE",
+                                                    1472724261,
+                                                    1572724261,
+                                                    0)
+                                    ),
+                                    null,
+                                    "这是测试友爱契约卡券"
+                            )));
 }

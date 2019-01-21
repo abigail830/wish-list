@@ -1,6 +1,6 @@
 package com.github.abigail830.wishlist.controller;
 
-import com.github.abigail830.wishlist.domainv1.CouponDTO;
+import com.github.abigail830.wishlist.domainv1.CouponMappingDTO;
 import com.github.abigail830.wishlist.domainv1.FormIDMappingDTO;
 import com.github.abigail830.wishlist.entity.CouponMapping;
 import com.github.abigail830.wishlist.service.WelcomeCouponService;
@@ -33,12 +33,12 @@ public class CouponAdminController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public List<CouponDTO> getWelcomeCoupon(
+    public List<CouponMappingDTO> getWelcomeCoupon(
             @ApiParam(example = "oEmJ75T7IHx-3zUjMteodZu5g09A") @RequestParam(value = "openID", required = false) String openID) {
         if (StringUtils.isNotBlank(openID)) {
-            return welcomeCouponService.getWelcomeCoupon(openID).stream().map(CouponDTO::new).collect(Collectors.toList());
+            return welcomeCouponService.getWelcomeCoupon(openID).stream().map(CouponMappingDTO::new).collect(Collectors.toList());
         } else {
-            return welcomeCouponService.getWelcomeCoupon().stream().map(CouponDTO::new).collect(Collectors.toList());
+            return welcomeCouponService.getWelcomeCoupon().stream().map(CouponMappingDTO::new).collect(Collectors.toList());
         }
     }
 
@@ -47,7 +47,7 @@ public class CouponAdminController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
     @RequestMapping(value = "/outstanding", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public CouponDTO getOutstandingWelcomeCoupon(
+    public CouponMappingDTO getOutstandingWelcomeCoupon(
             @ApiParam(example = "oEmJ75T7IHx-3zUjMteodZu5g09A") @RequestParam(value = "openID", required = true) String openID) {
         return welcomeCouponService.getOutstandingWelcomeCoupon(openID);
     }
@@ -59,12 +59,12 @@ public class CouponAdminController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
     @RequestMapping(value = "/", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public CouponDTO takeWelcomeCoupon(
+    public CouponMappingDTO takeWelcomeCoupon(
             @ApiParam(example = "oEmJ75T7IHx-3zUjMteodZu5g09A") @RequestParam(value = "openID", required = true) String openID) {
         logger.info("Take up coupon for open ID {}", openID);
         CouponMapping couponMapping = welcomeCouponService.takeUpWelcomeCoupon(openID);
         if (couponMapping != null) {
-            return new CouponDTO(couponMapping);
+            return new CouponMappingDTO(couponMapping);
         } else {
             return null;
         }

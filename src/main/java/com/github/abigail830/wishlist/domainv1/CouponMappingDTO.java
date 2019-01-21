@@ -3,21 +3,21 @@ package com.github.abigail830.wishlist.domainv1;
 
 import com.github.abigail830.wishlist.entity.CouponMapping;
 
-public class CouponDTO {
+public class CouponMappingDTO {
     private String openId;
     private String coupon;
     private String couponType;
     private String couponStatus;
 
-    public CouponDTO () {
+    public CouponMappingDTO() {
 
     }
 
-    public CouponDTO (CouponMapping couponMapping) {
+    public CouponMappingDTO(CouponMapping couponMapping) {
         this(couponMapping.getOpenId(), couponMapping.getCoupon(), couponMapping.getCouponType(), couponMapping.getCouponStatus());
     }
 
-    public CouponDTO(String openId, String coupon, String couponType, String couponStatus) {
+    public CouponMappingDTO(String openId, String coupon, String couponType, String couponStatus) {
         this.openId = openId;
         this.coupon = coupon;
         this.couponType = couponType;

@@ -24,14 +24,14 @@ public class WishListTimeline {
     private int myFriendsCompletedWishCount;
 
     @JsonProperty("outstandingCoupon")
-    private CouponDTO outstandingCoupon;
+    private CouponMappingDTO outstandingCoupon;
 
 
     public WishListTimeline(List<WishListTimelineEntry> wishListTimelineEntryList,
                             List<WishListDTO> wishLists,
                             int myCompletedWishCount,
                             int myFriendsCompletedWishCount,
-                            CouponDTO outstandingCoupon) {
+                            CouponMappingDTO outstandingCoupon) {
         this.wishListTimelineEntryList = wishListTimelineEntryList;
         this.wishLists = wishLists;
         this.hasWishList = !wishLists.isEmpty();
@@ -62,11 +62,11 @@ public class WishListTimeline {
         return myFriendsCompletedWishCount;
     }
 
-    public CouponDTO getOutstandingCoupon() {
+    public CouponMappingDTO getOutstandingCoupon() {
         return outstandingCoupon;
     }
 
-    public void setOutstandingCoupon(CouponDTO outstandingCoupon) {
+    public void setOutstandingCoupon(CouponMappingDTO outstandingCoupon) {
         this.outstandingCoupon = outstandingCoupon;
     }
 }

@@ -1,6 +1,6 @@
 package com.github.abigail830.wishlist.service;
 
-import com.github.abigail830.wishlist.domainv1.CouponDTO;
+import com.github.abigail830.wishlist.domainv1.CouponMappingDTO;
 import com.github.abigail830.wishlist.entity.CouponMapping;
 import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.Wish;
@@ -53,12 +53,12 @@ public class WelcomeCouponService {
         return isCouponOutstanding(couponMappings);
     }
 
-    public CouponDTO getOutstandingWelcomeCoupon(String openID) {
+    public CouponMappingDTO getOutstandingWelcomeCoupon(String openID) {
         List<CouponMapping> couponMappings = getWelcomeCoupon(openID);
         if (isCouponExists(couponMappings)) {
             List<CouponMapping> coupons = couponMappings.stream().filter(item -> Constants.COUPON_STATUS_NEW.equals(item.getCouponStatus())).collect(Collectors.toList());
             if (coupons.size() > 0) {
-                return new CouponDTO(coupons.get(0));
+                return new CouponMappingDTO(coupons.get(0));
             } else {
                 return null;
             }

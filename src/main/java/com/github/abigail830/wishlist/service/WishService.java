@@ -5,7 +5,6 @@ import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.entity.WishListDetail;
 import com.github.abigail830.wishlist.repository.ComplexWishDaoImpl;
-import com.github.abigail830.wishlist.repository.UserEventImpl;
 import com.github.abigail830.wishlist.repository.WishDaoImpl;
 import com.github.abigail830.wishlist.repository.WishListDaoImpl;
 import com.github.abigail830.wishlist.util.Constants;
@@ -268,7 +267,7 @@ public class WishService {
         List<WishListTimelineEntry> resultList = new ArrayList<WishListTimelineEntry>(wishListTimelineEntryMap.values());
         Collections.reverse(resultList);
 
-        CouponDTO outstandingWelcomeCoupon = welcomeCouponService.getOutstandingWelcomeCoupon(openId);
+        CouponMappingDTO outstandingWelcomeCoupon = welcomeCouponService.getOutstandingWelcomeCoupon(openId);
 
         return new WishListTimeline(resultList,
                 wishListDTOs,
