@@ -51,6 +51,6 @@ public class Constants {
                                                     0)
                                     ),
                                     null,
-                                    "这是测试友爱契约卡券"
+                                    "这是测试友爱契约卡券1"
                             )));
 }

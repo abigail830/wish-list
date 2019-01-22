@@ -43,7 +43,8 @@ public class WxPublicPlatformService {
                         JsonUtil.toJson(Constants.verificationCoupon),
                         ImmutableMap.of("Content-Type", "application/json"));
                 logger.info("Got respond from wechat public platform {}", response);
-                return response.message();
+                logger.info("Got respond body from wechat public platform {}", response.body().string());
+                return response.body().string();
             } catch (Exception ex) {
                 logger.error("Failed to create coupon. ", ex);
                 return "";
