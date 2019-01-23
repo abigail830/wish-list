@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 public class WelcomeCouponService {
     private static final Logger logger = LoggerFactory.getLogger(WelcomeCouponService.class);
 
+    private static final String CARD_ID = "pJ9yv0RrBQhNyWpmGR5Q9XnpR1eM";
+
     public static final String WELCOME_WISH_NAME = "祝你发喜";
 
     @Autowired
@@ -89,8 +91,7 @@ public class WelcomeCouponService {
             User owner = wishLists.get(0).getCreator();
             String openId = owner.getOpenId();
             if (!hasWelcomeCoupon(openId)) {
-                //TODO: Query WX API to get coupon for detail
-                CouponMapping welcomeCoupon = new CouponMapping(openId, "welcomeCoupon", Constants.COUPON_TYPE_WELCOME, Constants.COUPON_STATUS_NEW);
+                CouponMapping welcomeCoupon = new CouponMapping(openId, CARD_ID, Constants.COUPON_TYPE_WELCOME, Constants.COUPON_STATUS_NEW);
                 couponMappingDAO.createCouponMapping(welcomeCoupon);
                 notificationService.notifyCoupon(owner);
             } else {
@@ -104,8 +105,7 @@ public class WelcomeCouponService {
 
     public void deliverWelcomeCoupon(String openID) {
         if (!hasWelcomeCoupon(openID)) {
-            //TODO: Query WX API to get coupon for detail
-            CouponMapping welcomeCoupon = new CouponMapping(openID, "welcomeCoupon", Constants.COUPON_TYPE_WELCOME, Constants.COUPON_STATUS_NEW);
+            CouponMapping welcomeCoupon = new CouponMapping(openID, CARD_ID, Constants.COUPON_TYPE_WELCOME, Constants.COUPON_STATUS_NEW);
             couponMappingDAO.createCouponMapping(welcomeCoupon);
             User testUser = new User();
             testUser.setOpenId(openID);
