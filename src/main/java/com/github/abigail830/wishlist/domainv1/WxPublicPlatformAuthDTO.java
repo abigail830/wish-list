@@ -9,14 +9,17 @@ public class WxPublicPlatformAuthDTO {
 
     private String errmsg;
 
+    private long validInSecond;
+
     public WxPublicPlatformAuthDTO() {
     }
 
-    public WxPublicPlatformAuthDTO(String access_token, String expires_in, String errcode, String errmsg) {
+    public WxPublicPlatformAuthDTO(String access_token, String expires_in, String errcode, String errmsg, long validInSecond) {
         this.access_token = access_token;
         this.expires_in = expires_in;
         this.errcode = errcode;
         this.errmsg = errmsg;
+        this.validInSecond = validInSecond;
     }
 
     public String getAccess_token() {
@@ -51,13 +54,11 @@ public class WxPublicPlatformAuthDTO {
         this.errmsg = errmsg;
     }
 
-    @Override
-    public String toString() {
-        return "WxPublicPlatformAuthDTO{" +
-                "access_token='" + access_token + '\'' +
-                ", expires_in='" + expires_in + '\'' +
-                ", errcode='" + errcode + '\'' +
-                ", errmsg='" + errmsg + '\'' +
-                '}';
+    public long getValidInSecond() {
+        return validInSecond;
+    }
+
+    public void setValidInSecond(long validInSecond) {
+        this.validInSecond = validInSecond;
     }
 }

@@ -36,7 +36,8 @@ public class Constants {
                             GENERAL_COUPON,
                             new GeneralCouponInfoDTO(
                                     new BaseInfoDTO(
-                                            "http://mmbiz.qpic.cn/mmbiz/iaL1LJM1mF9aRKPZJkmG8xXhiaHqkKSVMMWeN3hLut7X7hicFNjakmxibMLGWpXrEXB33367o7zHN0CwngnQY7zb7g/0",
+                                            "",
+//                                            "http://mmbiz.qpic.cn/mmbiz/iaL1LJM1mF9aRKPZJkmG8xXhiaHqkKSVMMWeN3hLut7X7hicFNjakmxibMLGWpXrEXB33367o7zHN0CwngnQY7zb7g/0",
                                             "CODE_TYPE_QRCODE",
                                             "友爱契约",
                                             "友爱契约卡券",
@@ -51,6 +52,6 @@ public class Constants {
                                                     0)
                                     ),
                                     null,
-                                    "这是测试友爱契约卡券1"
+                                    "这是测试友爱契约卡券2"
                             )));
 }
