@@ -3,12 +3,8 @@ package com.github.abigail830.wishlist.service;
 import com.github.abigail830.wishlist.domainv1.WxPublicPlatformAuthDTO;
 import com.github.abigail830.wishlist.domainv1.card.APITicketDTO;
 import com.github.abigail830.wishlist.domainv1.card.CardSignatureDTO;
-import com.github.abigail830.wishlist.util.Constants;
 import com.github.abigail830.wishlist.util.HttpClientUtil;
 import com.github.abigail830.wishlist.util.JsonUtil;
-import com.google.common.collect.ImmutableMap;
-import okhttp3.Response;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Formatter;
 import java.util.UUID;
 
@@ -95,15 +92,29 @@ public class WxPublicPlatformService {
 
     public CardSignatureDTO getCardSign(String cardID) {
         APITicketDTO apiTicket = getAPITicket();
-        CardSignatureDTO sign = sign(apiTicket, cardID);
+        CardSignatureDTO sign = sign2(apiTicket, cardID);
         logger.info("Completed sign {} for card id {} ", sign, cardID);
         return sign;
     }
 
-    private CardSignatureDTO sign(APITicketDTO apiTicket, String cardID) {
+    private CardSignatureDTO sign2(APITicketDTO apiTicket, String cardID) {
         String nonceStr = createNonceStr();
         String timestamp = createTimestamp();
-        String stringToBeSign = apiTicket.getTicket() + timestamp + nonceStr + cardID;
+
+        String param[] = new String[4];
+
+        param[0] = nonceStr;
+        param[1] = timestamp;
+        param[2] = apiTicket.getTicket();
+        param[3] = cardID;
+
+        Arrays.sort(param);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for(String b : param){
+            stringBuilder.append(b);
+        }
+        String stringToBeSign = stringBuilder.toString();
         String signature;
 
         try{
