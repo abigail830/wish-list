@@ -1,0 +1,45 @@
+spring:
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://rm-wz9u841d66c0td1fq6o.mysql.rds.aliyuncs.com:3306/wishlist?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+        username: wishlist
+        password: ENC(lNUcvnJHALkQdC51gY+bWE7UJ0ar7b21LW3HTNftCPY=)
+    druid:
+        initial-size: 10
+        max-active: 100
+        min-idle: 10
+        max-wait: 60000
+        pool-prepared-statements: true
+        max-pool-prepared-statement-per-connection-size: 20
+        time-between-eviction-runs-millis: 60000
+        min-evictable-idle-time-millis: 300000
+        validation-query: SELECT 1 FROM DUAL
+        test-while-idle: true
+        test-on-borrow: false
+        test-on-return: false
+        filter:
+            stat:
+                log-slow-sql: true
+                slow-sql-millis: 1000
+                merge-sql: true
+                enabled: true
+            wall:
+                config:
+                    multi-statement-allow: true
+mybatis:
+    mapper-locations: ["classpath:mapper/*Mapper.xml", "classpath:mapper/**/*Mapper.xml"]
+    config-location: classpath:mapper/config/sqlMapConfig.xml
+app:
+    appId: "wxa823794835f994b3"
+    appSecret: "1e0d9911438978e850061262a1c58889"
+wxservice:
+    appId: "wxf21ef2401686aaf5"
+    secret: "d5d152323f6baf256b7dd748d5bb3e80"
+info:
+    github: https://github.com/abigail830/wish-list
+    jitpack: https://jitpack.io/#abigail830/wish-list
+server:
+    port: 8082
+
+
