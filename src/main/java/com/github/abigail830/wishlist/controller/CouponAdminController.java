@@ -92,10 +92,8 @@ public class CouponAdminController {
     @ResponseBody
     public void deleteWelcomeCouponForVerification(
             @ApiParam(example = "oEmJ75T7IHx-3zUjMteodZu5g09A") @RequestParam(value = "openID", required = true) String openID) {
-        if ("oEmJ75T7IHx-3zUjMteodZu5g09A".equals(openID) || "oEmJ75YWmBSDgyz4KLi_yGL8MBV4".equals(openID)) {
-            logger.info("Provision test coupon for {}", openID);
-            welcomeCouponService.deleteWelcomeCoupon(openID);
-        }
+        logger.info("Delete coupon for {}", openID);
+        welcomeCouponService.deleteWelcomeCoupon(openID);
 
     }
 }
