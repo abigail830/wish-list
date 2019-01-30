@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class WelcomeCouponService {
     private static final Logger logger = LoggerFactory.getLogger(WelcomeCouponService.class);
 
-    private static final String CARD_ID = "pJ9yv0RrBQhNyWpmGR5Q9XnpR1eM";
+    private static final String CARD_ID = "pJ9yv0cH95JySW1BKYBYMEg1_-pc";
 
     public static final String WELCOME_WISH_NAME = "祝你发喜";
 
