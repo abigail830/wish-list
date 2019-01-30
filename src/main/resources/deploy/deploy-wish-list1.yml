@@ -1,0 +1,30 @@
+---
+- hosts: centOS7
+  remote_user: root
+  vars:
+    version: v0.9.3
+  tasks:
+  - name: Download package from jitpack
+    get_url:
+      url: https://jitpack.io/com/github/abigail830/wish-list/{{version}}/wish-list-{{version}}.jar
+      dest: /var/www/wish-list-1/wish-list-{{version}}.jar
+      mode: 0744
+
+  - name: Remove existing softlink
+    file:
+      state: absent
+      path: /var/www/wish-list-1/wish-list.jar
+
+  - name: Create new softlink to deploy file
+    file:
+      src: /var/www/wish-list-1/wish-list-{{version}}.jar
+      dest: /var/www/wish-list-1/wish-list.jar
+      state: link
+      mode: 0744
+
+  - name: Stop current process
+    command: /var/www/wish-list-1/stop.sh
+
+  - name: Start new process
+    command: /var/www/wish-list-1/start.sh
+
