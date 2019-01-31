@@ -1,7 +1,14 @@
 package com.github.abigail830.wishlist.entity;
 
+import lombok.*;
+
 import java.sql.Timestamp;
 
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserEvent {
 
     private Integer id;
@@ -12,50 +19,5 @@ public class UserEvent {
     public UserEvent(String openId) {
         this.openId = openId;
     }
-    public UserEvent() {
 
-    }
-
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId;
-    }
-
-    public String getEventType() {
-        return eventType;
-    }
-
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
-    }
-
-    public Timestamp getEventTime() {
-        return eventTime;
-    }
-
-    public void setEventTime(Timestamp eventTime) {
-        this.eventTime = eventTime;
-    }
-
-    @Override
-    public String toString() {
-        return "UserEvent{" +
-                "id=" + id +
-                ", openId='" + openId + '\'' +
-                ", eventType='" + eventType + '\'' +
-                ", eventTime=" + eventTime +
-                '}';
-    }
 }

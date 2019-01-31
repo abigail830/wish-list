@@ -1,7 +1,14 @@
 package com.github.abigail830.wishlist.entity;
 
+import lombok.*;
+
 import java.sql.Timestamp;
 
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class Wish {
     private Integer id;
     private Integer wishListId;
@@ -14,97 +21,4 @@ public class Wish {
     private User Creator;
     private Timestamp dueTime;
 
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getWishListId() {
-        return wishListId;
-    }
-
-    public void setWishListId(Integer wishListId) {
-        this.wishListId = wishListId;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Timestamp getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
-    }
-
-    public Timestamp getLastUpdateTime() {
-        return lastUpdateTime;
-    }
-
-    public void setLastUpdateTime(Timestamp lastUpdateTime) {
-        this.lastUpdateTime = lastUpdateTime;
-    }
-
-    public String getWishStatus() {
-        return wishStatus;
-    }
-
-    public void setWishStatus(String wishStatus) {
-        this.wishStatus = wishStatus;
-    }
-
-    public String getImplementorOpenId() {
-        return implementorOpenId;
-    }
-
-    public void setImplementorOpenId(String implementorOpenId) {
-        this.implementorOpenId = implementorOpenId;
-    }
-
-    public User getImplementor() {
-        return implementor;
-    }
-
-    public void setImplementor(User implementor) {
-        this.implementor = implementor;
-    }
-
-    public User getCreator() {
-        return Creator;
-    }
-
-    public void setCreator(User creator) {
-        Creator = creator;
-    }
-
-    public Timestamp getDueTime() {
-        return dueTime;
-    }
-
-    public void setDueTime(Timestamp dueTime) {
-        this.dueTime = dueTime;
-    }
-
-    @Override
-    public String toString() {
-        return "Wish{" +
-                "id=" + id +
-                ", wishListId=" + wishListId +
-                ", description='" + description + '\'' +
-                ", createTime=" + createTime +
-                ", lastUpdateTime=" + lastUpdateTime +
-                ", wishStatus='" + wishStatus + '\'' +
-                ", implementorOpenId='" + implementorOpenId + '\'' +
-                '}';
-    }
 }

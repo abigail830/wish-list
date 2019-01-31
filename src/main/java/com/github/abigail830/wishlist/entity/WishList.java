@@ -1,7 +1,15 @@
 package com.github.abigail830.wishlist.entity;
 
+import lombok.*;
+
 import java.sql.Timestamp;
 
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
 public class WishList implements Comparable{
 
     private Integer id;
@@ -11,65 +19,6 @@ public class WishList implements Comparable{
     private Timestamp createTime;
     private Timestamp dueTime;
 
-    public Timestamp getDueTime() {
-        return dueTime;
-    }
-
-    public void setDueTime(Timestamp dueTime) {
-        this.dueTime = dueTime;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Timestamp getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getBrief() {
-        return brief;
-    }
-
-    public void setBrief(String brief) {
-        this.brief = brief;
-    }
-
-    @Override
-    public String toString() {
-        return "WishList{" +
-                "id=" + id +
-                ", openId='" + openId + '\'' +
-                ", title='" + title + '\'' +
-                ", brief='" + brief + '\'' +
-                ", createTime=" + createTime +
-                ", dueTime=" + dueTime +
-                '}';
-    }
 
     @Override
     public int compareTo(Object obj) {
