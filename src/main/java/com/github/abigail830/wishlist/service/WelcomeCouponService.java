@@ -1,6 +1,6 @@
 package com.github.abigail830.wishlist.service;
 
-import com.github.abigail830.wishlist.domainv1.CouponMappingDTO;
+import com.github.abigail830.wishlist.dtov1.CouponMappingDTO;
 import com.github.abigail830.wishlist.entity.CouponMapping;
 import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.Wish;

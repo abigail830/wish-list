@@ -1,8 +1,7 @@
 package com.github.abigail830.wishlist.service;
 
 
-
-import com.github.abigail830.wishlist.domainv1.WxToken;
+import com.github.abigail830.wishlist.dtov1.WxToken;
 import com.github.abigail830.wishlist.entity.FormIDMapping;
 import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.Wish;

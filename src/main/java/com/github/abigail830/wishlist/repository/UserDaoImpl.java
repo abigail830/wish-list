@@ -1,6 +1,6 @@
 package com.github.abigail830.wishlist.repository;
 
-import com.github.abigail830.wishlist.domain.UserInfo;
+import com.github.abigail830.wishlist.dto.UserInfo;
 import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.util.Toggle;
 import org.slf4j.Logger;

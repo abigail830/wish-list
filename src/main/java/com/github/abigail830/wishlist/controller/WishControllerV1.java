@@ -1,10 +1,8 @@
 package com.github.abigail830.wishlist.controller;
 
-import com.github.abigail830.wishlist.domainv1.*;
+import com.github.abigail830.wishlist.dtov1.*;
 import com.github.abigail830.wishlist.entity.WishListDetail;
 import com.github.abigail830.wishlist.service.FormIDMappingService;
-import com.github.abigail830.wishlist.service.NotificationService;
-import com.github.abigail830.wishlist.service.UserService;
 import com.github.abigail830.wishlist.service.WishService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -25,7 +23,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/v1/wishes")
 public class WishControllerV1 {
-    private static final Logger logger = LoggerFactory.getLogger(WishController.class);
+    private static final Logger logger = LoggerFactory.getLogger(WishControllerV1.class);
 
     @Autowired
     private WishService wishService;

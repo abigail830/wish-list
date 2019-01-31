@@ -1,6 +1,6 @@
 package com.github.abigail830.wishlist.service;
 
-import com.github.abigail830.wishlist.domainv1.*;
+import com.github.abigail830.wishlist.dtov1.*;
 import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.entity.WishListDetail;

@@ -1,7 +1,5 @@
 package com.github.abigail830.wishlist.util;
 
-import com.github.abigail830.wishlist.controller.WxController;
-import com.github.abigail830.wishlist.domain.UserInfo;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.codec.binary.Base64;

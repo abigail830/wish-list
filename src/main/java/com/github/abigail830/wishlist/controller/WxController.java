@@ -1,13 +1,11 @@
 package com.github.abigail830.wishlist.controller;
 
-import com.github.abigail830.wishlist.domain.UserInfo;
-import com.github.abigail830.wishlist.domain.WxDecryptResponse;
-import com.github.abigail830.wishlist.domain.WxLoginResponse;
-import com.github.abigail830.wishlist.domainv1.FormIDMappingDTO;
+import com.github.abigail830.wishlist.dto.UserInfo;
+import com.github.abigail830.wishlist.dto.WxDecryptResponse;
+import com.github.abigail830.wishlist.dto.WxLoginResponse;
+import com.github.abigail830.wishlist.dtov1.FormIDMappingDTO;
 import com.github.abigail830.wishlist.entity.FormIDMapping;
-import com.github.abigail830.wishlist.repository.UserDaoImpl;
 import com.github.abigail830.wishlist.service.FormIDMappingService;
-import com.github.abigail830.wishlist.service.NotificationService;
 import com.github.abigail830.wishlist.service.UserService;
 import com.github.abigail830.wishlist.util.HttpClientUtil;
 import com.github.abigail830.wishlist.util.JsonUtil;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 

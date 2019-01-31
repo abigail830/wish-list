@@ -1,7 +1,7 @@
 package com.github.abigail830.wishlist.controller;
 
-import com.github.abigail830.wishlist.domainv1.CouponMappingDTO;
-import com.github.abigail830.wishlist.domainv1.FormIDMappingDTO;
+import com.github.abigail830.wishlist.dtov1.CouponMappingDTO;
+import com.github.abigail830.wishlist.dtov1.FormIDMappingDTO;
 import com.github.abigail830.wishlist.entity.CouponMapping;
 import com.github.abigail830.wishlist.service.WelcomeCouponService;
 import io.swagger.annotations.ApiOperation;

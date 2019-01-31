@@ -1,6 +1,6 @@
 package com.github.abigail830.wishlist.util;
 
-import com.github.abigail830.wishlist.domainv1.card.*;
+import com.github.abigail830.wishlist.dtov1.card.*;
 
 public class Constants {
 

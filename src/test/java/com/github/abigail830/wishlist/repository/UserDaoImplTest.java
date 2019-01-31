@@ -1,6 +1,6 @@
 package com.github.abigail830.wishlist.repository;
 
-import com.github.abigail830.wishlist.domain.UserInfo;
+import com.github.abigail830.wishlist.dto.UserInfo;
 import org.flywaydb.core.Flyway;
 import org.h2.jdbcx.JdbcDataSource;
 import org.junit.AfterClass;

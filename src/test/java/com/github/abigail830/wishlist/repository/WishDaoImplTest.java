@@ -1,6 +1,6 @@
 package com.github.abigail830.wishlist.repository;
 
-import com.github.abigail830.wishlist.domain.UserInfo;
+import com.github.abigail830.wishlist.dto.UserInfo;
 import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.util.Toggle;

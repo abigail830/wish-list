@@ -1,6 +1,6 @@
 package com.github.abigail830.wishlist.controller;
 
-import com.github.abigail830.wishlist.domain.*;
+import com.github.abigail830.wishlist.dto.*;
 import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.service.UserService;
