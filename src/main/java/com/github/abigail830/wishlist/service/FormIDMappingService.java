@@ -8,6 +8,8 @@ import com.github.abigail830.wishlist.repository.FormIDMappingDaoImpl;
 import com.github.abigail830.wishlist.repository.WishListDaoImpl;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class FormIDMappingService {
+
+    private static final Logger logger = LoggerFactory.getLogger(FormIDMappingService.class);
+
 
     @Autowired
     private FormIDMappingDaoImpl formIDMappingDao;
@@ -57,11 +62,20 @@ public class FormIDMappingService {
     }
 
     public void contributeFormID(WishDTO wishDTO, String formID) {
-        List<WishList> wishListById = wishListDao.getWishListById(wishDTO.getWishListID().toString());
-        if (wishListById.size() > 0
-                && StringUtils.isNotBlank(wishListById.get(0).getOpenId())
-                && StringUtils.isNotBlank(formID)) {
-            contributeFormID(wishListById.get(0).getOpenId(), formID);
+        if (wishDTO.getWishListID() != null) {
+            try {
+                List<WishList> wishListById = wishListDao.getWishListById(wishDTO.getWishListID().toString());
+                if (wishListById.size() > 0
+                        && StringUtils.isNotBlank(wishListById.get(0).getOpenId())
+                        && StringUtils.isNotBlank(formID)) {
+                    contributeFormID(wishListById.get(0).getOpenId(), formID);
+                }
+            } catch (Exception ex) {
+                logger.error("Failed to contribute form ID.", ex);
+            }
+
+        } else {
+            logger.info("Could not locate open id with {}", wishDTO);
         }
 
     }
