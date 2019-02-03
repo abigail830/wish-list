@@ -4,7 +4,6 @@ import com.github.abigail830.wishlist.dtov1.*;
 import com.github.abigail830.wishlist.entity.WishListDetail;
 import com.github.abigail830.wishlist.service.FormIDMappingService;
 import com.github.abigail830.wishlist.service.WishService;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -12,7 +11,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -31,12 +29,7 @@ public class WishControllerV1 {
     @Autowired
     private FormIDMappingService formIDMappingService;
 
-    @ApiOperation(value = "Collect wish list detail by wish list id",
-            notes = "根据愿望清单的ID获取清单内所有具体内容",
-            response = WishListDTO.class)
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
+    @GetMapping
     public WishListDTO getWishListDetail(
             @ApiParam(example = "2") @RequestParam(value = "wishListId", required = false) String wishListId) {
 
@@ -54,12 +47,7 @@ public class WishControllerV1 {
 
     }
 
-    @ApiOperation(value = "Collect wish list by id or open_id",
-            notes = "根据ID或者openID搜索愿望清单，ID和openID只需要填一个，ID优先查询，只返回清单概述",
-            response = WishDashboardDTO.class)
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "/lists", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
+    @GetMapping("/lists")
     public WishDashboardDTO getWishListsByID(
             @ApiParam(example = "1") @RequestParam(value = "id", required = false) String id,
             @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openId,
@@ -97,12 +85,7 @@ public class WishControllerV1 {
     }
 
 
-    @ApiOperation(value = "Collect wish list by open_id in timeline",
-            notes = "根据ID或者openID搜索愿望清单，ID和openID只需要填一个，ID优先查询，只返回清单概述",
-            response = WishListTimeline.class)
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "/lists/timeline", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
+    @GetMapping("/lists/timeline")
     public WishListTimeline getWishListsTimeLineByOpenID(
             @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openId,
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) {
@@ -118,12 +101,8 @@ public class WishControllerV1 {
         }
     }
 
-    @ApiOperation(value = "Add new Wish List",
-            notes = "添加新愿望清单",
-            response = WishListDTO.class)
+    @PostMapping("/lists")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "/lists", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
     public WishListDTO postNewWishList(
             @RequestBody WishListDTO wishList,
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
@@ -141,12 +120,8 @@ public class WishControllerV1 {
 
     }
 
-    @ApiOperation(value = "Delete Wish List",
-            notes = "删除新愿望清单",
-            response = WishDashboardDTO.class)
+    @DeleteMapping("/lists")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "/lists", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
     public WishDashboardDTO deleteNewWishList(
             @RequestBody WishListDTO wishList,
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
@@ -166,12 +141,7 @@ public class WishControllerV1 {
 
     }
 
-    @ApiOperation(value = "Update new Wish List",
-            notes = "修改新愿望清单",
-            response = WishDashboardDTO.class)
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "/lists", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
+    @PutMapping("/lists")
     public WishListDTO updateNewWishList(
             @RequestBody WishListDTO wishList,
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
@@ -189,12 +159,8 @@ public class WishControllerV1 {
         }
     }
 
-    @ApiOperation(value = "Add new wish to wish list",
-            notes = "添加新愿望到愿望清单",
-            response = WishDTO.class)
+    @PostMapping
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
     public WishDTO addWishToWishList(
             @RequestBody WishDTO wishDTO,
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
@@ -211,12 +177,8 @@ public class WishControllerV1 {
         }
     }
 
-    @ApiOperation(value = "Delete new wish to wish list",
-            notes = "删除愿望",
-            response = WishDashboardDTO.class)
+    @DeleteMapping
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
     public WishDTO deleteWish(
             @RequestBody WishDTO wishDTO,
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
@@ -234,12 +196,7 @@ public class WishControllerV1 {
         }
     }
 
-    @ApiOperation(value = "Update wish",
-            notes = "更新愿望信息",
-            response = WishDashboardDTO.class)
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
+    @PutMapping
     public WishDTO updateWish(
             @RequestBody WishDTO wishDTO,
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
@@ -257,12 +214,7 @@ public class WishControllerV1 {
         }
     }
 
-    @ApiOperation(value = "Get Taken up wish",
-            notes = "获取认领愿望信息",
-            response = WishDTO.class)
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "/taken", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
+    @GetMapping("/taken")
     public List<WishDTO> getTakenUpWish(
             @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openID,
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
@@ -279,12 +231,7 @@ public class WishControllerV1 {
         }
     }
 
-    @ApiOperation(value = "Get Taken up wish timeline",
-            notes = "获取认领愿望信息",
-            response = TakenWishTimeline.class)
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "/taken/timeline", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
+    @GetMapping("/taken/timeline")
     public TakenWishTimeline getTakenUpWishTimeline(
             @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openID,
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
@@ -302,12 +249,7 @@ public class WishControllerV1 {
     }
 
 
-    @ApiOperation(value = "Taken up wish",
-            notes = "认领愿望",
-            response = WishDTO.class)
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "/taken", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
+    @PutMapping("/taken")
     public List<WishDTO> takeUpWish(
             @ApiParam(example = "1") @RequestParam(value = "id", required = true) String id,
             @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = true) String takeUpOpenID,
@@ -325,12 +267,8 @@ public class WishControllerV1 {
         }
     }
 
-    @ApiOperation(value = "Taken up wish",
-            notes = "取消认领",
-            response = WishDTO.class)
+    @DeleteMapping("/taken")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "/taken", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
     public void rollbackTakeUpWish(
             @ApiParam(example = "1") @RequestParam(value = "id", required = false) String id) throws ParseException {
         logger.info("Delete take up wish id : {}", id);
@@ -342,12 +280,7 @@ public class WishControllerV1 {
         }
     }
 
-    @ApiOperation(value = "Complete wish",
-            notes = "完成愿望",
-            response = WishDTO.class)
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "/completed", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
+    @PutMapping("/completed")
     public List<WishDTO>  completeWish(
             @ApiParam(example = "1") @RequestParam(value = "id", required = false) String id,
             @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String takeUpOpenID,

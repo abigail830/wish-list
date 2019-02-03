@@ -10,14 +10,10 @@ import com.github.abigail830.wishlist.service.UserService;
 import com.github.abigail830.wishlist.util.HttpClientUtil;
 import com.github.abigail830.wishlist.util.JsonUtil;
 import com.github.abigail830.wishlist.util.WXBizDataCrypt;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -46,12 +42,7 @@ public class WxController {
 	@Resource
 	private FormIDMappingService formIDMappingService;
 
-	@ApiOperation(value = "Handle wechat login",
-			notes = "小程序用户登陆处理",
-			response = String.class)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-	@GetMapping(value = "/wxLogin", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
+	@GetMapping("/wxLogin")
 	public String login(HttpServletRequest request) {
 		String code = request.getHeader("X-WX-Code");
 		String resultData =  HttpClientUtil.instance().getData(
@@ -71,12 +62,7 @@ public class WxController {
 		return resultData;
 	}
 
-	@ApiOperation(value = "Handle wechat info decryption",
-			notes = "小程序用户消息解密",
-			response = String.class)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-	@GetMapping(value = "/decrypt", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
+	@GetMapping("/decrypt")
 	public String decrypt(HttpServletRequest request) {
 		String skey = request.getHeader("skey");
 		String encryptedData = request.getHeader("encryptedData");
@@ -96,22 +82,14 @@ public class WxController {
 		return resultDate;
 	}
 
-	@ApiOperation(value = "Get wechat form id mapping - read only",
-			response = List.class)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-	@RequestMapping(value = "/formid/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
+	@GetMapping("/formid/list")
 	public List<FormIDMappingDTO> getFormID(
 			@ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openID", required = true) String openID) {
 		return formIDMappingService.getFormIDs(openID).stream().map(FormIDMappingDTO::new).collect(Collectors.toList());
 	}
 
 
-	@ApiOperation(value = "Take one wechat form id mapping - the taken up will be deleted ",
-			response = FormIDMappingDTO.class)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-	@RequestMapping(value = "/formid", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
+	@GetMapping("/formid")
 	public FormIDMappingDTO takeFormID(
 			@ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openID", required = true) String openID) {
 		FormIDMapping formIDMapping = formIDMappingService.takeFormID(openID);
@@ -122,20 +100,12 @@ public class WxController {
 		}
 	}
 
-	@ApiOperation(value = "Get all form id mapping - read only",
-			response = List.class)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-	@RequestMapping(value = "/formids", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
+	@GetMapping("/formids")
 	public List<FormIDMappingDTO> getAllFormID() {
 		return formIDMappingService.getAllFormIDs().stream().map(FormIDMappingDTO::new).collect(Collectors.toList());
 	}
 
-	@ApiOperation(value = "Delete form ID",
-			response = List.class)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-	@RequestMapping(value = "/formids", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
+	@DeleteMapping("/formids")
 	public void  deleteFormID(
 			@ApiParam(example = "formid") @RequestParam(value = "formID", required = true) String formID) {
 		formIDMappingService.deleteFormID(formID);

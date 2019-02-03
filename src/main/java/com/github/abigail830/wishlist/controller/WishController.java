@@ -6,7 +6,6 @@ import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.service.UserService;
 import com.github.abigail830.wishlist.service.WishService;
 import com.github.abigail830.wishlist.util.Constants;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -14,7 +13,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
@@ -36,12 +34,7 @@ public class WishController {
     private UserService userService;
 
 
-    @ApiOperation(value = "Collect wish list detail by wish list id",
-            notes = "根据愿望清单的ID获取清单内所有具体内容",
-            response = WishListDetailResponse.class)
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
+    @GetMapping
     public WishListDetailResponse getWishListDetail(
             @ApiParam(example = "2") @RequestParam(value = "wishListId", required = false) String wishListId) {
 
@@ -60,12 +53,8 @@ public class WishController {
 
     }
 
-    @ApiOperation(value = "Add new wish to wish list",
-            notes = "添加新愿望到愿望清单",
-            response = WishListDetailResponse.class)
+    @PostMapping
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
     public WishListDetailResponse postNewWish(@RequestBody Wish wish) {
 
         logger.info("Add new wish {}", wish);
@@ -80,12 +69,8 @@ public class WishController {
     }
 
 
-    @ApiOperation(value = "Add new Wish List",
-            notes = "添加新愿望清单",
-            response = WishListDetailResponse.class)
+    @PostMapping("/lists")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "/lists", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
     public WishListsResponse postNewWishList(
             @RequestBody WishList wishList) {
         logger.info("Add new wish list {}", wishList);
@@ -99,12 +84,8 @@ public class WishController {
 
     }
 
-    @ApiOperation(value = "Delete new Wish List",
-            notes = "删除新愿望清单",
-            response = WishListDetailResponse.class)
+    @DeleteMapping("/lists")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "/lists", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
     public WishListsResponse deleteWishList(
             @ApiParam(example = "1") @RequestParam(value = "id", required = false) String id) {
         List<WishList> wishToBeDeleted = wishService.getWishListByID(id);
@@ -120,12 +101,7 @@ public class WishController {
     }
 
 
-    @ApiOperation(value = "Collect wish list by id or open_id",
-            notes = "根据ID或者openID搜索愿望清单，ID和openID只需要填一个，ID优先查询，只返回清单概述",
-            response = WishListsResponse.class)
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "/lists", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
+    @GetMapping("/lists")
     public WishListsResponse getWishListsByID(
             @ApiParam(example = "1") @RequestParam(value = "id", required = false) String id,
             @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = false) String openId) {
@@ -180,12 +156,7 @@ public class WishController {
         }
     }
 
-    @ApiOperation(value = "Collect wish item by id or wishlist_id",
-            notes = "根据ID或者openID搜索愿望,ID和openID只需要填一个，ID优先查询，只返回愿望概述",
-            response = WishesResponse.class)
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-    @RequestMapping(value = "/details", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
+    @GetMapping("/details")
     public WishesResponse getWishesByID(
             @ApiParam(example = "1") @RequestParam(value = "wishId", required = false) String id,
             @ApiParam(example = "2") @RequestParam(value = "wishListId", required = false) String wishListID) {
