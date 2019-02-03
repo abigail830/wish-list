@@ -200,7 +200,9 @@ public class WishControllerV1 {
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
         logger.info("Add new wish to wish list {}, formID {}", wishDTO, formId);
 
-        formIDMappingService.contributeFormID(wishDTO,formId);
+        if (StringUtils.isNotBlank(formId) && wishDTO.getWishListID() != null) {
+            formIDMappingService.contributeFormID(wishDTO, formId);
+        }
 
         if (wishDTO.getWishListID() != null && wishDTO.getDescription() != null) {
             return wishService.addNewWish(wishDTO);
@@ -220,7 +222,9 @@ public class WishControllerV1 {
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
         logger.info("Delete wish from wish list {} formID {}", wishDTO, formId);
 
-        formIDMappingService.contributeFormID(wishDTO,formId);
+        if (StringUtils.isNotBlank(formId) && wishDTO.getWishListID() != null) {
+            formIDMappingService.contributeFormID(wishDTO, formId);
+        }
 
         if (wishDTO.getWishID() != null) {
             wishService.deleteWish(wishDTO);
@@ -241,7 +245,9 @@ public class WishControllerV1 {
             @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formId) throws ParseException {
         logger.info("Update wish {}, formID {}", wishDTO, formId);
 
-        formIDMappingService.contributeFormID(wishDTO,formId);
+        if (StringUtils.isNotBlank(formId) && wishDTO.getWishListID() != null) {
+            formIDMappingService.contributeFormID(wishDTO, formId);
+        }
 
         if (wishDTO.getWishID() != null) {
             wishService.updateWish(wishDTO);
