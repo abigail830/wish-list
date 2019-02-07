@@ -1,4 +1,4 @@
-package com.github.abigail830.wishlist.dtov1;
+package com.github.abigail830.wishlist.dto.v1;
 
 
 import com.github.abigail830.wishlist.entity.CouponMapping;

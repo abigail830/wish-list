@@ -1,4 +1,4 @@
-package com.github.abigail830.wishlist.dtov1;
+package com.github.abigail830.wishlist.dto.v1;
 
 
 import com.github.abigail830.wishlist.entity.FormIDMapping;
@@ -9,7 +9,6 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
 @NoArgsConstructor
 public class FormIDMappingDTO {
     private String openID;

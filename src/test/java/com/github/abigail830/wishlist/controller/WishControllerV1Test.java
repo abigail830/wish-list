@@ -1,9 +1,9 @@
 package com.github.abigail830.wishlist.controller;
 
 import com.github.abigail830.wishlist.dto.UserInfo;
-import com.github.abigail830.wishlist.dtov1.WishDTO;
-import com.github.abigail830.wishlist.dtov1.WishDashboardDTO;
-import com.github.abigail830.wishlist.dtov1.WishListDTO;
+import com.github.abigail830.wishlist.dto.v1.WishDTO;
+import com.github.abigail830.wishlist.dto.v1.WishDashboardDTO;
+import com.github.abigail830.wishlist.dto.v1.WishListDTO;
 import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.repository.*;
 import com.github.abigail830.wishlist.service.UserService;

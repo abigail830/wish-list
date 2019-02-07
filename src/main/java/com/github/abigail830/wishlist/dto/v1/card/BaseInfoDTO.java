@@ -1,12 +1,12 @@
-package com.github.abigail830.wishlist.dtov1.card;
+package com.github.abigail830.wishlist.dto.v1.card;
 
 import lombok.*;
 
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class BaseInfoDTO {
     private String logo_url;
     private String code_type;
@@ -17,5 +17,6 @@ public class BaseInfoDTO {
     private String description;
     private SkuDTO sku;
     private DateInfoDTO date_info;
+
 
 }

@@ -1,5 +1,6 @@
 package com.github.abigail830.wishlist.controller;
 
+import com.github.abigail830.wishlist.dto.v1.*;
 import com.github.abigail830.wishlist.dtov1.*;
 import com.github.abigail830.wishlist.entity.WishListDetail;
 import com.github.abigail830.wishlist.service.FormIDMappingService;

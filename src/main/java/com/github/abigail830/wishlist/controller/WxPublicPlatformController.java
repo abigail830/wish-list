@@ -1,9 +1,9 @@
 package com.github.abigail830.wishlist.controller;
 
 
-import com.github.abigail830.wishlist.dtov1.WxPublicPlatformAuthDTO;
-import com.github.abigail830.wishlist.dtov1.card.APITicketDTO;
-import com.github.abigail830.wishlist.dtov1.card.CardSignatureDTO;
+import com.github.abigail830.wishlist.dto.v1.WxPublicPlatformAuthDTO;
+import com.github.abigail830.wishlist.dto.v1.card.APITicketDTO;
+import com.github.abigail830.wishlist.dto.v1.card.CardSignatureDTO;
 import com.github.abigail830.wishlist.service.WxPublicPlatformService;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang.StringUtils;

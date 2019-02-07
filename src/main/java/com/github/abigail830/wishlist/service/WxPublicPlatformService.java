@@ -1,8 +1,8 @@
 package com.github.abigail830.wishlist.service;
 
-import com.github.abigail830.wishlist.dtov1.WxPublicPlatformAuthDTO;
-import com.github.abigail830.wishlist.dtov1.card.APITicketDTO;
-import com.github.abigail830.wishlist.dtov1.card.CardSignatureDTO;
+import com.github.abigail830.wishlist.dto.v1.WxPublicPlatformAuthDTO;
+import com.github.abigail830.wishlist.dto.v1.card.APITicketDTO;
+import com.github.abigail830.wishlist.dto.v1.card.CardSignatureDTO;
 import com.github.abigail830.wishlist.util.HttpClientUtil;
 import com.github.abigail830.wishlist.util.JsonUtil;
 import org.slf4j.Logger;
@@ -132,7 +132,7 @@ public class WxPublicPlatformService {
 
         }
 
-        return new CardSignatureDTO(nonceStr,cardID,signature,timestamp);
+        return new CardSignatureDTO(nonceStr, timestamp, signature, cardID);
     }
 
     private static String byteToHex(final byte[] hash) {

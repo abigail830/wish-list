@@ -1,7 +1,7 @@
 package com.github.abigail830.wishlist.service;
 
 
-import com.github.abigail830.wishlist.dtov1.WishDTO;
+import com.github.abigail830.wishlist.dto.v1.WishDTO;
 import com.github.abigail830.wishlist.entity.FormIDMapping;
 import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.repository.FormIDMappingDaoImpl;

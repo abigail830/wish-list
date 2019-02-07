@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
 public class WishList implements Comparable{
 
     private Integer id;

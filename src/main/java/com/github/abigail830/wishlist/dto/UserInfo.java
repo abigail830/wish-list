@@ -32,8 +32,7 @@ public class UserInfo {
         this.avatarUrl = "";
     }
 
-
-    public UserInfo(User user) {
+    public UserInfo(User user){
         this.openId = user.getOpenId();
         this.gender = user.getGender();
         this.nickName = user.getNickName();

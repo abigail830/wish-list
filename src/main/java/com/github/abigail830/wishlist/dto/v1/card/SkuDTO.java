@@ -1,4 +1,4 @@
-package com.github.abigail830.wishlist.dtov1.card;
+package com.github.abigail830.wishlist.dto.v1.card;
 
 import lombok.*;
 
