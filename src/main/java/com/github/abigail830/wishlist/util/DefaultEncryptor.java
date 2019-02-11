@@ -3,11 +3,8 @@ package com.github.abigail830.wishlist.util;
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DefaultEncryptor implements StringEncryptor {
-	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private final StringEncryptor encryptor;
 

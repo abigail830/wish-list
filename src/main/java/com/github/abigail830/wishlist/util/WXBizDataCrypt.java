@@ -4,8 +4,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
@@ -13,8 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WXBizDataCrypt {
-
-	private static final Logger logger = LoggerFactory.getLogger(WXBizDataCrypt.class);
 
 	private String appid;
 

@@ -1,9 +1,8 @@
 package com.github.abigail830.wishlist.util;
 
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 
 import javax.net.ssl.SSLContext;
@@ -17,9 +16,8 @@ import java.security.cert.X509Certificate;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-
+@Slf4j
 public class HttpClientUtil {
-	private final static Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
 
 	private final static long DEFAULT_CONNECT_TIMEOUT = 60;
 	private final static long DEFAULT_READ_TIMEOUT = 120;
@@ -44,7 +42,7 @@ public class HttpClientUtil {
 		try {
 			return this.send(url, HttpMethod.GET, null, null);
 		} catch (IOException e) {
-			logger.error("exception occur while doing http get", e);
+			log.error("exception occur while doing http get", e);
 			throw new RuntimeException(e);
 		}
 	}
@@ -66,7 +64,7 @@ public class HttpClientUtil {
 				}
 			}
 		}
-		logger.info("Request url is :{}, headers are :{}, params are :{}", url.toString(), params);
+		log.info("Request url is :{}, headers are :{}, params are :{}", url.toString(), params);
 
 		return httpClient.newCall(requestBuilder.build()).execute();
 	}
@@ -84,7 +82,7 @@ public class HttpClientUtil {
 				MediaType.parse(headers != null && headers.containsKey("Content-Type")
 						? headers.get("Content-Type") : "text/plain; charset=utf-8"), body));
 
-		logger.info("Request url is :{}, body is :{}", url.toString(), body);
+		log.info("Request url is :{}, body is :{}", url.toString(), body);
 		return httpClient.newCall(requestBuilder.build()).execute();
 	}
 
@@ -111,7 +109,7 @@ public class HttpClientUtil {
 		if (method == HttpMethod.POST && parameters != null) {
 			setFormBody(parameters, requestBuilder);
 		}
-		logger.info("Request url is :{}, headers are :{}, params are :{}", url.toString(), parameters);
+		log.info("Request url is :{}, headers are :{}, params are :{}", url.toString(), parameters);
 		return httpClient.newCall(requestBuilder.build()).execute();
 	}
 
