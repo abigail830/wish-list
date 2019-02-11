@@ -28,13 +28,13 @@
     <distributionManagement>
         <snapshotRepository>
             <id>nexus</id>
-            <name>maven-snapshots</name>
-            <url>http://nexus.saraqian.cn/repository/maven-snapshots/</url>
+            <name>Snapshots</name>
+            <url>http://nexus.saraqian.cn/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
         <repository>
             <id>nexus</id>
-            <name>maven-releases</name>
-            <url>http://nexus.saraqian.cn/repository/maven-releases/</url>
+            <name>Releases</name>
+            <url>http://nexus.saraqian.cn/nexus/content/repositories/releases/</url>
         </repository>
     </distributionManagement>
 
