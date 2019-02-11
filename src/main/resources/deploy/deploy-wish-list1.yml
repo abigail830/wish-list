@@ -2,11 +2,11 @@
 - hosts: centOS7
   remote_user: root
   vars:
-    version: v0.9.3
+    version: v1.0.0
   tasks:
   - name: Download package from jitpack
     get_url:
-      url: https://jitpack.io/com/github/abigail830/wish-list/{{version}}/wish-list-{{version}}.jar
+      url: http://nexus.saraqian.cn/nexus/content/repositories/releases/com/github/abigail830/wish-list/{{version}}/wish-list-{{version}}.jar
       dest: /var/www/wish-list-1/wish-list-{{version}}.jar
       mode: 0744
 
