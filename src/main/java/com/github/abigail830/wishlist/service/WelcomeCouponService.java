@@ -6,8 +6,7 @@ import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.repository.CouponMappingDAOImpl;
 import com.github.abigail830.wishlist.util.Constants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +14,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class WelcomeCouponService {
-    private static final Logger logger = LoggerFactory.getLogger(WelcomeCouponService.class);
 
     private static final String CARD_ID = "pJ9yv0cH95JySW1BKYBYMEg1_-pc";
 
@@ -75,7 +74,7 @@ public class WelcomeCouponService {
             CouponMapping couponMapping = welcomeCoupons.get(0);
             couponMapping.setCouponStatus(Constants.COUPON_STATUS_TAKEUP);
             boolean result = couponMappingDAO.updateCouponMapping(couponMapping);
-            logger.info("Update the coupon {} result: {}", couponMapping, result);
+            log.info("Update the coupon {} result: {}", couponMapping, result);
             return couponMapping;
         } else {
             return null;
@@ -95,10 +94,10 @@ public class WelcomeCouponService {
                 couponMappingDAO.createCouponMapping(welcomeCoupon);
                 notificationService.notifyCoupon(owner);
             } else {
-                logger.info("The open id {} already has coupon. ", openId);
+                log.info("The open id {} already has coupon. ", openId);
             }
         } else {
-            logger.info("The wish list doesn't contains the requires wish");
+            log.info("The wish list doesn't contains the requires wish");
         }
 
     }
@@ -112,7 +111,7 @@ public class WelcomeCouponService {
             testUser.setNickName("TEST_USER");
             notificationService.notifyCoupon(testUser);
         } else {
-            logger.info("The open id {} already has coupon. ", openID);
+            log.info("The open id {} already has coupon. ", openID);
         }
 
     }

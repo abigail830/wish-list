@@ -11,8 +11,7 @@ import com.github.abigail830.wishlist.util.HttpClientUtil;
 import com.github.abigail830.wishlist.util.JsonUtil;
 import com.github.abigail830.wishlist.util.WXBizDataCrypt;
 import io.swagger.annotations.ApiParam;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,9 +25,8 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/common")
+@Slf4j
 public class WxController {
-
-	private static final Logger logger = LoggerFactory.getLogger(WxController.class);
 
 	@Value("${app.appId}")
 	private String appId;
@@ -55,8 +53,8 @@ public class WxController {
         if(wxLoginResponse.getOpenid() != null){
             userService.createUser(new UserInfo(wxLoginResponse.getOpenid()));
         }else {
-			logger.error("not able to process ws response " + resultData);
-            logger.error("Fail to get openID from wechat API");
+			log.error("not able to process ws response " + resultData);
+			log.error("Fail to get openID from wechat API");
         }
 
 		return resultData;
@@ -71,12 +69,12 @@ public class WxController {
 
 		String resultDate = biz.decryptData(encryptedData, iv);
         WxDecryptResponse wxDecryptResponse = JsonUtil.toObject(resultDate, WxDecryptResponse.class);
-		logger.info("wxDecryptResponse: {}", wxDecryptResponse);
+		log.info("wxDecryptResponse: {}", wxDecryptResponse);
 		if(wxDecryptResponse.getErrorCode() == null){
             userService.updateUser(wxDecryptResponse.getUserInfo());
-            logger.info("Updated user info for user {}", wxDecryptResponse.getUserInfo().getOpenId());
+			log.info("Updated user info for user {}", wxDecryptResponse.getUserInfo().getOpenId());
         }else{
-		    logger.error("Error occur during decrypt wechat message with error code: {}", wxDecryptResponse.getErrorCode());
+			log.error("Error occur during decrypt wechat message with error code: {}", wxDecryptResponse.getErrorCode());
         }
 
 		return resultDate;

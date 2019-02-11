@@ -4,8 +4,7 @@ import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.util.Constants;
 import com.github.abigail830.wishlist.util.Toggle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,9 +16,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
+@Slf4j
 public class WishDaoImpl {
-
-	private static final Logger logger = LoggerFactory.getLogger(WishDaoImpl.class);
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -31,9 +29,9 @@ public class WishDaoImpl {
 	private RowMapper<Wish> wishRowMapperWithImplementor = new WishWithTakenUPInfoRowMapper();
 
 	public void createWish(Wish wish) {
-		logger.info("Create wish for wishlist [wish_list_id={}].", wish.getWishListId());
+		log.info("Create wish for wishlist [wish_list_id={}].", wish.getWishListId());
 		if (Toggle.TEST_MODE.isON()) {
-			logger.info("It is running in test mode");
+			log.info("It is running in test mode");
 			jdbcTemplate.update(
 					"INSERT INTO wish_tbl (wish_list_id, description, wish_status, implementor_open_id) " +
 							"VALUES (?, ?, ?, ?)",
@@ -57,8 +55,8 @@ public class WishDaoImpl {
 	}
 
 	public void updateWish(Wish wish) {
-		logger.debug(wish.toString());
-		logger.info("Update wish for wishlist [wish_id={}].", wish.getId());
+		log.debug(wish.toString());
+		log.info("Update wish for wishlist [wish_id={}].", wish.getId());
 		jdbcTemplate.update("UPDATE wish_tbl set description=?, wish_status=?, implementor_open_id=? " +
 						"where ID=?",
 				wish.getDescription(),
@@ -69,7 +67,7 @@ public class WishDaoImpl {
 	}
 
 	public List<Wish> getWishByWishListId(String wishListID) {
-		logger.info("Query Wish by WishList ID: {}", wishListID);
+		log.info("Query Wish by WishList ID: {}", wishListID);
 		List<Wish> wishes = jdbcTemplate.query("select wish_tbl.ID as ID, " +
 				"wish_tbl.wish_list_id as wish_list_id, " +
 				"wish_tbl.description as description, " +
@@ -92,7 +90,7 @@ public class WishDaoImpl {
 	}
 
 	public List<Wish> getWishByID(String id) {
-		logger.info("Query Wish by ID: {}", id);
+		log.info("Query Wish by ID: {}", id);
 		List<Wish> wishes = jdbcTemplate.query("SELECT * FROM wish_tbl WHERE id = ?", rowMapper, id);
 		return wishes;
 	}
@@ -102,17 +100,17 @@ public class WishDaoImpl {
 	}
 
 	public void deleteByWishListID(Integer wishListID) {
-		logger.info("Delete Wish by WishList ID: {}", wishListID);
+		log.info("Delete Wish by WishList ID: {}", wishListID);
 		jdbcTemplate.update("Delete from wish_tbl WHERE wish_list_id = ?", wishListID);
 	}
 
 	public void deleteByWishID(Integer wishID) {
-		logger.info("Delete Wish by Wish ID: {}", wishID);
+		log.info("Delete Wish by Wish ID: {}", wishID);
 		jdbcTemplate.update("Delete from wish_tbl WHERE ID=?", wishID);
 	}
 
 	public List<Wish> getWishByTakenupUserID(String openId) {
-		logger.info("Get Wish by taken ID: {}", openId);
+		log.info("Get Wish by taken ID: {}", openId);
 		return jdbcTemplate.query("select wish_tbl.ID as ID, " +
 						"wish_tbl.wish_list_id as wish_list_id, " +
 						"wish_tbl.description as description, " +
@@ -137,7 +135,7 @@ public class WishDaoImpl {
 	}
 
 	public List<Wish> getWishDetailByWishListID(String wishListID) {
-		logger.info("Get Wish by wish List ID: {}", wishListID);
+		log.info("Get Wish by wish List ID: {}", wishListID);
 		return jdbcTemplate.query("select wish_tbl.ID as ID, " +
 						"wish_tbl.wish_list_id as wish_list_id, " +
 						"wish_tbl.description as description, " +
@@ -162,7 +160,7 @@ public class WishDaoImpl {
 	}
 
 	public void takeupWish(String id, String takeUpOpenID) {
-		logger.info("Taking up Wish by Wish ID: {}", id);
+		log.info("Taking up Wish by Wish ID: {}", id);
 		jdbcTemplate.update("Update wish_tbl set implementor_open_id=?, wish_status=? WHERE ID=?",
 				takeUpOpenID,
 				Constants.WISH_STATUS_TAKEUP,
@@ -170,14 +168,14 @@ public class WishDaoImpl {
 	}
 
 	public void completeWish(String id) {
-		logger.info("Complete Wish ID: {}", id);
+		log.info("Complete Wish ID: {}", id);
 		jdbcTemplate.update("Update wish_tbl set  wish_status=? WHERE ID=?",
 				Constants.WISH_STATUS_DONE,
 				id);
 	}
 
 	public void removeTakenupWish(String id) {
-		logger.info("remove take up for Wish ID: {}", id);
+		log.info("remove take up for Wish ID: {}", id);
 		jdbcTemplate.update("Update wish_tbl set implementor_open_id=?, wish_status=? WHERE ID=?",
 				null,
 				Constants.WISH_STATUS_NEW,

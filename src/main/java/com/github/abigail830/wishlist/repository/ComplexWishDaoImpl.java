@@ -5,8 +5,6 @@ import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishListDetail;
 import com.github.abigail830.wishlist.util.Constants;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -21,8 +19,6 @@ import java.util.List;
 
 @Repository
 public class ComplexWishDaoImpl {
-
-    private static final Logger logger = LoggerFactory.getLogger(ComplexWishDaoImpl.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

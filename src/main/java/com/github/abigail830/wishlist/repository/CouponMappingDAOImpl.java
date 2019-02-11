@@ -1,8 +1,7 @@
 package com.github.abigail830.wishlist.repository;
 
 import com.github.abigail830.wishlist.entity.CouponMapping;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,8 +11,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
+@Slf4j
 public class CouponMappingDAOImpl {
-    private static final Logger logger = LoggerFactory.getLogger(CouponMappingDAOImpl.class);
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -24,7 +24,7 @@ public class CouponMappingDAOImpl {
     }
 
     public boolean updateCouponMapping(CouponMapping couponMapping) {
-        logger.info("Going to update coupon mapping: {}",
+        log.info("Going to update coupon mapping: {}",
                 couponMapping);
         try {
             int result = jdbcTemplate.update(
@@ -35,13 +35,13 @@ public class CouponMappingDAOImpl {
                     couponMapping.getCouponType());
             return result == 1;
         } catch (Exception ex) {
-            logger.error("Failed to insert coupon mapping. ", ex);
+            log.error("Failed to insert coupon mapping. ", ex);
             return false;
         }
     }
 
     public boolean createCouponMapping(CouponMapping couponMapping) {
-        logger.info("Going to create coupon mapping: {}",
+        log.info("Going to create coupon mapping: {}",
                 couponMapping);
         try {
             int result = jdbcTemplate.update(
@@ -52,35 +52,35 @@ public class CouponMappingDAOImpl {
                     couponMapping.getCouponStatus());
             return result == 1;
         } catch (Exception ex) {
-            logger.error("Failed to insert coupon mapping. ", ex);
+            log.error("Failed to insert coupon mapping. ", ex);
             return false;
         }
     }
 
     public List<CouponMapping> queryCoupon(String openId) {
-        logger.info("Going to query coupon mapping by open id: openID={}", openId);
+        log.info("Going to query coupon mapping by open id: openID={}", openId);
         return jdbcTemplate.query("SELECT * FROM coupon_map_tbl WHERE open_id=?", rowMapper, openId);
     }
 
     public List<CouponMapping> queryCouponByCouponType(String couponType) {
-        logger.info("Going to query coupon mapping by coupon type: couponType={}", couponType);
+        log.info("Going to query coupon mapping by coupon type: couponType={}", couponType);
         return jdbcTemplate.query("SELECT * FROM coupon_map_tbl WHERE coupon_type=?", rowMapper, couponType);
     }
 
     public List<CouponMapping> queryCoupon(String openId, String couponType) {
-        logger.info("Going to query coupon mapping by open id: openID={}, couponType={}", openId, couponType);
+        log.info("Going to query coupon mapping by open id: openID={}, couponType={}", openId, couponType);
         return jdbcTemplate.query("SELECT * FROM coupon_map_tbl WHERE open_id=? AND coupon_type=?", rowMapper, openId, couponType);
     }
 
 
     public boolean deleteCoupon(String openID, String couponType) {
         try {
-            logger.info("Delete coupon record for openID {} couponType {}", openID, couponType);
+            log.info("Delete coupon record for openID {} couponType {}", openID, couponType);
             int result = jdbcTemplate.update(
                     "DELETE FROM coupon_map_tbl WHERE open_id=? AND coupon_type=?", openID, couponType);
             return result == 1;
         } catch (Exception ex) {
-            logger.error("Failed to delete coupon mapping. ", ex);
+            log.error("Failed to delete coupon mapping. ", ex);
             return false;
         }
     }

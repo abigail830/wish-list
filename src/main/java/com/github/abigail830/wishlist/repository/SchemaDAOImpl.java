@@ -1,25 +1,24 @@
 package com.github.abigail830.wishlist.repository;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
+@Slf4j
 public class SchemaDAOImpl {
-    private static final Logger logger = LoggerFactory.getLogger(SchemaDAOImpl.class);
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
 
     public boolean isTableExist(String tableName) {
-        logger.info("Query table exist " + tableName);
+        log.info("Query table exist " + tableName);
         List list = jdbcTemplate.queryForList("select * from information_schema.TABLES where table_name = '" + tableName + "'");
-        logger.info("Is table exist " + list.size());
+        log.info("Is table exist " + list.size());
         return list.size() == 1;
     }
 

@@ -6,10 +6,9 @@ import com.github.abigail830.wishlist.entity.FormIDMapping;
 import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.repository.FormIDMappingDaoImpl;
 import com.github.abigail830.wishlist.repository.WishListDaoImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +16,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class FormIDMappingService {
-
-    private static final Logger logger = LoggerFactory.getLogger(FormIDMappingService.class);
-
 
     @Autowired
     private FormIDMappingDaoImpl formIDMappingDao;
@@ -71,11 +68,11 @@ public class FormIDMappingService {
                     contributeFormID(wishListById.get(0).getOpenId(), formID);
                 }
             } catch (Exception ex) {
-                logger.error("Failed to contribute form ID.", ex);
+                log.error("Failed to contribute form ID.", ex);
             }
 
         } else {
-            logger.info("Could not locate open id with {}", wishDTO);
+            log.info("Could not locate open id with {}", wishDTO);
         }
 
     }

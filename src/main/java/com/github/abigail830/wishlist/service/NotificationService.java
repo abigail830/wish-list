@@ -8,9 +8,8 @@ import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.util.HttpClientUtil;
 import com.github.abigail830.wishlist.util.JsonUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,9 +23,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
+@Slf4j
 public class NotificationService {
-    private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
-
 
     public final static String TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 
@@ -99,12 +97,12 @@ public class NotificationService {
                 sb.append(lines);
             }
             String reply = sb.toString();
-            logger.info("notification result:  " + reply);
+            log.info("notification result:  " + reply);
             reader.close();
 
             connection.disconnect();
         } catch (Exception e) {
-            logger.error("notification failure. ", e);
+            log.error("notification failure. ", e);
         }
     }
 
@@ -120,12 +118,12 @@ public class NotificationService {
         FormIDMapping formIDMapping =
                 formIDMappingService.takeFormID(user.getOpenId());
         if (formIDMapping != null) {
-            logger.info("This form ID {} is used for notify user: {}", formIDMapping, user);
+            log.info("This form ID {} is used for notify user: {}", formIDMapping, user);
             List<String> params = Arrays.asList(user.getNickName(),
                     COUPON_MESSAGE_TEMPLATE);
             notifyUser(user.getOpenId(), params, formIDMapping.getFormId());
         } else {
-            logger.info("There is no form id for this user: {} ", user);
+            log.info("There is no form id for this user: {} ", user);
         }
 
     }

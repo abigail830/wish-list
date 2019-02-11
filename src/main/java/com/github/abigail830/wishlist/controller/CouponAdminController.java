@@ -6,9 +6,8 @@ import com.github.abigail830.wishlist.service.WelcomeCouponService;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -17,9 +16,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/coupon")
+@Slf4j
 public class CouponAdminController {
-
-    private static final Logger logger = LoggerFactory.getLogger(CouponAdminController.class);
 
     @Resource
     private WelcomeCouponService welcomeCouponService;
@@ -45,7 +43,7 @@ public class CouponAdminController {
     @PutMapping("/")
     public CouponMappingDTO takeWelcomeCoupon(
             @ApiParam(example = "oEmJ75T7IHx-3zUjMteodZu5g09A") @RequestParam(value = "openID", required = true) String openID) {
-        logger.info("Take up coupon for open ID {}", openID);
+        log.info("Take up coupon for open ID {}", openID);
         CouponMapping couponMapping = welcomeCouponService.takeUpWelcomeCoupon(openID);
         if (couponMapping != null) {
             return new CouponMappingDTO(couponMapping);
@@ -59,7 +57,7 @@ public class CouponAdminController {
     public void createWelcomeCouponForVerification(
             @ApiParam(example = "oEmJ75T7IHx-3zUjMteodZu5g09A") @RequestParam(value = "openID", required = true) String openID) {
         if ("oEmJ75T7IHx-3zUjMteodZu5g09A".equals(openID) || "oEmJ75YWmBSDgyz4KLi_yGL8MBV4".equals(openID)) {
-            logger.info("Provision test coupon for {}", openID);
+            log.info("Provision test coupon for {}", openID);
             welcomeCouponService.deliverWelcomeCoupon(openID);
         }
 
@@ -69,7 +67,7 @@ public class CouponAdminController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
     public void deleteWelcomeCouponForVerification(
             @ApiParam(example = "oEmJ75T7IHx-3zUjMteodZu5g09A") @RequestParam(value = "openID", required = true) String openID) {
-        logger.info("Delete coupon for {}", openID);
+        log.info("Delete coupon for {}", openID);
         welcomeCouponService.deleteWelcomeCoupon(openID);
 
     }

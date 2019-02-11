@@ -21,9 +21,6 @@ public class SwaggerConfig {
 	@Bean
 	public Docket createRestApi() {
 		List<Parameter> pars = new ArrayList<>();
-//		ParameterBuilder appIdPt = new ParameterBuilder();
-//		appIdPt.name("appId").description("appId").modelRef(new ModelRef("string")).parameterType("header").required(true).defaultValue("ops_k8s_orchestration_system");
-//		pars.add(appIdPt.build());
 		return new Docket(DocumentationType.SWAGGER_2)
 				.apiInfo(apiInfo())
 				.select()

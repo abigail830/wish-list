@@ -3,8 +3,7 @@ package com.github.abigail830.wishlist.repository;
 import com.github.abigail830.wishlist.dto.UserInfo;
 import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.util.Toggle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,9 +13,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
+@Slf4j
 public class UserDaoImpl {
 
-	private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -28,7 +27,7 @@ public class UserDaoImpl {
 	}
 
 	public void createUser(UserInfo user) {
-		logger.info("Insert IGNORE data openId={}, gender={}, nick_name={}, " +
+		log.info("Insert IGNORE data openId={}, gender={}, nick_name={}, " +
 				"city={}, country={}, province={}, lang={}, avatar_url={}",
 				user.getOpenId(),
 				user.getGender(),
@@ -40,7 +39,7 @@ public class UserDaoImpl {
 				user.getAvatarUrl()
 		);
 		if (Toggle.TEST_MODE.isON()) {
-			logger.info("It is running in test mode");
+			log.info("It is running in test mode");
 
 			jdbcTemplate.update(
 					"INSERT INTO user_tbl (open_id, gender, nick_name, city, country, province, lang, avatar_url) " +
@@ -73,7 +72,7 @@ public class UserDaoImpl {
 	}
 
 	public void updateUserByOpenID(UserInfo user) {
-		logger.info("Update user openId={} to gender={}, nick_name={}, " +
+		log.info("Update user openId={} to gender={}, nick_name={}, " +
 						"city={}, country={}, province={}, lang={}, avatar_url={}",
 				user.getOpenId(),
 				user.getGender(),

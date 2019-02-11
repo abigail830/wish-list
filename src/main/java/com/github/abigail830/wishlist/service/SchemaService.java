@@ -2,16 +2,15 @@ package com.github.abigail830.wishlist.service;
 
 import com.github.abigail830.wishlist.repository.SchemaDAOImpl;
 import com.google.common.collect.ImmutableMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service
+@Slf4j
 public class SchemaService {
-    private static final Logger logger = LoggerFactory.getLogger(SchemaService.class);
 
     public static final Map<String, String> schemaMap =
             ImmutableMap.of(
@@ -36,12 +35,12 @@ public class SchemaService {
 
     public void populateTable (String tableName){
         if (!schemaDAO.isTableExist(tableName)) {
-            logger.info("Start to populate table " + tableName);
+            log.info("Start to populate table " + tableName);
             schemaDAO.updateSchema(schemaMap.get(tableName));
-            logger.info("Populate table completed " + tableName);
+            log.info("Populate table completed " + tableName);
 
         } else {
-            logger.info("Table is already existed or not in use" + tableName);
+            log.info("Table is already existed or not in use" + tableName);
         }
     }
 }

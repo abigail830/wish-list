@@ -5,8 +5,7 @@ import com.github.abigail830.wishlist.dto.v1.card.APITicketDTO;
 import com.github.abigail830.wishlist.dto.v1.card.CardSignatureDTO;
 import com.github.abigail830.wishlist.util.HttpClientUtil;
 import com.github.abigail830.wishlist.util.JsonUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +18,8 @@ import java.util.UUID;
 
 
 @Service
+@Slf4j
 public class WxPublicPlatformService {
-
-    private static final Logger logger = LoggerFactory.getLogger(WxPublicPlatformService.class);
 
     private static final long tolerence = 60;
 
@@ -37,7 +35,7 @@ public class WxPublicPlatformService {
 
     public boolean isValidToken(WxPublicPlatformAuthDTO wxPublicPlatformAuthDTO) {
         long currentSecond = System.currentTimeMillis()/1000;
-        logger.info("Auth Token current second: {} , valid second {}", currentSecond,wxPublicPlatformAuthDTO.getValidInSecond() - tolerence );
+        log.info("Auth Token current second: {} , valid second {}", currentSecond, wxPublicPlatformAuthDTO.getValidInSecond() - tolerence);
         return currentSecond < (wxPublicPlatformAuthDTO.getValidInSecond() - tolerence);
     }
 
@@ -52,10 +50,10 @@ public class WxPublicPlatformService {
 
     private WxPublicPlatformAuthDTO getAccessTokenFromWx() {
 
-        logger.info("Handle wechat public platform auth");
+        log.info("Handle wechat public platform auth");
         String resultData = HttpClientUtil.instance().getData("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential" +
                 "&appid=" + appId + "&secret=" + secret);
-        logger.info("Wechat public platform auth result: {}", resultData);
+        log.info("Wechat public platform auth result: {}", resultData);
         WxPublicPlatformAuthDTO wxPublicPlatformAuthDTO = JsonUtil.toObject(resultData, WxPublicPlatformAuthDTO.class);
         long currentSecond = System.currentTimeMillis()/1000;
         wxPublicPlatformAuthDTO.setValidInSecond(currentSecond + Long.valueOf(wxPublicPlatformAuthDTO.getExpires_in()));
@@ -64,7 +62,7 @@ public class WxPublicPlatformService {
 
     public boolean isValidToken(APITicketDTO apiTicketDTO) {
         long currentSecond = System.currentTimeMillis()/1000;
-        logger.info("API ticket - current second: {} , valid second {}", currentSecond, apiTicketDTO.getValidInSecond() - tolerence);
+        log.info("API ticket - current second: {} , valid second {}", currentSecond, apiTicketDTO.getValidInSecond() - tolerence);
         return currentSecond < (apiTicketDTO.getValidInSecond() - tolerence);
     }
 
@@ -78,12 +76,12 @@ public class WxPublicPlatformService {
     }
 
     private APITicketDTO getAPITicketFromWx(WxPublicPlatformAuthDTO wxPublicPlatformAuthDTO) {
-        logger.info("Handle get api ticket with auth {} ", wxPublicPlatformAuthDTO);
+        log.info("Handle get api ticket with auth {} ", wxPublicPlatformAuthDTO);
 
         String resultData = HttpClientUtil.instance().getData("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="
                 + wxPublicPlatformAuthDTO.getAccess_token() + "&type=wx_card");
 
-        logger.info("Wechat api ticket result: {} ", resultData);
+        log.info("Wechat api ticket result: {} ", resultData);
         APITicketDTO apiTicketDTO = JsonUtil.toObject(resultData, APITicketDTO.class);
         long currentSecond = System.currentTimeMillis()/1000;
         apiTicketDTO.setValidInSecond(currentSecond + apiTicketDTO.getExpires_in());
@@ -93,7 +91,7 @@ public class WxPublicPlatformService {
     public CardSignatureDTO getCardSign(String cardID) {
         APITicketDTO apiTicket = getAPITicket();
         CardSignatureDTO sign = sign2(apiTicket, cardID);
-        logger.info("Completed sign {} for card id {} ", sign, cardID);
+        log.info("Completed sign {} for card id {} ", sign, cardID);
         return sign;
     }
 
@@ -118,16 +116,16 @@ public class WxPublicPlatformService {
         String signature;
 
         try{
-            logger.info("Start to sign the sorted string {}", stringToBeSign);
+            log.info("Start to sign the sorted string {}", stringToBeSign);
             MessageDigest crypt = MessageDigest.getInstance("SHA-1");
             crypt.reset();
             crypt.update(stringToBeSign.getBytes("UTF-8"));
             signature = byteToHex(crypt.digest());
         }catch (NoSuchAlgorithmException ex){
-            logger.error("Failed to sign ticket. ", ex);
+            log.error("Failed to sign ticket. ", ex);
             throw new RuntimeException("Failed to sign ticket. ", ex);
         }catch (UnsupportedEncodingException ex){
-            logger.error("Failed to sign ticket. ", ex);
+            log.error("Failed to sign ticket. ", ex);
             throw new RuntimeException("Failed to sign ticket. ", ex);
 
         }

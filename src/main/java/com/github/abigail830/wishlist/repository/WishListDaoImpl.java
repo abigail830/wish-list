@@ -1,8 +1,7 @@
 package com.github.abigail830.wishlist.repository;
 
 import com.github.abigail830.wishlist.entity.WishList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,9 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
+@Slf4j
 public class WishListDaoImpl {
-
-	private static final Logger logger = LoggerFactory.getLogger(WishListDaoImpl.class);
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -22,7 +20,7 @@ public class WishListDaoImpl {
 	private RowMapper<WishList> rowMapper = new BeanPropertyRowMapper<>(WishList.class);
 
 	public void createWishList(WishList wishList) {
-		logger.info("Going to create wish list for user: {}", wishList.toString());
+		log.info("Going to create wish list for user: {}", wishList.toString());
 		jdbcTemplate.update(
 				"INSERT INTO wishlist_tbl (open_id, title, brief, create_time, due_time) VALUES (?, ?,?,?,?)",
 				wishList.getOpenId(),
@@ -34,7 +32,7 @@ public class WishListDaoImpl {
 	}
 
 	public void updateWishListByID(WishList wishList) {
-		logger.info("Going to update wish list for user : {}", wishList.toString());
+		log.info("Going to update wish list for user : {}", wishList.toString());
 		jdbcTemplate.update(
 				"UPDATE wishlist_tbl set title=?, brief=?, due_time=? where ID=?",
 				wishList.getTitle(),
@@ -45,7 +43,7 @@ public class WishListDaoImpl {
 	}
 
 	public void deleteWishList(Integer wishListID ) {
-		logger.info("Going to delete wish list {}", wishListID);
+		log.info("Going to delete wish list {}", wishListID);
 		jdbcTemplate.update("DELETE from wishlist_tbl where ID=?",wishListID);
 
 	}

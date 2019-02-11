@@ -6,9 +6,8 @@ import com.github.abigail830.wishlist.dto.v1.card.APITicketDTO;
 import com.github.abigail830.wishlist.dto.v1.card.CardSignatureDTO;
 import com.github.abigail830.wishlist.service.WxPublicPlatformService;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,22 +16,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/wx/platform")
+@Slf4j
 public class WxPublicPlatformController {
-
-    private static final Logger logger = LoggerFactory.getLogger(WxPublicPlatformController.class);
 
     @Autowired
     private WxPublicPlatformService wxPublicPlatformService;
 
     @GetMapping("/auth")
     public WxPublicPlatformAuthDTO getAccessToken() {
-        logger.info("Get access token for wechat public platform");
+        log.info("Get access token for wechat public platform");
         return wxPublicPlatformService.getToken();
     }
 
     @GetMapping("/apiticket")
     public APITicketDTO getAPITicket() {
-        logger.info("Get api ticket for wechat public platform");
+        log.info("Get api ticket for wechat public platform");
         return wxPublicPlatformService.getAPITicket();
     }
 
@@ -43,10 +41,10 @@ public class WxPublicPlatformController {
 
 
         if (StringUtils.isNotBlank(cardID)) {
-            logger.info("Start to get signature for {}", cardID);
+            log.info("Start to get signature for {}", cardID);
             return wxPublicPlatformService.getCardSign(cardID);
         }else{
-            logger.warn("cardID could not be null or emptyª");
+            log.warn("cardID could not be null or emptyª");
             throw new IllegalArgumentException("failed to validate");
         }
 

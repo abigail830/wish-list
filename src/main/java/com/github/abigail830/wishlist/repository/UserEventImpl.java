@@ -1,9 +1,7 @@
 package com.github.abigail830.wishlist.repository;
 
-import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.UserEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,9 +12,9 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
+@Slf4j
 public class UserEventImpl {
 
-	private static final Logger logger = LoggerFactory.getLogger(UserEventImpl.class);
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -24,7 +22,7 @@ public class UserEventImpl {
 	private RowMapper<UserEvent> rowMapper = new BeanPropertyRowMapper<>(UserEvent.class);
 
 	public void createUserEvent(UserEvent userEvent) {
-		logger.info("Going to insert user event openId={}, eventType={}",
+		log.info("Going to insert user event openId={}, eventType={}",
 				userEvent.getOpenId(),
 				userEvent.getEventType()
 		);
