@@ -19,7 +19,7 @@ public class WelcomeCouponService {
 
     private static final String CARD_ID = "pJ9yv0cH95JySW1BKYBYMEg1_-pc";
 
-    public static final String WELCOME_WISH_NAME = "祝你发喜";
+    public static final String WELCOME_WISH_NAME = "甜蜜发喜";
 
     @Autowired
     private CouponMappingDAOImpl couponMappingDAO;
