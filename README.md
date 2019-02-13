@@ -11,4 +11,6 @@
 http://jenkins.saraqian.cn/job/wish-list%20snapshot/
 * Manual trigger:
 http://jenkins.saraqian.cn/job/wish-list%20production/
+* Profile: 
+wish-list
 
