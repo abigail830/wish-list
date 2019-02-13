@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -33,22 +34,24 @@ public class WishDaoImpl {
 		if (Toggle.TEST_MODE.isON()) {
 			log.info("It is running in test mode");
 			jdbcTemplate.update(
-					"INSERT INTO wish_tbl (wish_list_id, description, wish_status, implementor_open_id) " +
-							"VALUES (?, ?, ?, ?)",
+					"INSERT INTO wish_tbl (wish_list_id, description, wish_status, implementor_open_id, create_time) " +
+							"VALUES (?, ?, ?, ?, ?)",
 					(int) wish.getWishListId(),
 					wish.getDescription(),
 					wish.getWishStatus(),
-					wish.getImplementorOpenId()
+					wish.getImplementorOpenId(),
+					new Timestamp(System.currentTimeMillis())
 			);
 
 		} else {
 			jdbcTemplate.update(
-					"REPLACE INTO wish_tbl (wish_list_id, description, wish_status, implementor_open_id) " +
-							"VALUES (?, ?, ?, ?)",
+					"REPLACE INTO wish_tbl (wish_list_id, description, wish_status, implementor_open_id, create_time) " +
+							"VALUES (?, ?, ?, ?, ?)",
 					(int) wish.getWishListId(),
 					wish.getDescription(),
 					wish.getWishStatus(),
-					wish.getImplementorOpenId()
+					wish.getImplementorOpenId(),
+					new Timestamp(System.currentTimeMillis())
 			);
 
 		}
