@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class WelcomeCouponService {
 
-    private static final String CARD_ID = "pJ9yv0cH95JySW1BKYBYMEg1_-pc";
+    private static final String CARD_ID = "pJ9yv0Y3nLo-3oeiI21nG44O93hM";
 
     public static final String WELCOME_WISH_NAME = "甜蜜发喜";
 
