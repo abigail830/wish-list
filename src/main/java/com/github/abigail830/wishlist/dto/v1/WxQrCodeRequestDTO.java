@@ -8,8 +8,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class WxQrCodeRequestDTO {
-    String page;
-    String scene;
+    String path;
     String width;
     Boolean is_hyaline;
 

@@ -5,9 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class QRCodeRequestDTO {
+public class QRCodeLimitRequestDTO {
     String width;
-    String page;
-    String scene;
+    String path;
 
 }
