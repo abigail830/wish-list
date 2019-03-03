@@ -8,7 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +21,7 @@ public class QRCodeController {
     @Autowired
     QRCodeService qrCodeService;
 
-    @PostMapping(value = "/limit", produces = MediaType.IMAGE_PNG_VALUE)
+    @GetMapping(value = "/limit", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<byte[]> getQRCodeForContent(
             @RequestBody QRCodeLimitRequestDTO qrCodeLimitRequestDTO) {
 
