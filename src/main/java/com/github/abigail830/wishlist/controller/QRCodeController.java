@@ -22,13 +22,9 @@ public class QRCodeController {
 
     @GetMapping(value = "/limit", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<byte[]> getQRCodeForContent(
-            @RequestParam String wishListID,
-            @RequestParam String wishimageId,
-            @RequestParam String wishimageUrl,
-            @RequestParam String nickName,
-            @RequestParam String width) {
+            @RequestParam String page) {
 
-        final byte[] result = qrCodeService.generate(wishListID, wishimageId, wishimageUrl, nickName, width);
+        final byte[] result = qrCodeService.generate(page);
         HttpHeaders headers_1 = new HttpHeaders();
         headers_1.setContentType(MediaType.IMAGE_JPEG);
 

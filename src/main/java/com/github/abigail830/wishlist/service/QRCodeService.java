@@ -27,7 +27,6 @@ public class QRCodeService {
 
     private final static String QR_REQUEST_URL_LIMIT = "https://api.weixin.qq.com/wxa/getwxacode?access_token=";
 
-    String forwardPage = "/pages/shareWish/shareWish?wishListId=LIST_ID&wishimageId=IMAGE_ID&wishimageUrl=URL&nickName=NICKNAME";
     
     @Value("${app.appId}")
     private String appId;
@@ -40,20 +39,14 @@ public class QRCodeService {
         return JsonUtil.toObject(resultData, WxToken.class);
     }
 
-    public byte[] generate(String wishListID, String wishimageId, String imageUrl, String nickName, String width) {
+    public byte[] generate(String page) {
         String access_token = getWxToken().getAccess_token();
         String url = QR_REQUEST_URL_LIMIT + access_token;
 
-        String targetUrl = forwardPage.replace("LIST_ID", wishListID)
-                .replace("IMAGE_ID", wishimageId)
-                .replace("URL", imageUrl)
-                .replace("NICKNAME", nickName);
-
         final WxQrCodeRequestDTO wxQrCodeRequestDTO = WxQrCodeRequestDTO.builder()
-                .path(targetUrl)
-                .width(width)
+                .path(page)
+                .width("250")
                 .is_hyaline(Boolean.TRUE).build();
-
 
         Map<String, String> headers = new HashMap<>();
 //        headers.put(CONTENT_TYPE, "application/json");
