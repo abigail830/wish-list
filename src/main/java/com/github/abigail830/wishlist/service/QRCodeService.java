@@ -26,6 +26,7 @@ public class QRCodeService {
 //    private final static String QR_REQUEST_URL = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=";
 
     private final static String QR_REQUEST_URL_LIMIT = "https://api.weixin.qq.com/wxa/getwxacode?access_token=";
+
     
     @Value("${app.appId}")
     private String appId;
@@ -38,14 +39,14 @@ public class QRCodeService {
         return JsonUtil.toObject(resultData, WxToken.class);
     }
 
-    public byte[] generate(String path, String width) {
+    public byte[] generate(String page) {
         String access_token = getWxToken().getAccess_token();
         String url = QR_REQUEST_URL_LIMIT + access_token;
 
         final WxQrCodeRequestDTO wxQrCodeRequestDTO = WxQrCodeRequestDTO.builder()
-                .path(path).width(width)
+                .path(page)
+                .width("250")
                 .is_hyaline(Boolean.TRUE).build();
-
 
         Map<String, String> headers = new HashMap<>();
 //        headers.put(CONTENT_TYPE, "application/json");
