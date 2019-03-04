@@ -28,7 +28,7 @@ public class QRCodeController {
         HttpHeaders headers_1 = new HttpHeaders();
         headers_1.setContentType(MediaType.IMAGE_JPEG);
 
-        return new ResponseEntity<>(result, headers_1, HttpStatus.CREATED);
+        return new ResponseEntity<>(result, headers_1, HttpStatus.OK);
 
     }
 
