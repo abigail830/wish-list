@@ -17,6 +17,7 @@ public class WishList implements Comparable{
     private String brief;
     private Timestamp createTime;
     private Timestamp dueTime;
+    private Integer implementorsLimit;
 
 
     @Override

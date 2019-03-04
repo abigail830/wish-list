@@ -45,6 +45,9 @@ public class WishDTO {
     @ApiModelProperty(value = "愿望承接人",  example = "微信用户")
     private List<UserDTO> implementors;
 
+    @ApiModelProperty(value = "愿望承接人数限制",  example = "1")
+    private Integer implementorsLimit;
+
     @ApiModelProperty(value = "愿望拥有人",  example = "微信用户")
     private UserDTO creator;
 
@@ -64,6 +67,7 @@ public class WishDTO {
         this.wishStatus = wishStatus;
         this.implementor = implementor;
         this.wishListID = wishListID;
+        this.implementorsLimit = 1;
     }
 
     public WishDTO(Wish wish) {
@@ -81,12 +85,20 @@ public class WishDTO {
             this.implementor = new UserDTO(wish.getImplementor());
         }
 
+        if (wish.getImplementorsLimit() != null) {
+            implementorsLimit = wish.getImplementorsLimit();
+        } else {
+            implementorsLimit = 1;
+        }
+
         if (wish.getImplementors() != null && wish.getImplementors().size() > 0) {
             implementors = new LinkedList<>();
             for (User user : wish.getImplementors()) {
                 implementors.add(new UserDTO(user));
             }
         }
+
+
         if (wish.getCreator() != null) {
             this.creator = new UserDTO(wish.getCreator());
         }

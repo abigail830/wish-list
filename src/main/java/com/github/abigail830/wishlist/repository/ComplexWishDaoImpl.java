@@ -23,6 +23,9 @@ public class ComplexWishDaoImpl {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private WishDaoImpl wishDao;
+
     private RowMapper<Wish> wishRowMapper = new BeanPropertyRowMapper<>(Wish.class);
 
     private RowMapper<WishListDetail> wishListDetailRowMapper = new BeanPropertyRowMapper<>(WishListDetail.class);
@@ -67,12 +70,13 @@ public class ComplexWishDaoImpl {
     }
 
     public WishListDetail getWishListDetail(String wishListId) {
-        return jdbcTemplate.query("select wishlist_tbl.ID as list_id, " +
+        WishListDetail wishListDetail = jdbcTemplate.query("select wishlist_tbl.ID as list_id, " +
                         "wishlist_tbl.open_id as list_open_id, " +
                         "wishlist_tbl.title as list_title, " +
                         "wishlist_tbl.brief as list_brief, " +
                         "wishlist_tbl.create_time as list_create_time, " +
                         "wishlist_tbl.due_time as list_due_time, " +
+                        "wishlist_tbl.implementors_limit as implementors_limit, " +
                         "wish_tbl.ID as ID, " +
                         "wish_tbl.wish_list_id as wish_list_id, " +
                         "wish_tbl.description as description, " +
@@ -116,6 +120,10 @@ public class ComplexWishDaoImpl {
                         return wishListDetail;
                     }
                 }, wishListId);
+        for (Wish wish : wishListDetail.getWishes()) {
+            wish.setImplementors(wishDao.queryImplementors(wish.getId().toString()));
+        }
+        return wishListDetail;
     }
 
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {

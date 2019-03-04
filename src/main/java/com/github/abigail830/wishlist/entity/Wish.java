@@ -21,7 +21,7 @@ public class Wish {
     private User implementor;
     private User Creator;
     private Timestamp dueTime;
-    private Integer implementorLimit;
+    private Integer implementorsLimit;
     private List<User> implementors;
 
 }

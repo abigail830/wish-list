@@ -5,3 +5,5 @@ CREATE TABLE implementors_tbl (
   PRIMARY KEY (wish_id,sequence)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE wishlist_tbl ADD implementors_limit int DEFAULT 1;

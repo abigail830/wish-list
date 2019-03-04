@@ -43,6 +43,9 @@ public class WishListDTO{
     @ApiModelProperty(value = "进度",  example = "50")
     private Integer progress;
 
+    @ApiModelProperty(value = "认领限制",  example = "1")
+    private Integer implementorsLimit;
+
     @ApiModelProperty(value = "愿望列表")
     List<WishDTO> wishes = new ArrayList<>();
 
@@ -67,7 +70,11 @@ public class WishListDTO{
         if (wishListDetail.getWishes() != null && wishListDetail.getWishes().size() > 0) {
             this.wishes = wishListDetail.getWishes().stream().filter(item -> item.getDescription() != null).map(WishDTO::new).collect(Collectors.toList());
         }
-
+        if (wishListDetail.getImplementorsLimit() != null) {
+            this.implementorsLimit = wishListDetail.getImplementorsLimit();
+        } else {
+            this.implementorsLimit = 1;
+        }
         this.dateInMonth = this.listDueTime.substring(8, 10);
         this.yearAndMonth = this.listDueTime.substring(0, 7);
     }
@@ -82,6 +89,11 @@ public class WishListDTO{
         this.listDueTime = dateFormatter.get().format(wishList.getDueTime());
         this.dateInMonth = this.listDueTime.substring(8, 10);
         this.yearAndMonth = this.listDueTime.substring(0, 7);
+        if (wishList.getImplementorsLimit() != null) {
+            this.implementorsLimit = wishList.getImplementorsLimit();
+        } else {
+            this.implementorsLimit = 1;
+        }
     }
 
 }

@@ -26,9 +26,11 @@ public class WishDaoImpl {
 
 	private RowMapper<User> userMapper = new BeanPropertyRowMapper<>(User.class);
 
-	private RowMapper<Wish> wishRowMapperWithCreator = new WishRowMapper();
+	private RowMapper<Wish> wishRowMapperWithCreator = new WishRowMapperWithCreator();
 
 	private RowMapper<Wish> wishRowMapperWithImplementor = new WishWithTakenUPInfoRowMapper();
+
+	private RowMapper<Wish> wishRowMapper = new WishRowMapper();
 
 	public void createWish(Wish wish) {
 		log.info("Create wish for wishlist [wish_list_id={}].", wish.getWishListId());
@@ -84,9 +86,11 @@ public class WishDaoImpl {
 				"user_table.country as implementor_country, " +
 				"user_table.province as implementor_province, " +
 				"user_table.lang as implementor_lang, " +
-				"user_table.avatar_url as implementor_avatar_url " +
+				"user_table.avatar_url as implementor_avatar_url, " +
+				"wishlist_tbl.implementors_limit as implementors_limit " +
 				"from wish_tbl " +
 				"left join user_tbl as user_table on wish_tbl.implementor_open_id = user_table.open_id " +
+				"left join wishlist_tbl on wish_tbl.wish_list_id = wishlist_tbl.ID " +
 				"where wish_tbl.wish_list_id = ?", wishRowMapperWithImplementor, wishListID);
 		for (Wish wish : wishes) {
 			List<User> users = queryImplementors(wish.getId().toString());
@@ -97,7 +101,17 @@ public class WishDaoImpl {
 
 	public List<Wish> getWishByID(String id) {
 		log.info("Query Wish by ID: {}", id);
-		List<Wish> wishes = jdbcTemplate.query("SELECT * FROM wish_tbl WHERE id = ?", rowMapper, id);
+		List<Wish> wishes = jdbcTemplate.query("select wish_tbl.ID as ID, " +
+				"wish_tbl.wish_list_id as wish_list_id, " +
+				"wish_tbl.description as description, " +
+				"wish_tbl.create_time as create_time, " +
+				"wish_tbl.last_update_time as last_update_time, " +
+				"wish_tbl.wish_status as wish_status, " +
+				"wish_tbl.implementor_open_id as implementor_open_id, " +
+				"wishlist_tbl.implementors_limit as implementors_limit " +
+				"from wish_tbl " +
+				"left join wishlist_tbl on wish_tbl.wish_list_id = wishlist_tbl.ID " +
+				"where wish_tbl.id = ?", wishRowMapper, id);
 		return wishes;
 	}
 
@@ -253,15 +267,15 @@ public class WishDaoImpl {
 						"user_table.country as country, " +
 						"user_table.province as province, " +
 						"user_table.lang as lang, " +
-						"user_table.avatar_url as avatar_url, " +
+						"user_table.avatar_url as avatar_url " +
 						"from implementors_tbl " +
-						"join user_tbl as user_table on implementors_tbl.open_id = user_table.open_id " +
+						"join user_tbl as user_table on implementors_tbl.implementor_open_id = user_table.open_id " +
 						"where implementors_tbl.wish_id = ?",
 				userMapper, wishID);
 
 	}
 
-	public static class WishRowMapper implements RowMapper<Wish> {
+	public static class WishRowMapperWithCreator implements RowMapper<Wish> {
 		@Override
 		public Wish mapRow(ResultSet resultSet, int i) throws SQLException {
 
@@ -300,6 +314,7 @@ public class WishDaoImpl {
 			wish.setLastUpdateTime(resultSet.getTimestamp("last_update_time"));
 			wish.setWishStatus(resultSet.getString("wish_status"));
 			wish.setImplementorOpenId("implementor_open_id");
+			wish.setImplementorsLimit(resultSet.getInt("implementors_limit"));
 
 			User user = new User();
 			user.setOpenId(resultSet.getString("implementor_open_id"));
@@ -309,6 +324,25 @@ public class WishDaoImpl {
 			user.setAvatarUrl(resultSet.getString("implementor_avatar_url"));
 
 			wish.setImplementor(user);
+			return wish;
+
+		}
+	}
+
+	public static class WishRowMapper implements RowMapper<Wish> {
+		@Override
+		public Wish mapRow(ResultSet resultSet, int i) throws SQLException {
+
+			Wish wish = new Wish();
+			wish.setId(resultSet.getInt("ID"));
+			wish.setWishListId(resultSet.getInt("wish_list_id"));
+			wish.setDescription(resultSet.getString("description"));
+			wish.setCreateTime(resultSet.getTimestamp("create_time"));
+			wish.setLastUpdateTime(resultSet.getTimestamp("last_update_time"));
+			wish.setWishStatus(resultSet.getString("wish_status"));
+			wish.setImplementorOpenId("implementor_open_id");
+			wish.setImplementorsLimit(resultSet.getInt("implementors_limit"));
+
 			return wish;
 
 		}

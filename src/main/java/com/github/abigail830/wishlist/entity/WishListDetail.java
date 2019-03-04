@@ -19,6 +19,8 @@ public class WishListDetail {
     private String listBrief;
     private Timestamp listCreateTime;
     private Timestamp listDueTime;
+    private Integer implementorsLimit;
+
 
     List<Wish> wishes = new ArrayList<>();
 

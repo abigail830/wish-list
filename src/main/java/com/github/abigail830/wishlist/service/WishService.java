@@ -146,6 +146,7 @@ public class WishService {
         wishList.setTitle(wishListDTO.getListDescription());
         wishList.setBrief(wishListDTO.getListDescription2());
         wishList.setOpenId(wishListDTO.getListOpenId());
+        wishList.setImplementorsLimit(wishListDTO.getImplementorsLimit() != null? wishListDTO.getImplementorsLimit():1);
         if (wishListDTO.getListDueTime().length() > 10) {
             wishList.setDueTime(new java.sql.Timestamp(dateFormatter.get().parse(wishListDTO.getListDueTime()).getTime()));
         } else {
@@ -217,7 +218,7 @@ public class WishService {
     }
 
     private void takeUp(Wish takeupWish, String takeUpOpenID) {
-        int implementorLimit = takeupWish.getImplementorLimit() != null? takeupWish.getImplementorLimit() : 1;
+        int implementorLimit = takeupWish.getImplementorsLimit() != null? takeupWish.getImplementorsLimit() : 1;
         int currentImplementorSequence = wishDao.getCurrentImplementorSequence(takeupWish.getId().toString());
         if (currentImplementorSequence < (implementorLimit - 1)) {
             log.info("Use the sequence {} for open id {} take up {} ", (currentImplementorSequence + 1), takeUpOpenID, takeupWish.getId());
