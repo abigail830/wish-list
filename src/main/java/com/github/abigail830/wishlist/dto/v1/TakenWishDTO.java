@@ -1,6 +1,7 @@
 package com.github.abigail830.wishlist.dto.v1;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.Wish;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,6 +9,8 @@ import lombok.*;
 import org.apache.commons.lang.StringUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.LinkedList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -39,6 +42,9 @@ public class TakenWishDTO {
 
     @ApiModelProperty(value = "愿望承接人",  example = "微信用户")
     private UserDTO implementor;
+
+    @ApiModelProperty(value = "愿望承接人",  example = "微信用户")
+    private List<UserDTO> implementors;
 
     @ApiModelProperty(value = "愿望拥有人",  example = "微信用户")
     private UserDTO creator;
@@ -83,6 +89,12 @@ public class TakenWishDTO {
         }
         if (StringUtils.isNotBlank(wish.getImplementorOpenId()) && wish.getImplementor() != null) {
             this.implementor = new UserDTO(wish.getImplementor());
+        }
+        if (wish.getImplementors() != null && wish.getImplementors().size() > 0) {
+            implementors = new LinkedList<>();
+            for (User user : wish.getImplementors()) {
+                implementors.add(new UserDTO(user));
+            }
         }
         if (wish.getCreator() != null) {
             this.creator = new UserDTO(wish.getCreator());

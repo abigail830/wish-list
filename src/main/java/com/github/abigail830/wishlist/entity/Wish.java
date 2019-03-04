@@ -3,6 +3,7 @@ package com.github.abigail830.wishlist.entity;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,5 +21,7 @@ public class Wish {
     private User implementor;
     private User Creator;
     private Timestamp dueTime;
+    private Integer implementorLimit;
+    private List<User> implementors;
 
 }

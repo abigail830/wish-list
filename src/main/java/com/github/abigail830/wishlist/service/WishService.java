@@ -194,14 +194,44 @@ public class WishService {
         List<Wish> wishByID = wishDao.getWishByID(id);
         if (wishByID.size() > 0) {
             wishDao.takeupWish(id, takeUpOpenID);
-            List<Wish> wishList = wishDao.getWishDetailByWishListID(wishByID.get(0).getWishListId().toString());
-            welcomeCouponService.deliverWelcomeCoupon(wishList);
+            deliverCoupon(wishByID);
             return wishDao.getWishByWishListId(wishByID.get(0).getWishListId().toString())
                     .stream()
                     .map(WishDTO::new).collect(Collectors.toList()) ;
         } else {
             throw new IllegalArgumentException("wish not found by ID");
         }
+    }
+
+    public List<WishDTO> takeupWishV2 (String id, String takeUpOpenID) {
+        List<Wish> wishByID = wishDao.getWishByID(id);
+        if (wishByID.size() > 0) {
+            takeUp(wishByID.get(0), takeUpOpenID);
+            deliverCoupon(wishByID);
+            return wishDao.getWishByWishListId(wishByID.get(0).getWishListId().toString())
+                    .stream()
+                    .map(WishDTO::new).collect(Collectors.toList()) ;
+        } else {
+            throw new IllegalArgumentException("wish not found by ID");
+        }
+    }
+
+    private void takeUp(Wish takeupWish, String takeUpOpenID) {
+        int implementorLimit = takeupWish.getImplementorLimit() != null? takeupWish.getImplementorLimit() : 1;
+        int currentImplementorSequence = wishDao.getCurrentImplementorSequence(takeupWish.getId().toString());
+        if (currentImplementorSequence < (implementorLimit - 1)) {
+            log.info("Use the sequence {} for open id {} take up {} ", (currentImplementorSequence + 1), takeUpOpenID, takeupWish.getId());
+            wishDao.takeupWish(takeupWish.getId().toString(), takeUpOpenID, (currentImplementorSequence + 1));
+            wishDao.updateTakeupStatus(takeupWish.getId().toString());
+        } else {
+            log.error("Take up user volume is over the limit " + implementorLimit);
+            throw new RuntimeException("Take up user volume is over the limit " + implementorLimit);
+        }
+    }
+
+    private void deliverCoupon(List<Wish> wishByID) {
+        List<Wish> wishList = wishDao.getWishDetailByWishListID(wishByID.get(0).getWishListId().toString());
+        welcomeCouponService.deliverWelcomeCoupon(wishList);
     }
 
     public List<Wish> getWishByID(String id) {

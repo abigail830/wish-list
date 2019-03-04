@@ -65,3 +65,10 @@ CREATE TABLE coupon_map_tbl (
   coupon_status varchar(100) NOT NULL,
   PRIMARY KEY (open_id,coupon,coupon_type)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE implementors_tbl (
+  wish_id int NOT NULL,
+  implementor_open_id varchar(100) NOT NULL,
+  sequence int NOT NULL,
+  PRIMARY KEY (wish_id,sequence)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

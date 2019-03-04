@@ -266,6 +266,25 @@ public class WishControllerV1 {
         }
     }
 
+    @PutMapping("/v2/taken")
+    public List<WishDTO> takeUpWishV2(
+            @ApiParam(example = "1") @RequestParam(value = "id", required = true) String id,
+            @ApiParam(example = "oEmJ75YWmBSDgyz4KLi_yGL8MBV4") @RequestParam(value = "openId", required = true) String takeUpOpenID,
+            @ApiParam(example = "3bd989440d1d9bb5b7d55a88c5425762") @RequestParam(value = "formId", required = false) String formID) throws ParseException {
+        log.info("V2 Take up {} wish by {} with form ID {}", id, takeUpOpenID, formID);
+
+        if (StringUtils.isNotBlank(takeUpOpenID) && StringUtils.isNotBlank(formID)) {
+            formIDMappingService.contributeFormID(takeUpOpenID,formID);
+        }
+
+        if (StringUtils.isNotBlank(takeUpOpenID) && StringUtils.isNotBlank(id)) {
+            return wishService.takeupWishV2(id, takeUpOpenID);
+        } else {
+            throw new IllegalArgumentException("Wish information is invalid");
+        }
+    }
+
+
     @DeleteMapping("/taken")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
     public void rollbackTakeUpWish(

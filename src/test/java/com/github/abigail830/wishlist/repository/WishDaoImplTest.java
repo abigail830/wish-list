@@ -92,4 +92,14 @@ public class WishDaoImplTest {
 
     }
 
+    @Test
+    public void testCanQueryAndAddImplementorSeq() throws Exception {
+        WishDaoImpl wishDaoImpl = new WishDaoImpl();
+        wishDaoImpl.setJdbcTemplate(jdbcTemplate);
+        assertThat(wishDaoImpl.getCurrentImplementorSequence("1"), is(-1));
+
+        wishDaoImpl.takeupWish("1","openIDTest1",0);
+        assertThat(wishDaoImpl.getCurrentImplementorSequence("1"), is(0));
+    }
+
 }
