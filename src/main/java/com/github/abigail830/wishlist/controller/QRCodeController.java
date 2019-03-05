@@ -25,8 +25,10 @@ public class QRCodeController {
             @RequestParam String page) {
 
         final byte[] result = qrCodeService.generate(page);
+//        log.info("{}", result);
+
         HttpHeaders headers_1 = new HttpHeaders();
-        headers_1.setContentType(MediaType.IMAGE_JPEG);
+        headers_1.setContentType(MediaType.IMAGE_PNG);
 
         return new ResponseEntity<>(result, headers_1, HttpStatus.OK);
 
