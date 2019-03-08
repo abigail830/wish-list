@@ -236,7 +236,7 @@ public class WishDaoImpl {
 
 	public int getCurrentImplementorSequence(String id) {
 		log.info("Get implementor seq {} for wish {}", id);
-		Integer seq = jdbcTemplate.queryForObject("select max(sequence) from implementors_tbl", Integer.class);
+		Integer seq = jdbcTemplate.queryForObject("select max(sequence) from implementors_tbl where wish_id = '" + id +"'" , Integer.class);
 		log.info("Current implementor sequence for wish {} is {}", id, seq);
 		return seq != null? seq : -1;
 	}
@@ -263,7 +263,7 @@ public class WishDaoImpl {
 		return jdbcTemplate.query("select user_table.open_id as open_id, " +
 						"user_table.gender as gender, " +
 						"user_table.nick_name as nick_name, " +
-						"user_table.city as city, " +
+						"userª_table.city as city, " +
 						"user_table.country as country, " +
 						"user_table.province as province, " +
 						"user_table.lang as lang, " +
