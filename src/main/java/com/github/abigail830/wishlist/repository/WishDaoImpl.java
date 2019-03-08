@@ -263,7 +263,7 @@ public class WishDaoImpl {
 		return jdbcTemplate.query("select user_table.open_id as open_id, " +
 						"user_table.gender as gender, " +
 						"user_table.nick_name as nick_name, " +
-						"userª_table.city as city, " +
+						"user_table.city as city, " +
 						"user_table.country as country, " +
 						"user_table.province as province, " +
 						"user_table.lang as lang, " +
