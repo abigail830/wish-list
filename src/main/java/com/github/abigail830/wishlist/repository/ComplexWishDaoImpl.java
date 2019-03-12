@@ -130,6 +130,10 @@ public class ComplexWishDaoImpl {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public void setWishDao(WishDaoImpl wishDao) {
+        this.wishDao = wishDao;
+    }
+
     public static class ImplementorUserMapper implements RowMapper<User> {
         @Override
         public User mapRow(ResultSet resultSet, int i) throws SQLException {

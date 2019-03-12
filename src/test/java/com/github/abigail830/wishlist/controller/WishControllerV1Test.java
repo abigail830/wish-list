@@ -103,6 +103,7 @@ public class WishControllerV1Test {
 
         ComplexWishDaoImpl complexWishDao = new ComplexWishDaoImpl();
         complexWishDao.setJdbcTemplate(jdbcTemplate);
+        complexWishDao.setWishDao(wishDao);
 
         UserEventImpl userEvent = new UserEventImpl();
         userEvent.setJdbcTemplate(jdbcTemplate);

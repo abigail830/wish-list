@@ -96,6 +96,9 @@ public class ComplexWishDaoImplTest {
     public void getWishListDetail() {
         ComplexWishDaoImpl complexWishDao = new ComplexWishDaoImpl();
         complexWishDao.setJdbcTemplate(jdbcTemplate);
+        WishDaoImpl wishDao = new WishDaoImpl();
+        wishDao.setJdbcTemplate(jdbcTemplate);
+        complexWishDao.setWishDao(wishDao);
         WishListDetail wishListDetail = complexWishDao.getWishListDetail("1");
         assertThat(wishListDetail.getListOpenId(), is("openID1"));
         assertThat(wishListDetail.getWishes().size(), is(2));
