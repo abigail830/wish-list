@@ -34,7 +34,9 @@ public class SchemaService {
                                                 "  sequence int NOT NULL, " +
                                                 "  PRIMARY KEY (wish_id,sequence) " +
                                                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4; " +
-                                                "ALTER TABLE wishlist_tbl ADD implementors_limit int DEFAULT 1; ");
+                                                "ALTER TABLE wishlist_tbl ADD implementors_limit int DEFAULT 1; ",
+                    "address_and_witness",      "ALTER TABLE wishlist_tbl ADD address varchar(255) DEFAULT NULL; " +
+                                                "ALTER TABLE wishlist_tbl ADD is_self_witness boolean DEFAULT false; ");
 
 
     @Autowired

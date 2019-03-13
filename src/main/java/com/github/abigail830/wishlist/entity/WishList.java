@@ -18,6 +18,8 @@ public class WishList implements Comparable{
     private Timestamp createTime;
     private Timestamp dueTime;
     private Integer implementorsLimit;
+    private String address;
+    private Boolean isSelfWitness;
 
 
     @Override

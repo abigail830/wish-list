@@ -46,6 +46,13 @@ public class WishListDTO{
     @ApiModelProperty(value = "认领限制",  example = "1")
     private Integer implementorsLimit;
 
+    @ApiModelProperty(value = "地址", example = "")
+    private String address;
+
+    @ApiModelProperty(value = "是否本人见证", example = "true")
+    private Boolean isSelfWitness;
+
+
     @ApiModelProperty(value = "愿望列表")
     List<WishDTO> wishes = new ArrayList<>();
 
@@ -77,6 +84,8 @@ public class WishListDTO{
         }
         this.dateInMonth = this.listDueTime.substring(8, 10);
         this.yearAndMonth = this.listDueTime.substring(0, 7);
+        this.address = wishListDetail.getAddress();
+        this.isSelfWitness = wishListDetail.getIsSelfWitness();
     }
 
 
@@ -94,6 +103,8 @@ public class WishListDTO{
         } else {
             this.implementorsLimit = 1;
         }
+        this.address = wishList.getAddress();
+        this.isSelfWitness = wishList.getIsSelfWitness();
     }
 
 }

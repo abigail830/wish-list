@@ -77,6 +77,8 @@ public class ComplexWishDaoImpl {
                         "wishlist_tbl.create_time as list_create_time, " +
                         "wishlist_tbl.due_time as list_due_time, " +
                         "wishlist_tbl.implementors_limit as implementors_limit, " +
+                        "wishlist_tbl.address as address, " +
+                        "wishlist_tbl.is_self_witness as is_self_witness, " +
                         "wish_tbl.ID as ID, " +
                         "wish_tbl.wish_list_id as wish_list_id, " +
                         "wish_tbl.description as description, " +
@@ -121,7 +123,9 @@ public class ComplexWishDaoImpl {
                     }
                 }, wishListId);
         for (Wish wish : wishListDetail.getWishes()) {
-            wish.setImplementors(wishDao.queryImplementors(wish.getId().toString()));
+            if (wish.getId() != null) {
+                wish.setImplementors(wishDao.queryImplementors(wish.getId().toString()));
+            }
         }
         return wishListDetail;
     }

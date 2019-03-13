@@ -20,6 +20,9 @@ CREATE TABLE wishlist_tbl (
   description varchar(255) DEFAULT NULL,
   create_time TIMESTAMP NOT NULL,
   due_time TIMESTAMP NOT NULL,
+  implementors_limit int DEFAULT 1,
+  address varchar(255) DEFAULT NULL;
+  is_self_witness boolean DEFAULT false;
   PRIMARY KEY (ID),
   FOREIGN KEY (open_id) REFERENCES user_tbl(open_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

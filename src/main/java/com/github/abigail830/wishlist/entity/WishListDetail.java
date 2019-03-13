@@ -20,6 +20,8 @@ public class WishListDetail {
     private Timestamp listCreateTime;
     private Timestamp listDueTime;
     private Integer implementorsLimit;
+    private String address;
+    private Boolean isSelfWitness;
 
 
     List<Wish> wishes = new ArrayList<>();

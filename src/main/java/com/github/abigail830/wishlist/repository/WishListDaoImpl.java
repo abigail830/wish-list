@@ -22,13 +22,15 @@ public class WishListDaoImpl {
 	public void createWishList(WishList wishList) {
 		log.info("Going to create wish list for user: {}", wishList.toString());
 		jdbcTemplate.update(
-				"INSERT INTO wishlist_tbl (open_id, title, brief, create_time, due_time, implementors_limit) VALUES (?,?,?,?,?,?)",
+				"INSERT INTO wishlist_tbl (open_id, title, brief, create_time, due_time, implementors_limit, address, is_self_witness) VALUES (?,?,?,?,?,?,?,?)",
 				wishList.getOpenId(),
 				wishList.getTitle(),
 				wishList.getBrief(),
 				wishList.getCreateTime(),
 				wishList.getDueTime(),
-				wishList.getImplementorsLimit()
+				wishList.getImplementorsLimit(),
+				wishList.getAddress(),
+				wishList.getIsSelfWitness()
 		);
 	}
 
