@@ -228,7 +228,7 @@ public class WishService {
             wishDao.takeupWish(takeupWish.getId().toString(), takeUpOpenID, (currentImplementorSequence + 1));
             wishDao.updateTakeupStatus(takeupWish.getId().toString());
         } else {
-            log.error("Take up user volume is over the limit " + implementorLimit);
+            log.error("Take up user volume is over the limit " + implementorLimit + " current sequence " + currentImplementorSequence);
             throw new RuntimeException("Take up user volume is over the limit " + implementorLimit);
         }
     }
