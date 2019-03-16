@@ -105,4 +105,8 @@ public class UserDaoImpl {
 		List<User> users = jdbcTemplate.query("SELECT * FROM user_tbl WHERE id = ?", rowMapper, id);
 		return users.stream().findFirst().orElse(null);
 	}
+
+	public List<User> getAllUsers() {
+		return jdbcTemplate.query("SELECT * from user_tbl", rowMapper);
+	}
 }

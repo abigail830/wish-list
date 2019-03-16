@@ -1,6 +1,7 @@
 package com.github.abigail830.wishlist.service;
 
 import com.github.abigail830.wishlist.dto.UserInfo;
+import com.github.abigail830.wishlist.dto.v1.UserDTO;
 import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.UserEvent;
 import com.github.abigail830.wishlist.repository.UserDaoImpl;
@@ -9,6 +10,9 @@ import com.github.abigail830.wishlist.util.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -42,6 +46,10 @@ public class UserService {
         UserEvent event = new UserEvent(userInfo.getOpenId());
         event.setEventType(Constants.EVENT_TYPE_AUTHORIZE);
         userEventDao.createUserEvent(event);
+    }
+
+    public List<UserDTO> getUsers() {
+        return userDao.getAllUsers().stream().map(UserDTO::new).collect(Collectors.toList());
     }
 
     public User getUserByOpenId(String openId){

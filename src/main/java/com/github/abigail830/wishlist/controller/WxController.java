@@ -4,6 +4,7 @@ import com.github.abigail830.wishlist.dto.UserInfo;
 import com.github.abigail830.wishlist.dto.WxDecryptResponse;
 import com.github.abigail830.wishlist.dto.WxLoginResponse;
 import com.github.abigail830.wishlist.dto.v1.FormIDMappingDTO;
+import com.github.abigail830.wishlist.dto.v1.UserDTO;
 import com.github.abigail830.wishlist.entity.FormIDMapping;
 import com.github.abigail830.wishlist.service.FormIDMappingService;
 import com.github.abigail830.wishlist.service.UserService;
@@ -109,4 +110,19 @@ public class WxController {
 		formIDMappingService.deleteFormID(formID);
 	}
 
+	@GetMapping("/users")
+	public List<UserDTO> getUsers (){
+		return userService.getUsers();
+
+	}
+
+	private UserInfo convertToUserInfo(UserDTO userDTO) {
+		return new UserInfo(userDTO.getOpenId());
+	}
+
+	@PostMapping("/users")
+	public List<UserDTO> createUser(UserDTO userDTO) {
+		userService.createUser(convertToUserInfo(userDTO));
+		return userService.getUsers();
+	}
 }
