@@ -340,7 +340,7 @@ public class WishDaoImpl {
 			wish.setCreateTime(resultSet.getTimestamp("create_time"));
 			wish.setLastUpdateTime(resultSet.getTimestamp("last_update_time"));
 			wish.setWishStatus(resultSet.getString("wish_status"));
-			wish.setImplementorOpenId("implementor_open_id");
+			wish.setImplementorOpenId(resultSet.getString("implementor_open_id"));
 			wish.setImplementorsLimit(resultSet.getInt("implementors_limit"));
 
 			return wish;

@@ -4,14 +4,18 @@ import com.github.abigail830.wishlist.dto.v1.*;
 import com.github.abigail830.wishlist.entity.WishListDetail;
 import com.github.abigail830.wishlist.service.FormIDMappingService;
 import com.github.abigail830.wishlist.service.WishService;
+import com.github.abigail830.wishlist.util.Toggle;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.List;
@@ -292,12 +296,21 @@ public class WishControllerV1 {
         }
 
         if (StringUtils.isNotBlank(id)) {
-            return wishService.completeWish(id, takeUpOpenID);
+            if (Toggle.COMPLETE_WITNESS_CHECK.isON()){
+                return wishService.completeWishWithWitnessCheck(id, takeUpOpenID);
+            } else {
+                return wishService.completeWish(id, takeUpOpenID);
+            }
         } else {
             throw new IllegalArgumentException("Wish information is invalid");
         }
     }
 
+
+    @ExceptionHandler
+    void handleIllegalArgumentException(IllegalArgumentException e, HttpServletResponse response) throws IOException {
+        response.sendError(HttpStatus.BAD_REQUEST.value());
+    }
 
     private WishDashboardDTO getWishListsByUserOpenID(String openId) {
         int myCompletedWishCount = wishService.getMyCompletedWishCount(openId);

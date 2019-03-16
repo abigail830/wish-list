@@ -1,7 +1,8 @@
 package com.github.abigail830.wishlist.util;
 
 public enum Toggle {
-    TEST_MODE(false);
+    TEST_MODE(false),
+    COMPLETE_WITNESS_CHECK(true);
 
     private boolean status;
 

@@ -1,6 +1,7 @@
 package com.github.abigail830.wishlist.service;
 
 import com.github.abigail830.wishlist.dto.v1.*;
+import com.github.abigail830.wishlist.entity.User;
 import com.github.abigail830.wishlist.entity.Wish;
 import com.github.abigail830.wishlist.entity.WishList;
 import com.github.abigail830.wishlist.entity.WishListDetail;
@@ -330,5 +331,43 @@ public class WishService {
         List<TakenWishTimelineEntry> resultList = new ArrayList<TakenWishTimelineEntry>(takenWishTimelineEntryMap.values());
         Collections.reverse(resultList);
         return new TakenWishTimeline(resultList);
+    }
+
+    public WishList getWishList(Wish wish) {
+        List<WishList> wishListById = wishListDao.getWishListById(wish.getWishListId().toString());
+        if (wishListById.size() == 0) {
+            throw new IllegalArgumentException("Can not find the wish list with wish id " + wish.getWishListId());
+        } else {
+            return wishListById.get(0);
+        }
+    }
+
+    public Wish getWish(String wishID) {
+        List<Wish> wishByID = wishDao.getWishByID(wishID);
+        if (wishByID.size() == 0) {
+            throw new IllegalArgumentException("Can not find the wish with wish id " + wishID);
+        } else {
+            return wishByID.get(0);
+        }
+    }
+
+    public List<WishDTO> completeWishWithWitnessCheck(String id, String takeUpOpenID) {
+        Wish wish = getWish(id);
+        WishList wishList = getWishList(wish);
+        if (wishList.getIsSelfWitness() != null && wishList.getIsSelfWitness() == true) {
+            if (takeUpOpenID.equals(wishList.getOpenId())) {
+                return completeWish(id, takeUpOpenID);
+            } else {
+                throw new IllegalArgumentException("Self Witness wish could only be completed by owner");
+            }
+        } else {
+            List<User> users = wishDao.queryImplementors(id);
+            if (users.stream().anyMatch(user -> takeUpOpenID.equals(user.getOpenId())) || takeUpOpenID.equals(wish.getImplementorOpenId())) {
+                return completeWish(id, takeUpOpenID);
+            } else {
+                throw new IllegalArgumentException("The open ID is not in the implementors list " + takeUpOpenID );
+            }
+
+        }
     }
 }
