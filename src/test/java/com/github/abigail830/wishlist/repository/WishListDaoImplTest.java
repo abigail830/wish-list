@@ -68,14 +68,25 @@ public class WishListDaoImplTest {
         wishList.setOpenId("openID1");
         wishList.setTitle("THIS IS FOR TEST");
         wishList.setBrief("THIS IS FOR BRIEF TEST");
+        wishList.setAddress("THIS IS ADDRESS");
+        wishList.setIsSelfWitness(false);
+        wishList.setImplementorsLimit(99);
         WishListDaoImpl wishListDao = new WishListDaoImpl();
         wishListDao.setJdbcTemplate(jdbcTemplate);
         wishListDao.createWishList(wishList);
+
         wishList.setTitle("THIS IS FOR TEST2");
+        wishList.setImplementorsLimit(1);
+        wishList.setIsSelfWitness(true);
+        wishList.setAddress("THIS IS NEW ADDRESS");
         wishListDao.updateWishListByID(wishList);
         assertThat(wishListDao.getWishListByOpenId("openID1")
                 .stream()
-                .filter(wl -> "THIS IS FOR TEST2".equals(wl.getTitle())).count(), is(1L));
+                .filter(wl -> "THIS IS FOR TEST2".equals(wl.getTitle()))
+                .filter(wl -> wl.getIsSelfWitness().equals(true))
+                .filter(wl -> "THIS IS NEW ADDRESS".equals(wl.getAddress()))
+                .filter(wl -> wl.getImplementorsLimit() == 1)
+                .count(), is(1L));
 
     }
 
