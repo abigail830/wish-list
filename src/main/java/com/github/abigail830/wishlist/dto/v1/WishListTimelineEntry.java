@@ -2,7 +2,7 @@ package com.github.abigail830.wishlist.dto.v1;
 
 import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -13,6 +13,6 @@ public class WishListTimelineEntry {
 
     private String asofMonth;
 
-    private List<WishListDTO> wishListDTOList;
+    private Set<WishListDTO> wishListDTOList;
 
 }

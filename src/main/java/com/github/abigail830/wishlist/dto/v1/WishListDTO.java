@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class WishListDTO{
+public class WishListDTO implements Comparable{
     @ApiModelProperty(value = "用户openID",  example = "troEmJ75YWmBSDgyz4KLi_yGL8MBV4ue")
     private String listOpenId;
 
@@ -107,4 +107,17 @@ public class WishListDTO{
         this.isSelfWitness = wishList.getIsSelfWitness();
     }
 
+
+    @Override
+    public int compareTo(Object targetDTO) {
+        WishListDTO wishListDTOTarget = (WishListDTO) targetDTO;
+        if (wishListDTOTarget.getDateInMonth() == null || this.getDateInMonth() == null) {
+            return 0;
+        } else {
+            Integer targetDateInMonth = Integer.valueOf(wishListDTOTarget.getDateInMonth());
+            Integer dateInMonth = Integer.valueOf(this.getDateInMonth());
+            return targetDateInMonth.compareTo(dateInMonth);
+        }
+
+    }
 }

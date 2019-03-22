@@ -17,10 +17,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -288,9 +285,9 @@ public class WishService {
             if (wishListTimelineEntry == null) {
                 String[] yearAndMonth = month.split("-");
                 String dateToPresent = yearAndMonth[0] + "年" + yearAndMonth[1] + "月";
-                ArrayList<WishListDTO> wishListDTOList = new ArrayList<>();
-                wishListDTOList.add(wishListDTO);
-                WishListTimelineEntry newWishListTimelineEntry = new WishListTimelineEntry(dateToPresent, wishListDTOList);
+                TreeSet<WishListDTO> wishListDTOSet = new TreeSet<>();
+                wishListDTOSet.add(wishListDTO);
+                WishListTimelineEntry newWishListTimelineEntry = new WishListTimelineEntry(dateToPresent, wishListDTOSet);
                 wishListTimelineEntryMap.put(month, newWishListTimelineEntry);
             } else {
                 wishListTimelineEntry.getWishListDTOList().add(wishListDTO);
