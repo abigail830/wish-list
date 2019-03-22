@@ -37,10 +37,13 @@ public class WishListDaoImpl {
 	public void updateWishListByID(WishList wishList) {
 		log.info("Going to update wish list for user : {}", wishList.toString());
 		jdbcTemplate.update(
-				"UPDATE wishlist_tbl set title=?, brief=?, due_time=? where ID=?",
+                "UPDATE wishlist_tbl set title=?, brief=?, due_time=?,implementors_limit=?, address=?, is_self_witness=? where ID=?",
 				wishList.getTitle(),
 				wishList.getBrief(),
 				wishList.getDueTime(),
+                wishList.getImplementorsLimit(),
+                wishList.getAddress(),
+                wishList.getIsSelfWitness(),
 				wishList.getId()
 		);
 	}
