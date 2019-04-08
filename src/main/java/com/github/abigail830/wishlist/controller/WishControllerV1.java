@@ -115,7 +115,7 @@ public class WishControllerV1 {
             formIDMappingService.contributeFormID(wishList.getListOpenId(),formId);
         }
 
-        if (StringUtils.isNotBlank(wishList.getListOpenId()) && StringUtils.isNotBlank(wishList.getListDescription())) {
+        if (StringUtils.isNotBlank(wishList.getListOpenId())) {
             return wishService.createWishList(wishList);
         } else {
             return wishList;
