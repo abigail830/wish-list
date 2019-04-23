@@ -23,5 +23,6 @@ public class Wish {
     private Timestamp dueTime;
     private Integer implementorsLimit;
     private List<User> implementors;
+    private boolean isSelfWitness;
 
 }

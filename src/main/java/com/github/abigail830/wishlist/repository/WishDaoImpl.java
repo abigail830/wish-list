@@ -146,7 +146,8 @@ public class WishDaoImpl {
 						"user_table.province as province, " +
 						"user_table.lang as lang, " +
 						"user_table.avatar_url as avatar_url, " +
-						"wishlist_tbl.due_time as due_time " +
+						"wishlist_tbl.due_time as due_time, " +
+						"wishlist_tbl.is_self_witness as is_self_witness " +
 						"from wish_tbl " +
 						"join wishlist_tbl on wishlist_tbl.id = wish_tbl.wish_list_id " +
 						"join user_tbl as user_table on wishlist_tbl.open_id = user_table.open_id " +
@@ -175,7 +176,8 @@ public class WishDaoImpl {
 						"user_table.province as province, " +
 						"user_table.lang as lang, " +
 						"user_table.avatar_url as avatar_url, " +
-						"wishlist_tbl.due_time as due_time " +
+						"wishlist_tbl.due_time as due_time, " +
+						"wishlist_tbl.is_self_witness as is_self_witness " +
 						"from wish_tbl " +
 						"join wishlist_tbl on wishlist_tbl.id = wish_tbl.wish_list_id " +
 						"join user_tbl as user_table on wishlist_tbl.open_id = user_table.open_id " +
@@ -288,6 +290,7 @@ public class WishDaoImpl {
 			wish.setWishStatus(resultSet.getString("wish_status"));
 			wish.setImplementorOpenId("implementor_open_id");
 			wish.setDueTime(resultSet.getTimestamp("due_time"));
+			wish.setSelfWitness(resultSet.getBoolean("is_self_witness"));
 
 			User user = new User();
 			user.setOpenId(resultSet.getString("open_id"));

@@ -58,6 +58,9 @@ public class TakenWishDTO {
     @ApiModelProperty(value = "月份",  example = "2018-10")
     private String yearAndMonth;
 
+    @ApiModelProperty(value = "是否本人见证", example = "true")
+    private Boolean isSelfWitness;
+
     private static final ThreadLocal<SimpleDateFormat> dateFormatter = new ThreadLocal<SimpleDateFormat>() {
         @Override protected SimpleDateFormat initialValue() {
             return new SimpleDateFormat("yyyy-MM-dd");
@@ -99,5 +102,6 @@ public class TakenWishDTO {
         if (wish.getCreator() != null) {
             this.creator = new UserDTO(wish.getCreator());
         }
+        this.isSelfWitness = wish.isSelfWitness();
     }
 }
