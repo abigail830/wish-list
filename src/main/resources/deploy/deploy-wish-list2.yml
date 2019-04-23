@@ -2,14 +2,11 @@
 - hosts: centOS7
   remote_user: root
   vars:
-    version: 1.0.1
+    version: v1.1.6
   tasks:
-  - name: download package from nexus
-    maven_artifact:
-      group_id: 'com.github.abigail830'
-      artifact_id: 'wish-list'
-      version: "{{version}}"
-      repository_url: 'http://nexus.saraqian.cn/nexus/content/repositories/releases/'
+  - name: Download package from jitpack
+    get_url:
+      url: https://jitpack.io/com/github/abigail830/wish-list/{{version}}/wish-list-{{version}}.jar
       dest: /var/www/wish-list-2/wish-list-{{version}}.jar
       mode: 0744
 
