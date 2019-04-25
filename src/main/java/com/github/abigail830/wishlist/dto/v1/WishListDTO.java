@@ -116,7 +116,11 @@ public class WishListDTO implements Comparable{
         } else {
             Integer targetDateInMonth = Integer.valueOf(wishListDTOTarget.getDateInMonth());
             Integer dateInMonth = Integer.valueOf(this.getDateInMonth());
-            return targetDateInMonth.compareTo(dateInMonth);
+            if (targetDateInMonth.equals(dateInMonth)) {
+                return 0;
+            } else {
+                return targetDateInMonth.compareTo(dateInMonth);
+            }
         }
 
     }
