@@ -117,7 +117,7 @@ public class WishListDTO implements Comparable{
             Integer targetDateInMonth = Integer.valueOf(wishListDTOTarget.getDateInMonth());
             Integer dateInMonth = Integer.valueOf(this.getDateInMonth());
             if (targetDateInMonth.equals(dateInMonth)) {
-                return 0;
+                return -1;
             } else {
                 return targetDateInMonth.compareTo(dateInMonth);
             }
